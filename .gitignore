@@ -1,0 +1,15 @@
+.DS_Store
+*.tmp
+*.log
+.vscode/*
+
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+composer.phar
+/vendor/
+
+/db/mariadb-data/
