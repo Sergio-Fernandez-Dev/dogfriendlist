@@ -14,6 +14,7 @@ services:
     volumes:
       - .:/var/www
       - ./db/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./config/php.ini-development:/usr/local/etc/php/php.ini
 
   db:
     container_name: mariadb
@@ -21,8 +22,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: $${DB_PASS}
-      MYSQL_DATABASE: $${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes: 
       - ./db/mariadb-data:/var/lib/mysql
 
