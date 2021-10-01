@@ -1,8 +1,9 @@
 .DS_Store
 *.tmp
 *.log
-.vscode/*
+.env
 
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
