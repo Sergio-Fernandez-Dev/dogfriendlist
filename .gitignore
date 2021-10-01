@@ -13,4 +13,4 @@
 composer.phar
 /vendor/
 
-/db/mariadb-data/}
+/db/mariadb-data/*
