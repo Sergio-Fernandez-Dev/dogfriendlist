@@ -24,6 +24,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - 3306:3306  
     volumes: 
       - ./db/mariadb-data:/var/lib/mysql
 
