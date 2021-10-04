@@ -19,13 +19,12 @@ services:
   db:
     container_name: mariadb
     image: mariadb:10.6.4
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - 3306:3306  
+      - 3309:3306  
     volumes: 
       - ./db/mariadb-data:/var/lib/mysql
 
@@ -35,7 +34,3 @@ services:
     restart: always
     ports:
       - 8080:8080 
-
-networks:
-  default:
-    name: dogfriendlist
