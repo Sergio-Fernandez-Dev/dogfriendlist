@@ -52,7 +52,7 @@ CREATE TABLE `Comments` (
   `Comment` TEXT(500) NOT NULL,
   `CreatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `UserId` INT(8) NOT NULL,
-  `SpotID` INT(8) NOT NULL
+  `SpotId` INT(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Estructura de la tabla `Coordinates`
