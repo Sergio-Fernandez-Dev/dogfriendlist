@@ -2,6 +2,7 @@
 *.tmp
 *.log
 .env
+*.cache
 
 .vscode/*
 !.vscode/settings.json
