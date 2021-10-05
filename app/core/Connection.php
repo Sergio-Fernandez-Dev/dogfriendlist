@@ -64,7 +64,7 @@ class Connection
      */
     public function close()
     {
-        $this->conn = null;
+        return $this->conn = null;
     }
 }
 
