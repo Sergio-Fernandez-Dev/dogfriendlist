@@ -18,8 +18,8 @@ class ConnectionTest extends TestCase
             'driver' => 'mysql',
             'host' => 'db',
             'user' => 'root',
-            'pass' => '1234',
-            'name' => 'testing-db',   
+            'pass' => 'pass',
+            'name' => 'dogfriendlist',   
             'charset' => 'utf8'
         ];
 
@@ -30,7 +30,6 @@ class ConnectionTest extends TestCase
     public static function tearDownAfterClass(): void
     {
         self::$conn = null; 
-        unset(self::$dbh);
     }
 
     public function testConnectionIsNotEmpty(): void
