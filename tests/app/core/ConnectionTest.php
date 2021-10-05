@@ -39,9 +39,19 @@ class ConnectionTest extends TestCase
 
     public function testConnectionIsAnObject(): void
     {
-        $this->assertIsObject(self::$conn);
+        $this->assertIsObject(self::$conn); 
+    }
+
+    public function testConnectionIsNotNull(): void
+    {
+        $this->assertNotNull(self::$conn);
     }
     
+    public function testClosedConecctionReturnsNullValue(): void
+    {
+        self::$conn = self::$dbh->close();
+        $this->assertNull(self::$conn);
+    }
 }
 
 ?>
