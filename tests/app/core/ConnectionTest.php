@@ -47,7 +47,7 @@ class ConnectionTest extends TestCase
         $this->assertNotNull(self::$conn);
     }
     
-    public function testClosedConecctionReturnsNullValue(): void
+    public function testClosedConnectionReturnsNullValue(): void
     {
         self::$conn = self::$dbh->close();
         $this->assertNull(self::$conn);
