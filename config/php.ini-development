@@ -366,6 +366,7 @@ zend.enable_gc = On
 ; of sensitive information in stack traces
 ; Default: Off
 zend.exception_ignore_args = Off
+zend_extension="xdebug.so"
 
 ;;;;;;;;;;;;;;;;;
 ; Miscellaneous ;
