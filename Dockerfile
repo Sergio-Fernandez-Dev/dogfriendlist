@@ -7,13 +7,16 @@ WORKDIR /var/www
 
 RUN apt-get update && apt-get upgrade -y
 
+
 RUN apt-get install -y \
     curl \
     git \
     zip \
-    zlib1g-dev
+    vim-tiny \
+    zlib1g-dev 
 
-RUN pecl install xdebug
+RUN pecl install -f xdebug \ 
+&& echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN docker-php-ext-install \
     mysqli \
