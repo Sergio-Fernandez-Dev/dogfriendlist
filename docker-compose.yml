@@ -9,7 +9,9 @@ services:
     tty: true
     depends_on: 
       - db
-    ports: 
+    environment:  
+      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9000 remote_enable=1
+    ports:
       - 3000:80
     volumes:
       - .:/var/www
