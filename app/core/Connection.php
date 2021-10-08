@@ -60,7 +60,7 @@ class Connection
     /**
      * Cierra la conexión con la base de datos
      *
-     * @return void
+     * @return null
      */
     public function close()
     {
