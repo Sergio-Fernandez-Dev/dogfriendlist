@@ -238,6 +238,9 @@ abstract class BaseModel
             echo "Query failed: " . $e->getMessage();
         }
     }
+
+    protected abstract function getClassParams();
+    protected abstract function setClassParams();
 }
 
 ?>
