@@ -15,8 +15,7 @@ class UserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->conn_mocked = 
-        $this->createMock(EntityInterface::class);
+        $this->conn_mocked = $this->createMock(EntityInterface::class);
 
         $this->user = new User();
 
