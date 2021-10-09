@@ -4,7 +4,7 @@ namespace Tests\Users;
 
 use PHPUnit\Framework\TestCase;
 use App\Users\User;
-use App\Interfaces\EntityInterface;
+use App\Core\Interfaces\EntityInterface;
 
 
 class UserTest extends TestCase 
@@ -16,8 +16,7 @@ class UserTest extends TestCase
     protected function setUp(): void
     {
         $this->conn_mocked = 
-        $this->createMock(EntityInterface::class)
-            ->getMock();
+        $this->createMock(EntityInterface::class);
 
         $this->user = new User();
 
@@ -96,7 +95,6 @@ class UserTest extends TestCase
 
         $this->assertEquals($this->data, $result);
     }
-
 }
 
 ?>

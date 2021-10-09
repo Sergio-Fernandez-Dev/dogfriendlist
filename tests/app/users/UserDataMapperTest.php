@@ -5,7 +5,8 @@ namespace Tests\Users;
 use PHPUnit\Framework\TestCase;
 use App\Users\UserDataMapper;
 use App\Users\User;
-use App\Core\Connection;
+use App\Core\Interfaces\ConnectionInterface;
+
 
 class UserDataMapperTest extends TestCase
 {
@@ -16,16 +17,7 @@ class UserDataMapperTest extends TestCase
     protected function setUp(): void
     {
         
-        $mock = 
-            $this->getMockBuilder(Connection::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-        
-        $mock->method('connect')->willReturn(true);
-        $mock->method('close')->willReturn(null);
-
-
-        $this->u_mapper = new UserDataMapper($mock);
+       
         $this->data =
         [
             'id' => 1,
@@ -45,8 +37,10 @@ class UserDataMapperTest extends TestCase
 
     public function testCanCreateNewUser()
     {
+        $connection_i_mock = $this->createMock(ConnectionInterface::class);
 
-        $this->u_mapper = new UserDataMapper($this->conn_mocked);
+        $this->u_mapper = new UserDataMapper($connection_i_mock);
+
         $user = $this->u_mapper->create();
         $this->assertInstanceOf(User::class, $user);
     }
