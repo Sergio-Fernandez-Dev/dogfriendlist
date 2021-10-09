@@ -11,12 +11,10 @@ class UserTest extends TestCase
 {
     public $data;
     public $user;
-    public $conn_mocked;
 
     protected function setUp(): void
     {
-        $this->conn_mocked = $this->createMock(EntityInterface::class);
-
+        
         $this->user = new User();
 
         $this->data =
