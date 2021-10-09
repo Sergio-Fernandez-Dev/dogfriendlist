@@ -4,9 +4,8 @@ namespace App\Users;
 
 use App\Users\User;
 use App\Core\BaseDataMapper;
-use App\Interfaces\ConnectionInterface;
-
-use App\Interfaces\EntityInterface;
+use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\EntityInterface;
 
 class UserDataMapper extends BaseDataMapper
 {

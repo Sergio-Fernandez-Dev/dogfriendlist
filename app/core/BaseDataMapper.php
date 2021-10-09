@@ -2,10 +2,7 @@
 
 namespace App\Core;
 
-use App\Core\Connection;
-use App\Core\BaseModel;
-use App\Interfaces\ConnectionInterface;
-use App\Interfaces\EntityInterface;
+use App\Core\Interfaces\EntityInterface;
 
 abstract class BaseDataMapper
 {

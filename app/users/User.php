@@ -2,7 +2,7 @@
 
 namespace App\Users;
 
-use App\Interfaces\EntityInterface;
+use App\Core\Interfaces\EntityInterface;
 
 class User implements EntityInterface
 {
