@@ -4,13 +4,13 @@ namespace App\Core;
 
 use PDO;
 use PDOException;
-use App\Interfaces\iConnection;
+use App\Interfaces\ConnectionInterface;
 
 /**
  * la clase BaseModel proporciona las funcionalidades
  * básicas a los modelos.
  */
-abstract class BaseModel
+abstract class BaseModel2
 {
     private $table;
     protected $dbh;
@@ -24,7 +24,7 @@ abstract class BaseModel
      *
      * @param string $table
      */
-    public function __construct(string $table, iConnection $dbh)
+    public function __construct(string $table, ConnectionInterface $dbh)
     {
         $this->table = $table;
         $this->$dbh = $dbh;
@@ -239,8 +239,6 @@ abstract class BaseModel
         }
     }
 
-    protected abstract function getClassParams();
-    protected abstract function setClassParams();
 }
 
 ?>

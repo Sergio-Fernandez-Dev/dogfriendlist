@@ -4,14 +4,21 @@ namespace Tests\Users;
 
 use PHPUnit\Framework\TestCase;
 use App\Users\User;
+use App\Interfaces\EntityInterface;
 
-class UserTest extends TestCase
+
+class UserTest extends TestCase 
 {
     public $data;
     public $user;
+    public $conn_mocked;
 
     protected function setUp(): void
     {
+        $this->conn_mocked = 
+        $this->createMock(EntityInterface::class)
+            ->getMock();
+
         $this->user = new User();
 
         $this->data =
@@ -38,7 +45,7 @@ class UserTest extends TestCase
 
     public function testFunctionSetAllPropertiesIsSettingClassPropertiesFromGivenArray(): void
     {
-        $this->user->setAllProperties($this->data);
+        $this->user->setClassParams($this->data, true);
 
         $properties['id'] = $this->user->getId();
         $properties['nickname'] = $this->user->getNickname();
@@ -60,7 +67,7 @@ class UserTest extends TestCase
     {
         $this->data['city'] = "";
 
-        $this->user->setAllProperties($this->data, false);
+        $this->user->setClassParams($this->data, false);
 
         $this->assertNull($this->user->getCity());
     }
@@ -69,23 +76,23 @@ class UserTest extends TestCase
     {
         $this->data['city'] = "";
 
-        $this->user->setAllProperties($this->data);
+        $this->user->setClassParams($this->data, true);
 
         $this->assertEmpty($this->user->getCity());
     }
 
     public function testFunctionGetAllPropertiesReturnsAnArray(): void
     {
-        $result = $this->user->getAllProperties();
+        $result = $this->user->getClassParams();
 
         $this->assertIsArray($result);
     }
 
     public function testFunctionGetAllPropertiesReturnsRightValues(): void
     {
-        $this->user->setAllProperties($this->data);
+        $this->user->setClassParams($this->data, true);
 
-        $result = $this->user->getAllProperties();
+        $result = $this->user->getClassParams();
 
         $this->assertEquals($this->data, $result);
     }

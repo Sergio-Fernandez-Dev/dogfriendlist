@@ -2,10 +2,9 @@
 
 namespace App\Users;
 
-use phpDocumentor\Reflection\Types\Boolean;
-use PHPUnit\Framework\Constraint\IsEmpty;
+use App\Interfaces\EntityInterface;
 
-class User
+class User implements EntityInterface
 {
     private $id;
     private $nickname;
@@ -18,36 +17,38 @@ class User
     private $img = 'users/common/default-profile-picture.jpg';
     private $about_me = null;
     private $pass_hash;
-    private $created_at = '2021-10-7 11:35:33'; 
+    private $created_at; 
 
-    public function getAllProperties()
+    public function __construct()
     {
-        $properties = (array)\get_class_vars(__CLASS__);
-        $property = '';
-        
-        foreach($properties as $key => $value)
-        {
-            $words = explode('_', $value );
-            if(\count($words)>1)
-            {    
-                foreach($words as $word)
-                {
-                    $property .= \ucwords($word);
-                }
-            }
-            else
-            {
-                $property = \ucwords($value);
-            }
+        $this->created_at = date('Y-m-d H:i:s');
+    }
 
-            $porperties[$key] = $this->get[$property]();
-        }
-
+    /**
+     * Devuelve un array con todas las propiedades de la clase.
+     *
+     * @return array
+     */
+    public function getClassParams()
+    {
+        $properties['id'] = $this->getId();
+        $properties['nickname'] = $this->getNickname();
+        $properties['email'] = $this->getEmail();
+        $properties['visibility'] = $this->getVisibility();
+        $properties['city'] = $this->getCity();
+        $properties['country'] = $this->getCountry();
+        $properties['name'] = $this->getName();
+        $properties['surname'] = $this->getSurname();
+        $properties['img'] = $this->getImg();
+        $properties['about_me'] = $this->getAboutMe();
+        $properties['pass_hash'] = $this->getPassHash();
+        $properties['created_at'] = $this->getCreatedAt();
+      
         return $properties;
     }
 
     /**
-     * Establece las propiedades de clase
+     * Establece las propiedades de clase dinámicamente
      * en base a un array pasado por parámetro.
      * 
      * @param array $data Lista de valores con los que rellenaremos nuestras propiedades de clase.
@@ -55,7 +56,7 @@ class User
      * 
      * @return void
      */   
-    public function setAllProperties(array $data, bool $override = true)
+    public function setClassParams(array $data, ?bool $override = false)
     {
         foreach($data as $key => $value)
         {
