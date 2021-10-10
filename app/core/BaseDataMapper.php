@@ -12,7 +12,7 @@ abstract class BaseDataMapper
         $object = $this->createObject();
         if($data)
         {
-            $object = $this->fillObject($object, $data);
+            $this->fillObject($object, $data);
         }
 
         return $object;
