@@ -26,7 +26,8 @@ class UserDataMapper extends BaseDataMapper
 
     protected function insertObject(EntityInterface $object)
     {
-        //TODO
+        $query = "INSERT INTO `USERS` (`Id`,`Nickname`,`Email`,`Visibility`,`City`,`Country`,`Name`,`Surname`,`Img`,`AboutMe`,`PassHash`,`CreatedAt`) 
+        VALUES (1, 'Loop 501 Talla S', '100.00', '125.00', 1), "
     }
 
     protected function updateObject(EntityInterface $object)

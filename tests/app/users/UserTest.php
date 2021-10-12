@@ -4,8 +4,6 @@ namespace Tests\Users;
 
 use PHPUnit\Framework\TestCase;
 use App\Users\User;
-use App\Core\Interfaces\EntityInterface;
-
 
 class UserTest extends TestCase 
 {

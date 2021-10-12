@@ -10,13 +10,15 @@ use App\Core\Interfaces\ConnectionInterface;
 
 class UserDataMapperTest extends TestCase
 {
-    public $conn_mocked;
+    public $connection_i_mock;
     public $data;
     public $u_mapper;
 
     protected function setUp(): void
     {
-        
+        $this->connection_i_mock = $this->createMock(ConnectionInterface::class);
+
+        $this->u_mapper = new UserDataMapper($this->connection_i_mock); 
        
         $this->data =
         [
@@ -37,13 +39,24 @@ class UserDataMapperTest extends TestCase
 
     public function testCanCreateNewUser()
     {
-        $connection_i_mock = $this->createMock(ConnectionInterface::class);
-
-        $this->u_mapper = new UserDataMapper($connection_i_mock);
 
         $user = $this->u_mapper->create();
         $this->assertInstanceOf(User::class, $user);
     }
+
+    public function testUserIsAnObject()
+    {
+        $user = $this->u_mapper->create($this->data);
+        $this->assertIsObject($user);
+    }
+
+    public function testFillobjectFunctionIsFillingClassAttributes()
+    {
+        $user = $this->u_mapper->create($this->data);
+        $this->assertEquals($this->data, $user->getClassParams());
+    }
+
+    
 
 }
 
