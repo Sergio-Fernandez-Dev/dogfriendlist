@@ -29,7 +29,7 @@ interface QueryBuilderInterface
     public function join(string $type = 'INNER', string $table): QueryBuilder;
     public function on(string $field, string $operator = '=', string $value): QueryBuilder;
 
-    public function getQuery(): string;
+    public function get(): string;
 }
 
 ?>
