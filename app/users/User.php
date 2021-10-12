@@ -29,7 +29,7 @@ class User implements EntityInterface
      *
      * @return array
      */
-    public function getClassParams()
+    public function getClassParams(): array
     {
         $properties['id'] = $this->getId();
         $properties['nickname'] = $this->getNickname();
@@ -56,7 +56,7 @@ class User implements EntityInterface
      * 
      * @return void
      */   
-    public function setClassParams(array $data, ?bool $override = false)
+    public function setClassParams(array $data, ?bool $override = false): void
     {
         foreach($data as $key => $value)
         {
@@ -68,12 +68,12 @@ class User implements EntityInterface
         }
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
