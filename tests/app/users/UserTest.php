@@ -37,7 +37,7 @@ class UserTest extends TestCase
         unset($this->user);
     }
 
-    public function testFunctionSetAllPropertiesIsSettingClassPropertiesFromGivenArray(): void
+    public function testFunctionSetClassParamsIsSettingClassPropertiesFromGivenArray(): void
     {
         $this->user->setClassParams($this->data, true);
 
@@ -57,7 +57,7 @@ class UserTest extends TestCase
         $this->assertEquals($this->data, $properties);
     }
 
-    public function testFunctionSetAllPropertiesIsNotOverridingDefaultClassPropertiesIfEmptyValueIsGiven(): void
+    public function testFunctionSetClassParamsIsNotOverridingDefaultClassPropertiesIfEmptyValueIsGiven(): void
     {
         $this->data['city'] = "";
 
@@ -66,7 +66,7 @@ class UserTest extends TestCase
         $this->assertNull($this->user->getCity());
     }
 
-    public function testFunctionSetAllPropertiesOverridesDefaultClassPropertiesIfEmptyValueIsGiven(): void
+    public function testFunctionSetClassParamsOverridesDefaultClassPropertiesIfEmptyValueIsGiven(): void
     {
         $this->data['city'] = "";
 
@@ -75,14 +75,15 @@ class UserTest extends TestCase
         $this->assertEmpty($this->user->getCity());
     }
 
-    public function testFunctionGetAllPropertiesReturnsAnArray(): void
+    public function testFunctionGetClassParamsReturnsAnArray(): void
     {
+        $this->user->setClassParams($this->data, true);
         $result = $this->user->getClassParams();
 
         $this->assertIsArray($result);
     }
 
-    public function testFunctionGetAllPropertiesReturnsRightValues(): void
+    public function testFunctionGetClassParamsReturnsRightValues(): void
     {
         $this->user->setClassParams($this->data, true);
 
