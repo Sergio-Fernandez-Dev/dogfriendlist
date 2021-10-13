@@ -8,7 +8,7 @@ interface QueryBuilderInterface
 {
     public function sql(string $query): QueryBuilder;
 
-    public function insert(string $table, array $fields = null, array $values): QueryBuilder;
+    public function insert(string $table, array $values, ?array $fields = NULL): QueryBuilder;
     public function select(array $fields = null): QueryBuilder;
     public function selectDistinct(array $fields): QueryBuilder;
     public function update(string $table): QueryBuilder;
