@@ -5,7 +5,7 @@ namespace App\Core;
 use App\Core\Interfaces\QueryBuilderInterface;
 use stdClass;
 
-use function PHPUnit\Framework\isNull;
+
 
 class QueryBuilder implements QueryBuilderInterface
 {
@@ -35,6 +35,20 @@ class QueryBuilder implements QueryBuilderInterface
         
     }
 
+    private function _implodeWithFormat(string $separator="", ?array $array)
+    {
+        $string = "";
+
+        foreach($array as $value)
+        {
+            if(!next($array)) {$separator = "";}
+            if(\is_string($value)) {$string .= "'".$value."'".$separator;}
+            else {$string .= $value.$separator;}       
+        }
+
+        return $string;
+    }
+
     public function sql(string $query): QueryBuilder
     {
         $this->query->base = $query;
@@ -43,15 +57,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function insert(string $table, array $values, $fields = NULL): QueryBuilder
+    public function insert(string $table, array $values, ?array $fields = null): QueryBuilder
     {
         if(!isset($fields))
         {
-            $this->query->base = "INSERT INTO $table VALUES ('".implode("', '", $values)."')";
+            $this->query->base = "INSERT INTO $table VALUES (".$this->_implodeWithFormat(", ", $values).")";
         }
         else 
         {
-            $this->query->base = "INSERT INTO $table (".implode(", ", $fields).") VALUES ('".implode("', '", $values)."')";
+            $this->query->base = "INSERT INTO $table (".implode(", ", $fields).") VALUES (".$this->_implodeWithFormat(", ", $values).")";
         }
 
         $this->query->type = 'insert';  
@@ -63,7 +77,7 @@ class QueryBuilder implements QueryBuilderInterface
     public function select(array $fields = null): QueryBuilder
     {
 
-        if(\is_null($fields)) 
+        if(\is_null($fields) || implode($fields) == '*') 
         {
             $this->query->base = "SELECT *";
         }
@@ -78,9 +92,16 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function selectDistinct(array $fields): QueryBuilder
+    public function selectDistinct(?array $fields = null): QueryBuilder
     {
-        $this->query->base = "SELECT DISTINCT ".implode(", ", $fields);
+        if(\is_null($fields) || implode($fields) == '*') 
+        {
+            $this->query->base = "SELECT DISTINCT *";
+        }
+        else
+        {
+            $this->query->base = "SELECT DISTINCT ".implode(", ", $fields);
+        }
         $this->query->type = 'select';
         $this->_build($this->query->base);
 
@@ -122,7 +143,7 @@ class QueryBuilder implements QueryBuilderInterface
             $this->query->set[] = ", $field $operator '$value'";
         }
 
-        $this->_build($this->query->set);
+        $this->_build(end($this->query->set));
 
         return $this; 
     }
