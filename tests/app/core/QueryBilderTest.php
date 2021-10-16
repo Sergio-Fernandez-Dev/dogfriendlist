@@ -388,8 +388,179 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals($expected, $query);  
     }   
 
+    public function testLimitReturnsExceptionIfQueryTypeIsNotSet()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->as('Homeland')
+                ->from('Users')
+                ->limit(3)
+                ->get();
+    }
 
+    public function testLimitReturnsExceptionIfQueryTypeIsWrong()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->insert('Users', ['Germany', 'Berlin'])
+                ->as('Homeland')
+                ->from('Users')
+                ->limit(3)
+                ->get();
+    }
 
+    public function testLimitWithOneArgumentReturnsExpectedSqlString()
+    {
+        $expected = "SELECT Name AS User FROM Users LIMIT 3".";";
+        $query = $this->qb->select(['Name'])
+                        ->as('User')
+                        ->from('Users')
+                        ->limit(3)
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }   
+
+    public function testlimitWhitTwoArgumentsReturnsExpectedSqlString()
+    {
+        $expected = "SELECT Name AS User FROM Users LIMIT 3, 10".";";
+        $query = $this->qb->select(['Name'])
+                        ->as('User')
+                        ->from('Users')
+                        ->limit(3, 10)
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }   
+
+    public function testOrderbyReturnsExceptionIfQueryTypeIsNotSet()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->from('Users')
+                ->orderBy('Name')
+                ->get();
+    }
+
+    public function testOrderbyReturnsExceptionIfQueryTypeIsWrong()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->delete('Users')
+                ->from('Users')
+                ->orderBy('Name')
+                ->get();
+    }
+
+    public function testOrderbyWithOneArgumentReturnsExpectedSqlString()
+    {
+        $expected = "SELECT * FROM Users ORDER BY Name ASC".";";
+        $query = $this->qb->select(['*'])
+                        ->from('Users')
+                        ->orderBy('Name')
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }   
+
+    public function testOrderbyWhitTwoArgumentsReturnsExpectedSqlString()
+    {
+        $expected = "SELECT * FROM Users ORDER BY Name DESC".";";
+        $query = $this->qb->select(['*'])
+                        ->from('Users')
+                        ->orderBy('Name', 'desc')
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }   
+
+    public function testJoinReturnsExceptionIfQueryTypeIsNotSet()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->as('Homeland')
+                ->from('Users')
+                ->join('Spots')
+                ->get();
+    }
+
+    public function testJoinReturnsExceptionIfQueryTypeIsWrong()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->insert('Users', ['Germany', 'Berlin'])
+                ->as('Homeland')
+                ->from('Users')
+                ->join('Spots')
+                ->get();
+    }
+
+    public function testJoinWithOneArgumentReturnsExpectedSqlString()
+    {
+        $expected = "SELECT * FROM Users INNER JOIN Spots".";";
+        $query = $this->qb->select(['*'])
+                        ->from('Users')
+                        ->join('Spots')
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }
+    
+    public function testJoinWithTwoArgumentReturnsExpectedSqlString()
+    {
+        $expected = "SELECT * FROM Users LEFT JOIN Spots".";";
+        $query = $this->qb->select(['*'])
+                        ->from('Users')
+                        ->join('Spots', 'left')
+                        ->get();
+
+        $this->assertEquals($expected, $query);  
+    }
+    
+    public function testOnReturnsExceptionIfQueryTypeIsNotSet()
+    {
+        $this->expectException(Exception::class);
+        $this->qb->select(['Users.Id'])
+                        ->from('Users')
+                        ->on ('Users.SpotId', '=', 'Spots.Id')
+                        ->get();
+    }
+
+    public function testOnReturnsExpectedSqlString()
+    {
+        $expected = "SELECT Users.Id FROM Users LEFT JOIN Spots ON Users.SpotId = Spots.Id".";";
+        $query = $this->qb->select(['Users.Id'])
+                        ->from('Users')
+                        ->join('Spots', 'LEFT')
+                        ->on('Users.SpotId', '=', 'Spots.Id')
+                        ->get();
+        
+        $this->assertEquals($expected, $query);  
+    }
+
+    public function testLongQueryReturnsExpectedSqlString()
+    {
+        $expected = 
+                "SELECT Spots.Title AS Title,"
+                ." Categories.Name AS Category"
+                ." FROM Spots"
+                ." INNER JOIN Categories ON Spots.CategoryId = Categories.Id"
+                ." WHERE Category != 'Parques'"
+                ." OR Category != 'Guarderias'"
+                ." ORDER BY Category ASC"
+                ." LIMIT 10".";";
+        $query = 
+        $this->qb->select(['Spots.Title'])
+                ->as('Title')
+                ->select(['Categories.Name'])
+                ->as('Category')
+                ->from('Spots')
+                ->join('Categories')
+                ->on('Spots.CategoryId','=','Categories.Id')
+                ->where('Category','!=','Parques')
+                ->orWhere('Category','!=','Guarderias')
+                ->orderBy('Category')
+                ->limit(10)
+                ->get();
+
+        $this->assertEquals($expected, $query);  
+    }
+
+    
 }
 
 
