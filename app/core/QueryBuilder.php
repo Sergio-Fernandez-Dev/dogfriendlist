@@ -5,6 +5,10 @@ namespace App\Core;
 use App\Core\Interfaces\QueryBuilderInterface;
 use stdClass;
 
+/**
+ * La clase QueryBuilder se encarga de construir
+ * sentencias SQL mediante la combinación de sus métodos. 
+ */
 class QueryBuilder implements QueryBuilderInterface
 {
     private $query;
@@ -14,26 +18,42 @@ class QueryBuilder implements QueryBuilderInterface
         $this->_createEmptyQueryObject();
     }
 
+    /**
+     * Crea un objeto vacío
+     *
+     * @return void
+     */
     private function _createEmptyQueryObject()
     {
         $this->query = new stdClass();
         $this->query->type = null;
     }
 
+    /**
+     * Construye la consulta
+     *
+     * @param int $sql_string
+     * 
+     * @return void
+     */
     private function _build($sql_string)
     {
-        /* if(\is_array($sql_string))
-        {
-            $last = array_pop($sql_string);
-            $this->query->result .=  $last;
-            \array_push($sql_string, $last);
-        } */
+       
         if(empty($this->query->result)){$this->query->result = "";}
 
         $this->query->result .= $sql_string;
         
     }
 
+    /**
+     * Devuelve un string con los valores 
+     * correctamente formateados.
+     *
+     * @param string $separator
+     * @param array|null $array
+     * 
+     * @return string
+     */
     private function _implodeWithFormat(string $separator="", ?array $array)
     {
         $string = "";
@@ -48,6 +68,14 @@ class QueryBuilder implements QueryBuilderInterface
         return $string;
     }
 
+    /**
+     * Construye una sentencia SQL 
+     * con la cadena pasada como argumento.
+     * 
+     * @param string $query
+     * 
+     * @return QueryBuilder
+     */
     public function sql(string $query): QueryBuilder
     {
         $this->query->base = $query;
@@ -56,6 +84,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo INSERT
+     *
+     * @param string $table
+     * @param array $values
+     * @param array|null $fields
+     * 
+     * @return QueryBuilder
+     */
     public function insert(string $table, array $values, ?array $fields = null): QueryBuilder
     {
         if(!isset($fields))
@@ -73,6 +110,13 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo SELECT
+     *
+     * @param array|null $fields
+     * 
+     * @return QueryBuilder
+     */
     public function select(array $fields = null): QueryBuilder
     {
         if($this->query->type == 'select')
@@ -95,6 +139,12 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo SELECT DINSTINCT
+     *
+     * @param array|null $fields
+     * @return QueryBuilder
+     */
     public function selectDistinct(?array $fields = null): QueryBuilder
     {
         if(\is_null($fields) || implode($fields) == '*') 
@@ -111,6 +161,13 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo UPDATE
+     *
+     * @param string $table
+     *
+     *  @return QueryBuilder
+     */
     public function update(string $table): QueryBuilder
     {
         $this->_createEmptyQueryObject();
@@ -121,6 +178,14 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+
+    /**
+     * Construye una sentencia del tipo DELETE
+     *
+     * @param string $table
+     * 
+     * @return QueryBuilder
+     */
     public function delete(string $table): QueryBuilder
     {
         $this->_createEmptyQueryObject();
@@ -131,6 +196,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo SET.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function set (string $field, string $operator, string $value): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) 
@@ -151,6 +225,14 @@ class QueryBuilder implements QueryBuilderInterface
         return $this; 
     }
 
+
+    /**
+     * Construye una sentencia del tipo AS.
+     *
+     * @param string $alias
+     * 
+     * @return QueryBuilder
+     */
     public function as(string $alias): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
@@ -163,6 +245,13 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo FROM
+     *
+     * @param string $table
+     * 
+     * @return QueryBuilder
+     */
     public function from(string $table): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
@@ -175,6 +264,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo WHERE.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function where(string $field, string $operator, string $value): QueryBuilder
     {
         
@@ -199,6 +297,16 @@ class QueryBuilder implements QueryBuilderInterface
 
         return $this;
     }
+
+    /**
+     * Construye una sentencia del tipo AND.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function andWhere(string $field, string $operator, string $value): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
@@ -215,6 +323,16 @@ class QueryBuilder implements QueryBuilderInterface
         
         return $this;
     }
+
+    /**
+     * Construye una sentencia del tipo OR.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function orWhere(string $field, string $operator, string $value): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
@@ -231,6 +349,16 @@ class QueryBuilder implements QueryBuilderInterface
 
         return $this;
     }
+
+    /**
+     * Construye una sentencia del tipo NOT.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function whereNot(string $field, string $operator, string $value): QueryBuilder
     {
         if(!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
@@ -248,6 +376,14 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
 
+    /**
+     * Construye una sentencia del tipo LIMIT.
+     *
+     * @param integer $start
+     * @param integer|null $offset
+     * 
+     * @return QueryBuilder
+     */
     public function limit(int $start, int $offset = null): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
@@ -267,6 +403,14 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo ORDER BY.
+     *
+     * @param string $field
+     * @param string $order
+     * 
+     * @return QueryBuilder
+     */
     public function orderBy(string $field, string $order = 'ASC'): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
@@ -280,6 +424,14 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo JOIN.
+     *
+     * @param string $table
+     * @param string $type
+     * 
+     * @return QueryBuilder
+     */
     public function join(string $table, string $type = 'INNER'): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
@@ -293,6 +445,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Construye una sentencia del tipo ON.
+     *
+     * @param string $field
+     * @param string $operator
+     * @param string $value
+     * 
+     * @return QueryBuilder
+     */
     public function on(string $field, string $operator, string $value): QueryBuilder
     {
         if (!isset($this->query->join)) 
@@ -305,6 +466,11 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    /**
+     * Devuelve la query completa y resetea el objeto.
+     * 
+     * @return string
+     */
     public function get(): string
     {
         {
