@@ -17,6 +17,7 @@ class QueryBuilder implements QueryBuilderInterface
     private function _createEmptyQueryObject()
     {
         $this->query = new stdClass();
+        $this->query->type = null;
     }
 
     private function _build($sql_string)
@@ -74,8 +75,12 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function select(array $fields = null): QueryBuilder
     {
-
-        if(\is_null($fields) || implode($fields) == '*') 
+        if($this->query->type == 'select')
+        {
+            $this->query->base = ", ".implode(", ", $fields);
+            
+        }
+        elseif(\is_null($fields) || implode($fields) == '*') 
         {
             $this->query->base = "SELECT *";
         }
@@ -243,14 +248,21 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
 
-    public function limit(int $start, int $offset): QueryBuilder
+    public function limit(int $start, int $offset = null): QueryBuilder
     {
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
         {
             throw new \Exception("LIMIT can only be added to SELECT");
         }
-        $this->query->limit = " LIMIT $start, $offset";
-        $this->_build($this->query->limit);
+        if (isset($offset))
+        {    
+            $this->query->limit = " LIMIT $start, $offset";
+        }
+        else
+        {
+            $this->query->limit = " LIMIT $start";
+        }
+            $this->_build($this->query->limit);
 
         return $this;
     }
@@ -261,6 +273,7 @@ class QueryBuilder implements QueryBuilderInterface
         {
             throw new \Exception("ORDER BY can only be added to SELECT");
         }
+        $order = \strtoupper($order);
         $this->query->orderBy = " ORDER BY $field $order";
         $this->_build($this->query->orderBy);
         
@@ -273,20 +286,21 @@ class QueryBuilder implements QueryBuilderInterface
         {
             throw new \Exception("JOIN can only be added to SELECT, UPDATE OR DELETE");
         }
-        $this->query->join = " $type JOIN $table";
-        $this->_build($this->query->join);
+        $type = \strtoupper($type);
+        $this->query->join[] = " $type JOIN $table";
+        $this->_build(end($this->query->join));
         
         return $this;
     }
 
-    public function on(string $field, string $operator = '=', string $value): QueryBuilder
+    public function on(string $field, string $operator, string $value): QueryBuilder
     {
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->join)) 
         {
-            throw new \Exception("ON can only be added to SELECT, UPDATE OR DELETE");
+            throw new \Exception("ON can only be added to JOIN");
         }
-        $this->query->on = " ON $field $operator '$value'";
-        $this->_build($this->query->on);
+        $this->query->on[] = " ON $field $operator $value";
+        $this->_build(end($this->query->on));
 
         return $this;
     }
@@ -303,7 +317,4 @@ class QueryBuilder implements QueryBuilderInterface
         }
     }
 }
-
-
-
 ?>
