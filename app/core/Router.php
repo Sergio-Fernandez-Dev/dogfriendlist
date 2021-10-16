@@ -28,10 +28,10 @@ class Router
     
     * @param string $params    Cadena de la ruta o parámetros
     * @param callable $action    Acción a la que llamar si la ruta existe
-    * @param string|array $method  Cadena con los tipos de petición permitidos o array con parámetros
+    * @param string|array $method  Tipos de petición permitidos
     *
     */
-  public static function add($params, $action, $method = 'get')
+  public static function add($params, $action, $method = 'GET')
   {
     array_push(self::$routes,
     [
@@ -83,7 +83,7 @@ class Router
     $route_match_found = false;
 
     // Descompone la URI
-    $parsed_url = parse_url($_SERVER['REQUEST_URI']);//Parse Uri
+    $parsed_url = \parse_url($_SERVER['REQUEST_URI']);//Parse Uri
 
     //Si encuentra el path lo almacena, si no establece un path por defecto.
     if(isset($parsed_url['path']))
@@ -115,26 +115,26 @@ class Router
 
       // Mediante expresiones regulares comprobamos si los parámetros en params coinciden	 
       // con la cadena pasada en la petición
-      if(preg_match('#'.$route['params'].'#', $path, $matches))
+      if(\preg_match('#'.$route['params'].'#', $path, $matches))
       {
 
         $path_match_found = true;
 
         // Si el tipo de petición conincide con alguno de los permitidos...
-        if(strtolower($method) == strtolower($route['method']))
+        if(\strtoupper($method) == \strtoupper($route['method']))
         {
           //...eliminamos el primer elemento, ya que contiene la cadena entera.
-          array_shift($matches);
+          \array_shift($matches);
 
           // Si el basepath está establecido y es distinto a '/'...
           if($basepath !='' && $basepath != '/')
           {
             //...lo eliminamos, dejando únicamente los parámetros correspondientes a action
-            array_shift($matches);
+            \array_shift($matches);
           }
 
           //Llamamos a la función correspondiente almacenada en 'action' y le pasamos los parámetros correspondientes
-          call_user_func_array($route['action'], $matches);
+          \call_user_func_array($route['action'], $matches);
 
           $route_match_found = true;
 
@@ -151,26 +151,26 @@ class Router
       if($path_match_found)
       {
         //lanza un error 405
-        header("HTTP/1.0 405 Method Not Allowed");
+        \header("HTTP/1.0 405 Method Not Allowed");
 
         //Si $methodNotAllowed contiene alguna instrucción
         if(self::$methodNotAllowed)
         {
           //Se ejecuta la acción correspondiente al path y tipo de petición recibidos
-          call_user_func_array(self::$methodNotAllowed, Array($path,$method));
+          \call_user_func_array(self::$methodNotAllowed, Array($path,$method));
         }
       }
       // Si el path tampoco coincide
       else
       {
         //lanza un error 404
-        header("HTTP/1.0 404 Not Found");
+        \header("HTTP/1.0 404 Not Found");
 
         // Si $pathNotFound contiene alguna instrucción
         if(self::$pathNotFound)
         {
           // Se ejecuta la acción correspondiente al path recibido
-          call_user_func_array(self::$pathNotFound, Array($path));
+          \call_user_func_array(self::$pathNotFound, Array($path));
         }
       }
     }
