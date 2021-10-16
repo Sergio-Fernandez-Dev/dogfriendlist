@@ -5,8 +5,6 @@ namespace App\Core;
 use App\Core\Interfaces\QueryBuilderInterface;
 use stdClass;
 
-
-
 class QueryBuilder implements QueryBuilderInterface
 {
     private $query;
@@ -23,12 +21,12 @@ class QueryBuilder implements QueryBuilderInterface
 
     private function _build($sql_string)
     {
-        if(\is_array($sql_string))
+        /* if(\is_array($sql_string))
         {
             $last = array_pop($sql_string);
             $this->query->result .=  $last;
             \array_push($sql_string, $last);
-        }
+        } */
         if(empty($this->query->result)){$this->query->result = "";}
 
         $this->query->result .= $sql_string;
@@ -128,9 +126,9 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function set (string $field, string $operator = '=', string $value): QueryBuilder
+    public function set (string $field, string $operator, string $value): QueryBuilder
     {
-        if (!in_array($this->query->type, ['update'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) 
         {
             throw new \Exception("SET can only be added to UPDATE");
         }
@@ -150,7 +148,7 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function as(string $alias): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("AS can only be added to SELECT, UPDATE OR DELETE");
         }
@@ -162,7 +160,7 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function from(string $table): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
         {
             throw new \Exception("FROM can only be added to SELECT");
         }
@@ -172,73 +170,82 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function where(string $field, ?string $operator = '=', string $value): QueryBuilder
+    public function where(string $field, string $operator, string $value): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        
+        if(!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
         }
-        $this->query->where[] = "WHERE $field $operator '$value'";
-        $this->_build($this->query->where);
+        if(isset($this->query->where) && !isset($this->query->join))
+        {
+            throw new \Exception("WHERE can't be used again. Try with AND Command");
+        }
+        if(\strcasecmp($value, 'IS NULL') == 0 || \strcasecmp($value, 'NOT NULL') == 0)
+        {
+            $value = \strtoupper($value);
+            $this->query->where[] = " WHERE $field $value"; 
+        }
+        else
+        {
+            $this->query->where[] = " WHERE $field $operator '$value'";
+        }
+        $this->_build(end($this->query->where));
 
         return $this;
     }
-    public function whereAnd(string $field, string $operator = '=', string $value): QueryBuilder
+    public function andWhere(string $field, string $operator, string $value): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("AND can only be added to SELECT, UPDATE OR DELETE");
         }
-        $this->query->whereAnd[] = "AND $field $operator '$value'";
-        $this->_build($this->query->whereAnd);
+        if (!isset($this->query->where) && !isset($this->query->whereNot))
+        {
+            throw new \Exception("AND can only be added to WHERE commmand");
+        }
+    
+        $this->query->andWhere[] = " AND $field $operator '$value'";
+        $this->_build(end($this->query->andWhere));
         
         return $this;
     }
-    public function whereOr(string $field, string $operator = '=', string $value): QueryBuilder
+    public function orWhere(string $field, string $operator, string $value): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("OR can only be added to SELECT, UPDATE OR DELETE");
         }
-        $this->query->whereOr[] = " OR $field $operator '$value'";
-        $this->_build($this->query->whereOr);
+        if (!isset($this->query->where) && !isset($this->query->whereNot))
+        {
+            throw new \Exception("OR can only be added to WHERE");
+        }
+
+        $this->query->orWhere[] = " OR $field $operator '$value'";
+        $this->_build(end($this->query->orWhere));
 
         return $this;
     }
-    public function whereNot(string $field, string $operator = '=', string $value): QueryBuilder
+    public function whereNot(string $field, string $operator, string $value): QueryBuilder
     {
-        if(!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if(!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("NOT can only be added to SELECT, UPDATE OR DELETE");
         }
-        $this->query->whereNot[] = "$field $operator '$value'";
-        $this->_build($this->query->whereNot);
+        if(isset($this->query->where) && !isset($this->query->join))
+        {
+            throw new \Exception("WHERE NOT can't be used after WHERE command");
+        }
+        $this->query->whereNot[] = " WHERE NOT $field $operator '$value'";
+        $this->_build(end($this->query->whereNot));
 
         return $this;
     }
 
-    public function whereIsNull(bool $value = true): QueryBuilder
-    {
-        if(!in_array($this->query->type, ['select', 'update', 'delete']) && $value) 
-        {
-            throw new \Exception("IS NULL can only be added to SELECT, UPDATE OR DELETE");
-        }
-        if(!in_array($this->query->type, ['select', 'update', 'delete']) && !$value) 
-        {
-            throw new \Exception("IS NOT NULL can only be added to SELECT, UPDATE OR DELETE");
-        }
-
-        if($value) {$this->query->whereIsNull = " IS NULL";}
-        else {$this->query->whereIsNull = " IS NOT NULL";}
-
-        $this->_build($this->query->whereIsNull);
-
-        return $this;
-    }
 
     public function limit(int $start, int $offset): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
         {
             throw new \Exception("LIMIT can only be added to SELECT");
         }
@@ -250,7 +257,7 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function orderBy(string $field, string $order = 'ASC'): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) 
         {
             throw new \Exception("ORDER BY can only be added to SELECT");
         }
@@ -260,9 +267,9 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function join(string $type = 'INNER', string $table): QueryBuilder
+    public function join(string $table, string $type = 'INNER'): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("JOIN can only be added to SELECT, UPDATE OR DELETE");
         }
@@ -274,7 +281,7 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function on(string $field, string $operator = '=', string $value): QueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) 
+        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) 
         {
             throw new \Exception("ON can only be added to SELECT, UPDATE OR DELETE");
         }
