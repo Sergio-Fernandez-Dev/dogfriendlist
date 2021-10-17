@@ -9,7 +9,7 @@ class Router
    * Registro de rutas disponibles
    * @var array
    */
-  private static $routes = Array();
+  private static $routes = [];
 
   /**
    * Acción a realizar en caso de no existir el path
@@ -24,15 +24,16 @@ class Router
   private static $methodNotAllowed = null;
 
   /**
-    * Añade una nueva ruta
+    * Añade una nueva ruta al registro
     
-    * @param string $params    Cadena de la ruta o parámetros
+    * @param string $params    Ruta o parámetros
     * @param callable $action    Acción a la que llamar si la ruta existe
     * @param string|array $method  Tipos de petición permitidos
     *
     */
   public static function add($params, $action, $method = 'GET')
   {
+    $params = \strtolower($params);
     array_push(self::$routes,
     [
       'params' => $params,
@@ -85,6 +86,9 @@ class Router
     // Descompone la URI
     $parsed_url = \parse_url($_SERVER['REQUEST_URI']);//Parse Uri
 
+    // Obtiene el tipo de petición
+    $method = $_SERVER['REQUEST_METHOD'];
+
     //Si encuentra el path lo almacena, si no establece un path por defecto.
     if(isset($parsed_url['path']))
     {
@@ -94,11 +98,7 @@ class Router
     {
       $path = '/';
     }
-
-    // Obtiene el tipo de petición
-    $method = $_SERVER['REQUEST_METHOD'];
-
-
+    
     foreach(self::$routes as $route)
     {
 
@@ -176,4 +176,4 @@ class Router
     }
   }
 }
- ?>
+?>
