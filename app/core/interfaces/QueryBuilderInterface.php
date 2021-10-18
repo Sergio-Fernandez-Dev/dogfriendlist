@@ -14,21 +14,21 @@ interface QueryBuilderInterface
     public function update(string $table): QueryBuilder;
     public function delete(string $table): QueryBuilder;
 
-    public function set (string $field, string $operator, string $value): QueryBuilder;
+    public function set (string $field, string $operator, $value): QueryBuilder;
     public function as(string $alias): QueryBuilder;
     public function from(string $table): QueryBuilder;
 
-    public function where(string $field, string $operator, string $value): QueryBuilder;
-    public function andWhere(string $field, string $operator, string $value): QueryBuilder;
-    public function orWhere(string $field, string $operator, string $value): QueryBuilder;
-    public function whereNot(string $field, string $operator, string $value): QueryBuilder;
+    public function where(string $field, string $operator, $value): QueryBuilder;
+    public function andWhere(string $field, string $operator, $value): QueryBuilder;
+    public function orWhere(string $field, string $operator, $value): QueryBuilder;
+    public function whereNot(string $field, string $operator, $value): QueryBuilder;
 
     public function limit(int $start, int $offset): QueryBuilder;
     public function orderBy(string $field, string $order): QueryBuilder;
     public function join(string $table, string $type): QueryBuilder;
-    public function on(string $field, string $operator, string $value): QueryBuilder;
+    public function on(string $field, string $operator, $value): QueryBuilder;
     
-    public function get(): string; 
+    public function get(): array; 
 }
 
 ?>           
