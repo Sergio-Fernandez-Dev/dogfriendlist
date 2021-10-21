@@ -16,3 +16,4 @@ composer.phar
 /vendor/
 
 /db/mariadb-data/*
+app/test.php
