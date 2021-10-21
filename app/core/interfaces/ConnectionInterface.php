@@ -4,8 +4,8 @@ namespace App\Core\Interfaces;
 
 interface ConnectionInterface
 {
-    public function connect(): array;
-    public function close(): void;
+    public function connect(): object;
+    public function close(): null;
 }
 
 ?>
