@@ -1,21 +1,29 @@
 <?php 
 
-require_once '../app/core/Router.php';
-require_once '../app/auth/AuthController.php';
+print_r($_SESSION);
+require_once '../config/config.php';
 
-use App\Core\Router;
-use App\Auth\AuthController;
+use App\Core\Router as route;
 
-Router::add('/', function(){
-    echo '<h1>Hello World</h1>';
-},'GET');
-
-Router::add('/auth/(.*)', function($action)
+route::add('/', function()
 {
-    $controller = new AuthController();
-    $controller->index($action);
-},'get');
+    return render('index.php', true, ['title' => 'Dogfriendlist - Index', 'user' => 'Sergio'] );
+},
+'GET');
 
-Router::run('/');
+route::add('/auth/(.*)', function()
+{
+   return require_once '../app/auth/auth.php';
+},
+['GET', 'POST']);
+
+route::add('/test', function()
+{
+    require_once '../app/test.php';
+},
+'GET');
+
+
+route::run('');
 
 ?>
