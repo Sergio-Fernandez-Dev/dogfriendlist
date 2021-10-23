@@ -19,10 +19,8 @@ class QueryBuilderTest extends TestCase
     {
         $expected = "SELECT * FROM 'Users'";
         $query = $this->qb->sql($expected)->get();
-
-        [$result, $values_to_bind] = $query;
         
-        $this->assertEquals($expected.";", $result);
+        $this->assertEquals($expected.";", $query['query']);
     }
 
     public function testInsertWithoutFieldsReturnsExpectedSqlString()
@@ -30,9 +28,7 @@ class QueryBuilderTest extends TestCase
         $expected = "INSERT INTO Users VALUES (:0, :1, :2)".";";
         $query = $this->qb->insert('Users', [1, 'Eduardo', 'Sevilla'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testInsertWithFieldsReturnsExpectedSqlString()   
@@ -40,9 +36,7 @@ class QueryBuilderTest extends TestCase
         $expected = "INSERT INTO Users (Id, Name, City) VALUES (:0, :1, :2)".";";
         $query = $this->qb->insert('Users', [1,'Eduardo', 'Sevilla'], ['Id', 'Name', 'City'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testSelectReturnsExpectedSqlStringIfItReceivesEmptyFields()   
@@ -50,9 +44,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT *".";";
         $query = $this->qb->select()->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testSelectReturnsExpectedSqlStringIfItReceivesGivenFields()   
@@ -60,9 +52,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT Id, Name, City".";";
         $query = $this->qb->select(['Id', 'Name', 'City'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
 
@@ -71,9 +61,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT *".";";
         $query = $this->qb->select(['*'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testSelectDistinctReturnsExpectedSqlStringIfItReceivesEmptyFields()   
@@ -81,9 +69,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT DISTINCT *".";";
         $query = $this->qb->selectDistinct()->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }    
 
     public function testSelectDistinctReturnsExpectedSqlStringIfItReceivesFields()
@@ -91,9 +77,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT DISTINCT Country, City".";";
         $query = $this->qb->selectDistinct(['Country','City'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }    
 
     public function testSelectDistinctReturnsExpectedSqlStringIfItReceivesAsteriskLikeParam()   
@@ -101,9 +85,7 @@ class QueryBuilderTest extends TestCase
         $expected = "SELECT DISTINCT *".";";
         $query = $this->qb->selectDistinct(['*'])->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }    
 
     public function testUpdateReturnsExpectedSqlString()   
@@ -111,9 +93,7 @@ class QueryBuilderTest extends TestCase
         $expected = "UPDATE Users".";";
         $query = $this->qb->update('Users')->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testDeleteReturnsExpectedSqlString()   
@@ -121,9 +101,7 @@ class QueryBuilderTest extends TestCase
         $expected = "DELETE FROM Users".";";
         $query = $this->qb->delete('Users')->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testSetReturnsExceptionIfQueryTypeIsNotUpdate()
@@ -140,10 +118,9 @@ class QueryBuilderTest extends TestCase
         $query = $this->qb->update('Users')
                         ->set('Country','=','Germany')
                         ->get();
-        
-        [$result, $values_to_bind] = $query;
+    
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testSetReturnsExpectedSqlStringWhenHasBeenPreviouslySet()   
@@ -154,9 +131,7 @@ class QueryBuilderTest extends TestCase
                         ->set('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testAsReturnsExceptionIfQueryTypeIsNotSelectUpdateOrDelete()
@@ -174,9 +149,7 @@ class QueryBuilderTest extends TestCase
                         ->as('Homeland')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testFromReturnsExceptionIfQueryTypeIsNotSet()
@@ -194,10 +167,9 @@ class QueryBuilderTest extends TestCase
                         ->as('Homeland')
                         ->from('Users')
                         ->get();
-            
-        [$result, $values_to_bind] = $query;
+        
 
-        $this->assertEquals($expected, $result);    
+        $this->assertEquals($expected, $query['query']); 
     }
 
     public function testWhereReturnsExceptionIfQueryTypeIsNotSet()
@@ -235,10 +207,9 @@ class QueryBuilderTest extends TestCase
                         ->where('City','=','Berlin')
                         ->join('Spots')
                         ->get();
-            
-        [$result, $values_to_bind] = $query;
+        
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }  
 
     public function testWhereReturnsExpectedSqlStringIfIsnullIsGiven()
@@ -249,10 +220,9 @@ class QueryBuilderTest extends TestCase
                         ->from('Users')
                         ->where('City','=','is null')
                         ->get();
-            
-        [$result, $values_to_bind] = $query;
+        
 
-        $this->assertEquals($expected, $result);    
+        $this->assertEquals($expected, $query['query']); 
     }  
     
     public function testWhereReturnsExpectedSqlString()
@@ -263,10 +233,9 @@ class QueryBuilderTest extends TestCase
                         ->from('Users')
                         ->where('City','=','Berlin')
                         ->get();
-            
-        [$result, $values_to_bind] = $query;
+        
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }  
     
     public function testAndwhereReturnsExceptionIfQueryTypeIsNotSet()
@@ -310,9 +279,7 @@ class QueryBuilderTest extends TestCase
                         ->andWhere('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testAndwhereReturnsExpectedSqlString()
@@ -325,9 +292,7 @@ class QueryBuilderTest extends TestCase
                         ->andWhere('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testOrwhereReturnsExceptionIfQueryTypeIsNotSet()
@@ -371,9 +336,7 @@ class QueryBuilderTest extends TestCase
                         ->andWhere('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testOrwhereReturnsExpectedSqlString()
@@ -386,9 +349,7 @@ class QueryBuilderTest extends TestCase
                         ->orWhere('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
     public function testWherenotReturnsExceptionIfQueryTypeIsNotSet()
     {
@@ -429,9 +390,7 @@ class QueryBuilderTest extends TestCase
                         ->whereNot('City','=','Berlin')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);  
+        $this->assertEquals($expected, $query['query']); 
     }   
 
     public function testLimitReturnsExceptionIfQueryTypeIsNotSet()
@@ -462,9 +421,7 @@ class QueryBuilderTest extends TestCase
                         ->limit(3)
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }   
 
     public function testlimitWhitTwoArgumentsReturnsExpectedSqlString()
@@ -476,9 +433,7 @@ class QueryBuilderTest extends TestCase
                         ->limit(3, 10)
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }   
 
     public function testOrderbyReturnsExceptionIfQueryTypeIsNotSet()
@@ -506,9 +461,7 @@ class QueryBuilderTest extends TestCase
                         ->orderBy('Name')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }   
 
     public function testOrderbyWhitTwoArgumentsReturnsExpectedSqlString()
@@ -519,9 +472,7 @@ class QueryBuilderTest extends TestCase
                         ->orderBy('Name', 'desc')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }   
 
     public function testJoinReturnsExceptionIfQueryTypeIsNotSet()
@@ -551,9 +502,7 @@ class QueryBuilderTest extends TestCase
                         ->join('Spots')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
     
     public function testJoinWithTwoArgumentReturnsExpectedSqlString()
@@ -564,9 +513,7 @@ class QueryBuilderTest extends TestCase
                         ->join('Spots', 'left')
                         ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
     
     public function testOnReturnsExceptionIfQueryTypeIsNotSet()
@@ -586,10 +533,9 @@ class QueryBuilderTest extends TestCase
                         ->join('Spots', 'LEFT')
                         ->on('Users.SpotId', '=', 'Spots.Id')
                         ->get();
-        
-        [$result, $values_to_bind] = $query;
+    
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testLongQueryReturnsExpectedSqlString()
@@ -617,9 +563,7 @@ class QueryBuilderTest extends TestCase
                 ->limit(10)
                 ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testLongQueryReturnsExpectedValuesToBind()
@@ -640,9 +584,7 @@ class QueryBuilderTest extends TestCase
                 ->limit(10)
                 ->get();
 
-        [$result, $values_to_bind] = $query;
-
-        $this->assertEquals($expected, $values_to_bind);
+        $this->assertEquals($expected, $query['values']);
     }
 
     
