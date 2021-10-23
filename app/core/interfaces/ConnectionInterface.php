@@ -4,8 +4,9 @@ namespace App\Core\Interfaces;
 
 interface ConnectionInterface
 {
-    public function connect(): object;
-    public function close(): null;
+    public function connect();
+    public function close();
+    public function execute(array $query);
 }
 
 ?>
