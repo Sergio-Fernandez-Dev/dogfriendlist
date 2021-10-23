@@ -1,6 +1,5 @@
 <?php 
 
-print_r($_SESSION);
 require_once '../config/config.php';
 
 use App\Core\Router as route;
@@ -11,7 +10,7 @@ route::add('/', function()
 },
 'GET');
 
-route::add('/auth/(.*)', function()
+route::add('/auth/([a-zA-Z0-9]*)', function($action)
 {
    return require_once '../app/auth/auth.php';
 },
