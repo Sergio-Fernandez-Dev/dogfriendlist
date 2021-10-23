@@ -2,18 +2,21 @@
 
 namespace App\Core;
 
+require_once '../app/core/interfaces/ConnectionInterface.php';
+
+use App\Core\Interfaces\ConnectionInterface;
 use PDO;
 use PDOException;
 
 /**
- * La clase Connection se encarga de establecer las conexiones a la base de datos
- * en base a la configuración pasada como parámetro de su método constructor.
+ * La clase DBHandler se encarga de establecer las conexiones a la base de datos
+ * y de ejecutar las consultas.
  */
 
-class DBHandler
+class DBHandler implements ConnectionInterface
 {
     private $conn;
-    private $adapter;
+
     private $driver;
     private $host;
     private $user;
@@ -28,8 +31,9 @@ class DBHandler
      * 
      * @param array $db_config Idealmente contendrá los parámetros de las variables de entorno.
      */
-    public function __construct($db_adapter, array $db_config)
+    public function __construct()
     {
+        $db_config = require \DB_CONFIG;
 
         $this->driver = $db_config['driver'];
         $this->host = $db_config['host'];
@@ -38,13 +42,9 @@ class DBHandler
         $this->name = $db_config['name'];
         $this->charset = $db_config['charset'];
 
-        $this->adapter = $db_adapter;
+
     }
 
-    private function _buildConnection()
-    {
-        return new $this->adapter("$this->driver:host=$this->host;dbname=$this->name", $this->user, $this->pass);
-    }
     /**
      * Establece la conexión a la base de datos.
      *
@@ -54,7 +54,7 @@ class DBHandler
     {
         try
         {
-            $this->conn = $this->_buildConnection();
+            $this->conn = new PDO("$this->driver:host=$this->host;dbname=$this->name", $this->user, $this->pass);
             $this->conn->exec('SET NAMES '.$this->charset);
             return $this->conn;
         }
@@ -71,7 +71,8 @@ class DBHandler
      */
     public function close()
     {
-        return $this->conn = null;
+        $this->conn;
+        return null;
     }
 
     /**
@@ -87,8 +88,8 @@ class DBHandler
 
         try
         {
-            $stmt = $this->conn->prepare($query[0]);
-            $stmt->execute($query[1]); 
+            $stmt = $this->conn->prepare($query['query']);
+            $stmt->execute($query['values']); 
         }
         catch (PDOException $e) 
         {
