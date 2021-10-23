@@ -5,8 +5,8 @@
         <p>UNLOGGED NAVBAR</p>
     </div>
     <div id="unlogged-navbar-buttons-box">
-        <a href="auth/login">Login</a>
+        <a href="../auth/login">Login</a>
         |
-        <a href="auth/register">Registrarse</a>
+        <a href="../auth/register">Registrarse</a>
     </div>
 </div>
