@@ -568,7 +568,12 @@ class QueryBuilderTest extends TestCase
 
     public function testLongQueryReturnsExpectedValuesToBind()
     {
-        $expected = ['Categories.Id', 'Parques', 8];
+        $expected = 
+        [
+            '0'=> 'Categories.Id', 
+            '1' => 'Parques', 
+            '2' => 8
+        ];
 
         $query = 
         $this->qb->select(['Spots.Title'])
@@ -584,6 +589,24 @@ class QueryBuilderTest extends TestCase
                 ->limit(10)
                 ->get();
 
+        $this->assertEquals($expected, $query['values']);
+    }
+
+    public function testSingleQueryReturnsExpectedValuesToBind()
+    {
+        $expected = 
+        [
+            '0'=> 'Zegius', 
+            '1' => 'test@testing.com' 
+        ];
+
+        $query = 
+        $this->qb->select(['nickname', 'email'])
+                ->from('Users')
+                ->where('Nickname','=','Zegius')
+                ->orWhere('Email','=','test@testing.com')
+                ->get();
+        
         $this->assertEquals($expected, $query['values']);
     }
 
