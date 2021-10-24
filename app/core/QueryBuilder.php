@@ -49,29 +49,6 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
     /**
-     * Devuelve un string con los valores 
-     * correctamente formateados.
-     *
-     /* @param string $separator
-     //* @param array|null $array
-     * 
-     /* @return string
-     */
-    /* private function _implodeWithFormat(string $separator="", ?array $array)
-    {
-        $string = "";
-
-        foreach($array as $value)
-        {
-            if(!next($array)) {$separator = "";}
-            if(\is_string($value)) {$string .= "'".$value."'".$separator;}
-            else {$string .= $value.$separator;}       
-        }
-
-        return $string;
-    } */
-
-    /**
      * Formatea los argumentos recibidos
      * para evitar inyección SQL
      * 
@@ -85,7 +62,7 @@ class QueryBuilder implements QueryBuilderInterface
         {
             foreach($values as $value)
             {
-                $this->values_to_bind[(string)$this->position] = $value;
+                $this->values_to_bind[":$this->position"] = $value;
                 $this->secure_values[] = ":$this->position";
 
                 $result[] = ":$this->position"; 
@@ -95,7 +72,7 @@ class QueryBuilder implements QueryBuilderInterface
         }
         else
         {
-            $this->values_to_bind[(string)$this->position] = $values;
+            $this->values_to_bind[":$this->position"] = $values;
             $this->secure_values[] = ":$this->position";
 
             $result_string= ":$this->position"; 
@@ -159,7 +136,7 @@ class QueryBuilder implements QueryBuilderInterface
      * 
      * @return QueryBuilder
      */
-    public function select(array $fields = null): QueryBuilder
+    public function select(?array $fields = null): QueryBuilder
     {
         if($this->query->type == 'select')
         {
@@ -529,10 +506,12 @@ class QueryBuilder implements QueryBuilderInterface
             $query = $this->query->result;
             $query .= ";";
 
+            $values_to_bind = $this->values_to_bind;
+
             $this->position = 0;
             $this->_createEmptyQueryObject();
 
-            return [$query, $this->values_to_bind];
+            return ['query' => $query, 'values' => $values_to_bind];
         }
     }
 }
