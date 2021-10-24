@@ -33,7 +33,7 @@ class DBHandler implements ConnectionInterface
      */
     public function __construct()
     {
-        $db_config = require \DB_CONFIG;
+        $db_config = require_once \DB_CONFIG;
 
         $this->driver = $db_config['driver'];
         $this->host = $db_config['host'];
@@ -41,8 +41,6 @@ class DBHandler implements ConnectionInterface
         $this->pass = $db_config['pass'];
         $this->name = $db_config['name'];
         $this->charset = $db_config['charset'];
-
-
     }
 
     /**
@@ -60,7 +58,7 @@ class DBHandler implements ConnectionInterface
         }
         catch (PDOException $e) 
         {
-            die("No se ha podido conectar ala base de datos:" . $e->getMessage());
+            die("No se ha podido conectar a la base de datos:" . $e->getMessage());
         }     
     }
 
@@ -98,17 +96,21 @@ class DBHandler implements ConnectionInterface
 
         if($stmt->rowCount() > 1)
         {
-            while($row = $stmt->fetch_object()) 
+            while($row = $stmt->fetchAll(PDO::FETCH_OBJ)) 
             {
                 $result[] = $row;
             }
         }
         elseif($stmt->rowCount() == 1)
         {
-            if($row = $stmt->fetch_object()) 
+            if($row = $stmt->fetchAll(PDO::FETCH_OBJ)) 
             {
                 $result = $row;
             }
+        }
+        else
+        {
+            $result = null;
         }
 
         return $result;
