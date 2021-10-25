@@ -1,7 +1,11 @@
 <?php
+namespace App\Auth\Forms;
 
+use App\Auth\Forms\Form;
 use App\Core\Interfaces\ConnectionInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
+use Exceptions\Form\NotAvailableEmailException;
+use Exceptions\Form\NotAvailableNicknameException;
 
 class RegisterForm extends Form
 {
@@ -13,7 +17,9 @@ class RegisterForm extends Form
 
     public function __construct(array $data, QueryBuilderInterface $qb)
     {
+   
         $data = $this->_getData($data);
+      
         isset($data['nickname']) ? $this->nickname = $data['nickname'] : $this->nickname = null;
         isset($data['email']) ? $this->email = $data['email'] : $this->email = null;
         isset($data['password']) ? $this->password = $data['password'] : $this->password = null;
@@ -21,21 +27,48 @@ class RegisterForm extends Form
         $this->qb = $qb;
     }
 
-    protected function _prepare()
+    private function _checkNickname()
     {
-        $query = $this->qb->select(['nickname', 'email'])
+        $query = $this->qb->select(['*'])
                         ->from('Users')
                         ->where('Nickname','=',$this->nickname)
-                        ->andWhere('Email','=',$this->email)
                         ->get();
-        
+                        
+        return $query;
+    }
+    
+    private function _checkEmail()
+    {
+        $query = $this->qb->select(['*'])
+                        ->from('Users')
+                        ->where('EMAIL','=',$this->email)
+                        ->get();
+                        
         return $query;
     }
 
-    public function send(ConnectionInterface $conn)
+
+    public function send(ConnectionInterface $dbh)
     {
-        //TODO ejecutar la consulta a traves del objeto de conexion
-        return $this->_prepare();
+        $query = $this->_checkEmail();
+        $result = $dbh->execute($query);
+        $dbh->close();
+
+        if(null != ($result)) 
+        {
+            throw new NotAvailableEmailException('La dirección de correo ya ha sido registrada anteriormente');
+        }
+
+        $query = $this->_checkNickname();
+        $dbh->connect();
+        $result = $dbh->execute($query);
+        
+        if(null != ($result)) 
+        {
+            throw new NotAvailableNicknameException('El nombre de usuario ya existe');
+        }
+
+        return $result;
     }
 
 
