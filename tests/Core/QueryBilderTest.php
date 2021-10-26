@@ -119,6 +119,22 @@ class QueryBuilderTest extends TestCase {
         $this->assertEquals($expected, $query['query']);
     }
 
+    public function testSetfromarrayReturnsExceptionIfQueryTypeIsNotUpdate() {
+        $this->expectException(Exception::class);
+        $this->qb->select()
+            ->setFromArray(['City', 'Country'], '=', ['Berlin', 'Germany'])
+            ->get();
+    }
+
+    public function testSetfromarrayReturnsExpectedSqlString() {
+        $expected = "UPDATE Users SET City = :0, Country = :1" . ";";
+        $query = $this->qb->update('Users')
+            ->setFromArray(['City', 'Country'], '=', ['Berlin', 'Germany'])
+            ->get();
+
+        $this->assertEquals($expected, $query['query']);
+    }
+
     public function testAsReturnsExceptionIfQueryTypeIsNotSelectUpdateOrDelete() {
         $this->expectException(Exception::class);
         $this->qb->insert('Users', ['Germany', 'Berlin'])
