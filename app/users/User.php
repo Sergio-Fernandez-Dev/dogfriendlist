@@ -1,26 +1,80 @@
-<?php 
-
+<?php
 namespace App\Users;
 
 use App\Core\Interfaces\EntityInterface;
 
-class User implements EntityInterface
-{
-    private $id;
-    private $nickname;
-    private $email;
-    private $visibility = 1;
-    private $city = null;
-    private $country = null;
-    private $name = null;
-    private $surname = null;
-    private $img = 'users/common/default-profile-picture.jpg';
+class User implements EntityInterface {
+    /**
+     * @var string
+     */
     private $about_me = null;
-    private $pass_hash;
-    private $created_at; 
 
-    public function __construct()
-    {
+    /**
+     * @var string
+     */
+    private $activation_key;
+
+    /**
+     * @var string
+     */
+    private $city = null;
+
+    /**
+     * @var string
+     */
+    private $country = null;
+
+    /**
+     * @var date
+     */
+    private $created_at;
+
+    /**
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $img = 'users/common/default-profile-picture.jpg';
+
+    /**
+     * @var string
+     */
+    private $name = null;
+
+    /**
+     * @var string
+     */
+    private $nickname;
+
+    /**
+     * @var string
+     */
+    private $pass_hash;
+
+    /**
+     * @var int
+     */
+    private $role = 0;
+
+    /**
+     * @var string
+     */
+    private $surname = null;
+
+    /**
+     * @var int
+     */
+    private $visibility = 1;
+
+    public function __construct() {
         $this->created_at = date('Y-m-d H:i:s');
     }
 
@@ -31,10 +85,10 @@ class User implements EntityInterface
      */
     public function getClassParams(): array
     {
-        $properties['id'] = $this->getId();
+        $properties['id'] = (int) $this->getId();
         $properties['nickname'] = $this->getNickname();
         $properties['email'] = $this->getEmail();
-        $properties['visibility'] = $this->getVisibility();
+        $properties['visibility'] = (int) $this->getVisibility();
         $properties['city'] = $this->getCity();
         $properties['country'] = $this->getCountry();
         $properties['name'] = $this->getName();
@@ -42,151 +96,234 @@ class User implements EntityInterface
         $properties['img'] = $this->getImg();
         $properties['about_me'] = $this->getAboutMe();
         $properties['pass_hash'] = $this->getPassHash();
+        $properties['role'] = (int) $this->getRole();
+        $properties['activation_key'] = $this->getActivationKey();
         $properties['created_at'] = $this->getCreatedAt();
-      
+
         return $properties;
+    }
+
+    /**
+     * @param array $data
+     * @param bool $override
+     */
+    public function setClassParams(array $data, ?bool $override = false): void {
+
+        foreach ($data as $key => $value) {
+
+            if (empty($value) && !$override) {
+                continue;
+            }
+
+            \is_int($this->$key) ? $this->$key = (int) $value : $this->$key = $value;
+        }
+
+    }
+
+    /**
+     * @return string
+     */
+    public function getAboutMe() {
+        return $this->about_me;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivationKey() {
+        return $this->activation_key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+     * @return date
+     */
+    public function getCreatedAt() {
+        return $this->created_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImg() {
+        return $this->img;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNickname() {
+        return $this->nickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassHash() {
+        return $this->pass_hash;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole() {
+        return $this->role;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname() {
+        return $this->surname;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVisibility() {
+        return $this->visibility;
+    }
+
+    /**
+     * @param $about_me
+     */
+    public function setAboutMe($about_me) {
+        $this->about_me = $about_me;
+    }
+
+    /**
+     * @param $activation_key
+     */
+    public function setActivationKey($activation_key) {
+        $this->activation_key = $activation_key;
+    }
+
+    /**
+     * @param $city
+     */
+    public function setCity($city) {
+        $this->city = $city;
     }
 
     /**
      * Establece las propiedades de clase dinámicamente
      * en base a un array pasado por parámetro.
-     * 
+     *
      * @param array $data Lista de valores con los que rellenaremos nuestras propiedades de clase.
      * @param bool $override Permite sobreescribir los valores por defecto cuando recibimos un valor vacío.
-     * 
+     *
      * @return void
-     */   
-    public function setClassParams(array $data, ?bool $override = false): void
-    {
-        foreach($data as $key => $value)
-        {
-            if(empty($value) && !$override)
-            {
-                continue;
-            }
-            $this->$key = $value;
-        }
-    }
+     */
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getNickname()
-    {
-        return $this->nickname;
-    }
-
-    public function setNickname($nickname)
-    {
-        $this->nickname = $nickname;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    public function getVisibility()
-    {
-        return $this->visibility;
-    }
-
-    public function setVisibility($visibility)
-    {
-        $this->visibility = $visibility;
-    }
-
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    public function setCity($city)
-    {
-        $this->city = $city;
-    }
-
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    public function setCountry($country)
-    {
+    /**
+     * @param $country
+     */
+    public function setCountry($country) {
         $this->country = $country;
     }
 
-    public function getName()
-    {
-        return $this->name;
+    /**
+     * @param $created_at
+     */
+    public function setCreatedAt($created_at) {
+        $this->created_at = $created_at;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
+    /**
+     * @param $email
+     */
+    public function setEmail($email) {
+        $this->email = $email;
     }
 
-    public function getSurname()
-    {
-        return $this->surname;
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void {
+        $this->id = $id;
     }
 
-    public function setSurname($surname)
-    {
-        $this->surname = $surname;
-    }
- 
-    public function getImg()
-    {
-        return $this->img;
-    }
-
-    public function setImg($img)
-    {
+    /**
+     * @param $img
+     */
+    public function setImg($img) {
         $this->img = $img;
     }
 
-    public function getAboutMe()
-    {
-        return $this->about_me;
+    /**
+     * @param $name
+     */
+    public function setName($name) {
+        $this->name = $name;
     }
 
-    public function setAboutMe($about_me)
-    {
-        $this->about_me = $about_me;
+    /**
+     * @param $nickname
+     */
+    public function setNickname($nickname) {
+        $this->nickname = $nickname;
     }
 
-    public function getPassHash()
-    {
-        return $this->pass_hash;
-    }
- 
-    public function setPassHash($pass_hash)
-    {
+    /**
+     * @param $pass_hash
+     */
+    public function setPassHash($pass_hash) {
         $this->pass_hash = $pass_hash;
     }
 
-    public function getCreatedAt()
-    {
-        return $this->created_at;
+    /**
+     * @param $role
+     */
+    public function setRole($role) {
+        $this->role = $role;
     }
 
-    public function setCreatedAt($created_at)
-    {
-        $this->created_at = $created_at;
+    /**
+     * @param $surname
+     */
+    public function setSurname($surname) {
+        $this->surname = $surname;
     }
+
+    /**
+     * @param $visibility
+     */
+    public function setVisibility($visibility) {
+        $this->visibility = $visibility;
+    }
+
 }
-
-?>

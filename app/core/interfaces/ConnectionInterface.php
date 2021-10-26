@@ -1,12 +1,24 @@
-<?php declare(strict_types = 1);
+<?php declare (strict_types = 1);
 
-namespace App\Core\Interfaces;
+    namespace App\Core\Interfaces;
 
-interface ConnectionInterface
-{
-    public function connect();
-    public function close();
-    public function execute(array $query);
-}
+    interface ConnectionInterface {
+        public function connect();
+
+        public function close();
+
+        /**
+         * @param array $query
+         */
+        public function execute(array $query);
+    }
 
 ?>
+
+
+
+
+
+
+
+

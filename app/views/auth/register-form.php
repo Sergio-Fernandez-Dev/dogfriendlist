@@ -1,11 +1,22 @@
 <form action="register" method="post">
+<?php
+
+    if (isset($params['exception'])) {
+        echo '<div class="form-exception">' . $params['exception'] . '</div><br>';
+    }
+
+?>
     <fieldset>
-        <label>Nombre de Usuario:</label>
-        <input type="text" class="auth-form" name="nickname" required>
-        <label>Email:</label>
-        <input type="email" class="auth-form" name="email" required>
-        <label>Contraseña:</label>
-        <input type="password" class="auth-form" name="password" required>
-        <input type="submit" value="Registrar">
+        <label>Nombre de Usuario:</label><br>
+        <input type="text" class="auth-form" name="nickname" required><br>
+        <label>Email:</label><br>
+        <input type="email" class="auth-form" name="email" required><br>
+        <label>Contraseña:</label><br>
+        <input type="password" class="auth-form" name="password" required><br>
+        <label>Repetir Contraseña:</label><br>
+        <input type="password" class="auth-form" name="password2" required><br>
+        <input type="submit" name="submit" value="Registrar">
+        o <a href="../auth/login">Iniciar Sesión</a>
     </fieldset>
 </form>
+

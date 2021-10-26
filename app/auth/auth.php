@@ -1,43 +1,51 @@
-<?php 
+<?php
+require_once '../vendor/autoload.php';
 
-
-use App\Core\QueryBuilder;
+use App\Users\User;
 use App\Core\DBHandler;
+use App\Core\QueryBuilder;
 use App\Core\Router as route;
+use App\Auth\Forms\RegisterForm;
+use Exceptions\Form\FormException;
 
+route::add('/login',
+    function () {
+        return render('auth/login-form.php', true, ['title' => 'Dogfriendlist - Login']);
+    },
+    'GET'
+);
 
-route::add('/login', function()
-{
-   return render('auth/login-form.php', true, ['title' => 'Dogfriendlist - Login']);
-},
-'GET');
+route::add('/register',
+    function () {
+        return render('auth/register-form.php', true, ['title' => 'Registro']);
+    },
+    'GET'
+);
 
-route::add('/login-form',function()
-{
-   echo '<form action="login-form" method="post"><input type="text" name="test" /><input type="submit" value="send" /></form>';
-},
-'POST');
+route::add('/register',
+    function () {
+        $dbh = new DBHandler();
+        $qb = new QueryBuilder();
+        $form = new RegisterForm($_POST, $qb);
+        try {
+            $query = $form->send($dbh);
+        } catch (FormException $e) {
+            $exception = $e->getMessage();
 
-route::add('/register', function(){
+            return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
+        }
+        $user = new User();
 
-   return render('auth/register-form.php', true, ['title' => 'Dogfriendlist - Registro']);
-},
-'GET');
+    },
+    'POST'
+);
 
-route::add('/register', function()
-{
-   $dbh = new DBHandler();
-   $qb = new QueryBuilder();
-   $form = new RegisterForm($_POST, $qb);
-   $query = $form->send($dbh);
-},
-'POST');
-
-route::add('/all', function(){
-
-   return print_r(route::getAll());
-},
-'GET');
+route::add('/all',
+    function () {
+        return print_r(route::getAll());
+    },
+    'GET'
+);
 
 route::run('/auth');
 

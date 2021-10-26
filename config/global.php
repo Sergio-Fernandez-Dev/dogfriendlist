@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 define('BASE_VIEW_PATH', '../app/views/');
 define('BASE_VIEW_TEMPLATE', '../app/views/base-template.php');

@@ -1,13 +1,29 @@
-<?php declare(strict_types = 1);
+<?php
+    namespace App\Core\Interfaces;
 
-namespace App\Core\Interfaces;
+    interface EntityInterface {
+        public function getClassParams();
 
-interface EntityInterface
-{
-    public function getId(): int;
-    public function setId(int $id): void;
-    public function getClassParams(): array;
-    public function setClassParams(array $data, bool $override): void;
-}
+        /**
+         * @param array $data
+         * @param bool $override
+         */
+        public function setClassParams(array $data, bool $override);
+
+        public function getId();
+
+        /**
+         * @param int $id
+         */
+        public function setId(int $id);
+    }
 
 ?>
+
+
+
+
+
+
+
+

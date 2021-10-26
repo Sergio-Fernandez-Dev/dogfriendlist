@@ -14,8 +14,8 @@
                 <ul>
                     <li><a href="user/profile">Mi perfil</a></li>
                     <li><a href="user/personal-spots">Mis spots</a></li>
-                    <li><a href="user/config">Configuración del perfil</a></li>      
-                    <li><a href="auth/logout">Cerrar sesión</a></li>          
+                    <li><a href="user/config">Configuración del perfil</a></li>
+                    <li><a href="auth/logout">Cerrar sesión</a></li>
                 </ul>
                  <!-- fin menu desplegable -->
             </ul>
