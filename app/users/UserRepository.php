@@ -48,6 +48,8 @@ class UserRepository implements UserRepositoryInterface {
      *
      * @param User $user
      * @return bool
+     *
+     * @throws UserNotFoundException
      */
     public function save(User $user) {
 
@@ -108,6 +110,8 @@ class UserRepository implements UserRepositoryInterface {
      *
      * @param User $user
      * @return bool
+     *
+     * @throws UserNotFoundException
      */
     public function remove(User $user) {
 
