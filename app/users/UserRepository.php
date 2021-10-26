@@ -1,80 +1,163 @@
-<?php 
-
+<?php
 namespace App\Users;
 
-use App\Users\Interfaces\UserRepositoryInterface;
+use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\ConnectionInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
+use App\Users\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface {
+    /**
+     * @var mixed
+     */
     private $dbh;
+    /**
+     * @var mixed
+     */
     private $qb;
 
+    /**
+     * @param ConnectionInterface $dbh
+     * @param QueryBuilderInterface $qb
+     */
     public function __construct(ConnectionInterface $dbh, QueryBuilderInterface $qb) {
         $this->dbh = $dbh;
         $this->qb = $qb;
     }
-    
-    
 
+    /**
+     * Busca al usuario en la base de datos;
+     *
+     * @param int $id
+     * @return mixed
+     */
     public function find(int $id) {
+
         $query = $this->qb->select(['*'])
-                        ->from('Users')
-                        ->where('Id','=',$id)
-                        ->get();
-        
+            ->from('Users')
+            ->where('Id', '=', $id)
+            ->get();
+
         $result = $this->_execute($query);
 
         return $this->_setUser($result);
     }
 
+    /**
+     * Registra o actualiza al usuario en la base de datos
+     *
+     * @param User $user
+     * @return bool
+     */
     public function save(User $user) {
-        if($this->_checkIfItExists($user->id)) {
-            $db_user = $this->find($user->id);
 
-            foreach($db_user as $key => $value) {
+//Si el usuario existe
+        if ($this->_checkIfItExists($user->getId())) {
+            $db_user = $this->find($user->getId());
+            $fields = [];
+            $values = [];
+
+            foreach ($db_user as $key => $value) {
+
+//Comprobamos qué valores han sido modificados y los almacenamos
                 if (!empty($user[$key]) && $db_user[$key] != $user[$key]) {
-                    $array[$key] = $value;
+                    $fields[] = $key;
+                    $values[] = $value;
                 }
+
+            }
+
+            //Creamos una consulta de actualización
+            $query = $this->qb->update('Users')
+                ->setFromArray($fields, '=', $values)
+                ->where('id', '=', $user->getId())
+                ->get();
+
+            //Si el usuario no existe
+        } else {
+
+            //Obtenemos todos sus parámetros
+            $data = $user->getClassParams();
+            $fields = [];
+            $values = [];
+
+//Y los almacenamos
+            foreach ($data as $key => $value) {
+                $fields[] = $key;
+                $values[] = $value;
+            }
+
+            //Creamos una consulta de inserción
+            $query = $this->qb->insert('Users', $fields, $values)
+                ->get();
+
         }
 
-        $data = $user->getClassParams();
-        $fields = [];
-        $values = [];
+        $this->_execute($query);
 
-        foreach($data as $key => $value) {
-            $fields[] = $key;
-            $values[] = $value;
+//Comprobamos que el usuario se ha creado
+        if ($this->_checkIfItExists($user->getId())) {
+            throw new UserNotFoundException();
         }
 
-        $query = $this->qb->insert('Users', $fields, $values)
-                        ->get();
-
-        $result = $this->_checkIfItExists($user->getId());
-        
-        return $result;        
+        return true;
     }
 
+    /**
+     * Elimina al Usuario de la base de datos
+     *
+     * @param User $user
+     * @return bool
+     */
     public function remove(User $user) {
-        //TO-DO
+
+//Comprobamos que el Usuario existe
+        if ($this->_checkIfItExists($user->getId())) {
+            throw new UserNotFoundException();
+        }
+
+        $query = $this->qb->delete('Users')
+            ->where('id', '=', $user->getId())
+            ->get();
     }
 
+    /**
+     * Ejecuta una consulta en nuestra base de datos
+     *
+     * @param array $query
+     * @return mixed
+     */
     private function _execute($query) {
+
         $this->dbh->connect();
         $row = $this->dbh->execute($query);
         $this->dbh->close();
+
         return $row;
     }
 
+    /**
+     * Crea un nuevo usuario con los parámetros obtenidos de la base de datos
+     *
+     * @param array $rows
+     * @return mixed
+     */
     private function _setUser($rows) {
         $user = new User();
         $user->setClassParams($rows, true);
+
         return $user;
     }
 
+    /**
+     * Comprueba si un usuario existe en la base de datos
+     *
+     * @param int $id
+     */
     private function _checkIfItExists(int $id) {
         $this->find($id) instanceof User ? true : false;
     }
+
 }
 
 ?>
