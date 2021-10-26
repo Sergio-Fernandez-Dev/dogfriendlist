@@ -157,7 +157,7 @@ class QueryBuilder implements QueryBuilderInterface {
     public function set(string $field, string $operator, $value): QueryBuilder {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) {
-            throw new \Exception("SET can only be added to UPDATE");
+            throw new \Exception("SET solo puede ser añadido a UPDATE");
         }
 
         $value = $this->_secureValues($value);
@@ -169,6 +169,42 @@ class QueryBuilder implements QueryBuilderInterface {
         }
 
         $this->_build(end($this->query->set));
+
+        return $this;
+    }
+
+    /**
+     * Construye una sentencia del tipo SET con un array de argumentos
+     *
+     * @param array $fields
+     * @param string $operator
+     * @param array $values
+     * @return mixed
+     */
+    public function setFromArray(array $fields, string $operator, array $values): QueryBuilder {
+
+        if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) {
+            throw new \Exception("SET solo puede ser añadido a UPDATE");
+        }
+
+        if (\count($fields) != \count($values)) {
+            throw new \Exception("El número de campos debe coincidir con el número de valores");
+        }
+
+        $count = \count($fields);
+
+        $values = $this->_secureValues($values);
+
+        for ($i = 0; $i < $count; $i++) {
+
+            if (empty($this->query->set)) {
+                $this->query->set[] = " SET $fields[$i] $operator $values[$i]";
+            } else {
+                $this->query->set[] = ", $fields[$i] $operator $values[$i]";
+            }
+
+            $this->_build(end($this->query->set));
+        }
 
         return $this;
     }
