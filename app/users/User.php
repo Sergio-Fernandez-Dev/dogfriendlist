@@ -104,8 +104,13 @@ class User implements EntityInterface {
     }
 
     /**
-     * @param array $data
-     * @param bool $override
+     * Establece las propiedades de clase dinámicamente
+     * en base a un array pasado por parámetro.
+     *
+     * @param array $data Lista de valores con los que rellenaremos nuestras propiedades de clase.
+     * @param bool $override Permite sobreescribir los valores por defecto cuando recibimos un valor vacío.
+     *
+     * @return void
      */
     public function setClassParams(array $data, ?bool $override = false): void {
 
@@ -238,16 +243,6 @@ class User implements EntityInterface {
     public function setCity($city) {
         $this->city = $city;
     }
-
-    /**
-     * Establece las propiedades de clase dinámicamente
-     * en base a un array pasado por parámetro.
-     *
-     * @param array $data Lista de valores con los que rellenaremos nuestras propiedades de clase.
-     * @param bool $override Permite sobreescribir los valores por defecto cuando recibimos un valor vacío.
-     *
-     * @return void
-     */
 
     /**
      * @param $country
