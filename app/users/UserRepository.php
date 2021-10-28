@@ -1,6 +1,7 @@
 <?php
 namespace App\Users;
 
+use ReflectionObject;
 use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\ConnectionInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
@@ -28,10 +29,10 @@ class UserRepository implements UserRepositoryInterface {
     /**
      * Busca al usuario en la base de datos;
      *
-     * @param int $id
+     * @param $id
      * @return mixed
      */
-    public function find(int $id) {
+    public function find($id) {
 
         $query = $this->qb->select(['*'])
             ->from('Users')
@@ -123,6 +124,23 @@ class UserRepository implements UserRepositoryInterface {
         $query = $this->qb->delete('Users')
             ->where('id', '=', $user->getId())
             ->get();
+    }
+
+    /**
+     * Mapea el objeto user con el objeto devuelto por la base de datos;
+     *
+     * @param User $user
+     * @param mixed $object
+     * @return void
+     */
+    public function map(User $user, $object) {
+
+        if (\is_object($object)) {
+            $reflected = new ReflectionObject($object);
+            $response = $reflected->getProperties();
+        }
+
+        $user->setClassParams($object, true);
     }
 
     /**

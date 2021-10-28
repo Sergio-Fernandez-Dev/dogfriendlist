@@ -5,6 +5,7 @@ use App\Users\User;
 use App\Core\DBHandler;
 use App\Core\QueryBuilder;
 use App\Core\Router as route;
+use App\Users\UserRepository;
 use App\Auth\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
@@ -26,15 +27,20 @@ route::add('/register',
     function () {
         $dbh = new DBHandler();
         $qb = new QueryBuilder();
-        $form = new RegisterForm($_POST, $qb);
+        $form = new RegisterForm($_POST, $qb, $dbh);
+        
         try {
-            $query = $form->send($dbh);
+            $form->send($dbh);
         } catch (FormException $e) {
             $exception = $e->getMessage();
 
             return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
         }
+
         $user = new User();
+        $user->setClassParams()
+
+        $repo = new UserRepository($dbh, $qb);
 
     },
     'POST'

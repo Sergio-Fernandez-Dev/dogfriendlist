@@ -121,7 +121,7 @@ class DBHandler implements ConnectionInterface {
 
         } elseif ($stmt->rowCount() == 1) {
 
-            if ($row = $stmt->fetchAll(PDO::FETCH_OBJ)) {
+            if ($row = $stmt->fetchObject('User')) {
                 $result = $row;
             }
 

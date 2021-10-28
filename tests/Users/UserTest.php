@@ -1,6 +1,4 @@
-<?php
-
-declare (strict_types = 1);
+<?php declare (strict_types = 1);
 
 namespace Tests\Users;
 
@@ -17,6 +15,32 @@ class UserTest extends TestCase {
      * @var mixed
      */
     public $user;
+
+    protected function setUp(): void {
+
+        $this->user = new User();
+
+        $this->data = [
+            'id'             => 1,
+            'nickname'       => 'Testing',
+            'email'          => 'correo@prueba.com',
+            'visibility'     => 1,
+            'city'           => 'Madrid',
+            'country'        => 'España',
+            'name'           => 'Sergio',
+            'surname'        => 'Fernández Fernández',
+            'img'            => 'users/common/default-profile-picture.jpg',
+            'about_me'       => 'Me encantan los perros',
+            'pass_hash'      => 'E806A291CFC3E61F83B98D344EE57E3E8933CCCECE4FB45E1481F1F560E70EB1',
+            'role'           => 0,
+            'activation_key' => '4991d8ea19230ad9ccf4c9986c2a3b31',
+            'created_at'     => '2021-10-7 11:35:33',
+        ];
+    }
+
+    protected function tearDown(): void {
+        unset($this->user);
+    }
 
     public function testFunctionGetClassParamsReturnsAnArray(): void {
         $this->user->setClassParams($this->data, true);
@@ -86,29 +110,4 @@ class UserTest extends TestCase {
         $this->assertIsInt($result);
     }
 
-    protected function setUp(): void {
-
-        $this->user = new User();
-
-        $this->data = [
-            'id'             => 1,
-            'nickname'       => 'Testing',
-            'email'          => 'correo@prueba.com',
-            'visibility'     => 1,
-            'city'           => 'Madrid',
-            'country'        => 'España',
-            'name'           => 'Sergio',
-            'surname'        => 'Fernández Fernández',
-            'img'            => 'users/common/default-profile-picture.jpg',
-            'about_me'       => 'Me encantan los perros',
-            'pass_hash'      => 'E806A291CFC3E61F83B98D344EE57E3E8933CCCECE4FB45E1481F1F560E70EB1',
-            'role'           => 0,
-            'activation_key' => '4991d8ea19230ad9ccf4c9986c2a3b31',
-            'created_at'     => '2021-10-7 11:35:33',
-        ];
-    }
-
-    protected function tearDown(): void {
-        unset($this->user);
-    }
 }

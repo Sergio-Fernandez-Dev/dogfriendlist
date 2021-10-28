@@ -36,14 +36,16 @@ class RegisterForm extends Form {
      * @param array $data
      * @param QueryBuilderInterface $qb
      */
-    public function __construct(array $data, QueryBuilderInterface $qb) {
+    public function __construct(array $data, QueryBuilderInterface $qb, ConnectionInterface $dbh) {
+
+        parent::__construct($dbh);
 
         $data = $this->_getData($data);
 
         isset($data['nickname']) ? $this->nickname = $data['nickname'] : $this->nickname = null;
         isset($data['email']) ? $this->email = $data['email'] : $this->email = null;
-        isset($data['password']) ? $this->password = $data['password'] : $this->password = null;
-        isset($data['password2']) ? $this->password2 = $data['password2'] : $this->password2 = null;
+        isset($data['password']) ? $this->password = \md5($data['password']) : $this->password = null;
+        isset($data['password2']) ? $this->password2 = \md5($data['password2']) : $this->password2 = null;
 
         $this->qb = $qb;
     }
@@ -56,20 +58,19 @@ class RegisterForm extends Form {
      *
      * @throws FormException
      */
-    public function send(ConnectionInterface $dbh) {
+    public function send() {
+
         $this->_validateEmail($this->email);
 
         $query = $this->_checkEmail();
-        $result = $dbh->execute($query);
-        $dbh->close();
+        $result = $this->_execute($query);
 
         if (null != ($result)) {
             throw new FormException('La dirección de correo ya ha sido registrada anteriormente');
         }
 
         $query = $this->_checkNickname();
-        $dbh->connect();
-        $result = $dbh->execute($query);
+        $result = $this->_execute($query);
 
         if (null != ($result)) {
             throw new FormException('El nombre de usuario ya existe');
@@ -78,6 +79,19 @@ class RegisterForm extends Form {
         $this->_checkPassword();
 
         return $result;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFields() {
+        $fields = [
+            'nickname'  => $this->nickname,
+            'email'     => $this->email,
+            'pass_hash' => $this->password,
+        ];
+
+        return $fields;
     }
 
     /**

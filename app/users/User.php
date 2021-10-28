@@ -120,7 +120,7 @@ class User implements EntityInterface {
                 continue;
             }
 
-            \is_int($this->$key) ? $this->$key = (int) $value : $this->$key = $value;
+            $this->$key = $value;
         }
 
     }
@@ -170,7 +170,7 @@ class User implements EntityInterface {
     /**
      * @return int
      */
-    public function getId(): int {
+    public function getId(): mixed {
         return $this->id;
     }
 
