@@ -1,27 +1,30 @@
 <?php
 namespace App\Users;
 
+use App\Users\User;
+use App\Users\Interfaces\UserInterface;
 use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Users\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface {
+
     /**
      * @var mixed
      */
-    private $dbh;
+    private $db;
     /**
      * @var mixed
      */
     private $qb;
 
     /**
-     * @param GatewayInterface $dbh
+     * @param GatewayInterface $db
      * @param QueryBuilderInterface $qb
      */
-    public function __construct(GatewayInterface $dbh, QueryBuilderInterface $qb) {
-        $this->dbh = $dbh;
+    public function __construct(GatewayInterface $db, QueryBuilderInterface $qb) {
+        $this->dbh = $db;
         $this->qb = $qb;
     }
 
@@ -38,20 +41,22 @@ class UserRepository implements UserRepositoryInterface {
             ->where('Id', '=', $id)
             ->get();
 
-        $result = $this->_execute($query);
+        $result = $this->db->connect()
+            ->retrieve($query)
+            ->disconnect();
 
-        return $this->_setUser($result);
+        return UserFactory::make($result);
     }
 
     /**
      * Registra o actualiza al usuario en la base de datos
      *
-     * @param User $user
+     * @param UserInterface $user
      * @return bool
      *
      * @throws UserNotFoundException
      */
-    public function save(User $user) {
+    public function save(UserInterface $user) {
 
 //Si el usuario existe
         if ($this->_checkIfItExists($user->getId())) {
@@ -108,12 +113,12 @@ class UserRepository implements UserRepositoryInterface {
     /**
      * Elimina al Usuario de la base de datos
      *
-     * @param User $user
+     * @param UserInterface $user
      * @return bool
      *
      * @throws UserNotFoundException
      */
-    public function remove(User $user) {
+    public function remove(UserInterface $user) {
 
 //Comprobamos que el Usuario existe
         if ($this->_checkIfItExists($user->getId())) {
@@ -160,6 +165,52 @@ class UserRepository implements UserRepositoryInterface {
      */
     private function _checkIfItExists(int $id) {
         $this->find($id) instanceof User ? true : false;
+    }
+
+    public function findAll() {
+        //TO-DO
+    }
+
+    /**
+     * @param string $email
+     */
+    public function findByEmail(string $email) {
+        //TO-DO
+    }
+
+    /**
+     * @param string $nickname
+     */
+    public function findByNickname(string $nickname) {
+        //TO-DO
+    }
+
+    /**
+     * @param string $country
+     */
+    public function findByCountry(string $country) {
+        //TO-DO
+    }
+
+    /**
+     * @param string $city
+     */
+    public function findByCity(string $city) {
+        //TO-DO
+    }
+
+    /**
+     * @param int $role
+     */
+    public function findByRole(int $role) {
+        //TO-DO
+    }
+
+    /**
+     * @param int $id
+     */
+    public function delete(int $id) {
+        //TO-DO
     }
 
 }

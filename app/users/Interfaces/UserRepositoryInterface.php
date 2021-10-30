@@ -1,26 +1,40 @@
 <?php
     namespace App\Users\Interfaces;
 
-    use App\Users\User;
+    use App\Core\Interfaces\RepositoryInterface;
 
-    Interface UserRepositoryInterface {
+    Interface UserRepositoryInterface extends RepositoryInterface {
         /**
          * @param int $id
          */
-        public function find(int $id);
+        public function findByEmail(string $email);
 
         /**
-         * @param User $user
+         * @param string $nickname
          */
-        public function remove(User $user);
+        public function findByNickname(string $nickname);
 
         /**
-         * @param User $user
+         * @param string $country
          */
-        public function save(User $user);
+        public function findByCountry(string $country);
+
+        /**
+         * @param string $city
+         */
+        public function findByCity(string $city);
+
+        /**
+         * @param int $role
+         */
+        public function findByRole(int $role);
     }
 
 ?>
+
+
+
+
 
 
 

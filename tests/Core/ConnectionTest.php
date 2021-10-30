@@ -3,7 +3,7 @@
 namespace Tests\Core;
 
 use PHPUnit\Framework\TestCase;
-use App\Core\DBHandler;
+use App\Core\DB;
 
 class ConnectionTest extends TestCase
 {
@@ -15,7 +15,7 @@ public static function setUpBeforeClass(): void
 {
 define('DB_CONFIG', '../config/database.php');
 
-self::$dbh = new DBHandler();
+self::$dbh = new DB();
 self::$conn = self::$dbh->connect();
 }
 

@@ -6,7 +6,7 @@ use PDOException;
 use App\Core\Interfaces\GatewayInterface;
 
 /**
- * La clase DBHandler se encarga de establecer las conexiones a la base de datos
+ * La clase DB se encarga de establecer las conexiones a la base de datos
  * y de ejecutar las consultas.
  */
 
@@ -87,29 +87,33 @@ class DB implements GatewayInterface {
      * @return null
      */
     public function disconnect() {
+
         $this->conn = null;
 
         return null;
     }
 
     /**
-     * Ejecuta las consultas a la base de datos
+     * Almacena un objeto en nuestra base de datos.
+     * @param array $query
+     */
+    public function persist(array $query) {
+
+        $this->_execute($query);
+
+        return true;
+    }
+
+    /**
+     * Devuelve un array correspondiente a todas las filas encontradas en la db
+     * para la consulta realizada.
      *
      * @param array $query
-     *
-     * @return array|object
+     * @return mixed
      */
-    public function execute(array $query) {
+    public function retrieve(array $query) {
 
-        if (!isset($this->conn)) {$this->connect();}
-
-        try
-        {
-            $stmt = $this->conn->prepare($query['query']);
-            $stmt->execute($query['values']);
-        } catch (PDOException $e) {
-            die("No se ha podido ejecutar la consulta:" . $e->getMessage());
-        }
+        $stmt = $this->_execute($query);
 
         if ($stmt->rowCount() > 1) {
 
@@ -128,6 +132,31 @@ class DB implements GatewayInterface {
         }
 
         return $result;
+
+    }
+
+    /**
+     * Ejecuta las consultas a la base de datos
+     *
+     * @param array $query
+     *
+     * @return array|object
+     */
+    private function _execute(array $query) {
+
+        if (!isset($this->conn)) {$this->connect();}
+
+        try
+        {
+            $stmt = $this->conn->prepare($query['query']);
+            $stmt->execute($query['values']);
+
+            return $stmt;
+
+        } catch (PDOException $e) {
+            die("No se ha podido ejecutar la consulta:" . $e->getMessage());
+        }
+
     }
 
 }

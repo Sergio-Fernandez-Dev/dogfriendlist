@@ -2,7 +2,7 @@
 require_once '../vendor/autoload.php';
 
 use App\Users\User;
-use App\Core\DBHandler;
+use App\Core\DB;
 use App\Core\QueryBuilder;
 use App\Core\Router as route;
 use App\Users\UserRepository;
@@ -25,7 +25,7 @@ route::add('/register',
 
 route::add('/register',
     function () {
-        $dbh = new DBHandler();
+        $dbh = new DB();
         $qb = new QueryBuilder();
         $form = new RegisterForm($_POST, $qb, $dbh);
         

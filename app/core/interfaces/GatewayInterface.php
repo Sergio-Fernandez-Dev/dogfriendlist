@@ -2,6 +2,7 @@
     namespace App\Core\Interfaces;
 
     interface GatewayInterface {
+
         public function connect();
 
         public function disconnect();
@@ -14,10 +15,13 @@
         /**
          * @param int $id
          */
-        public function retrieve(int $id);
+        public function retrieve(array $data);
     }
 
 ?>
+
+
+
 
 
 
