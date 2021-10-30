@@ -2,7 +2,7 @@
     namespace App\Auth\Forms;
 
     use Exceptions\Form\FormException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
 
     abstract class Form {
 
@@ -14,9 +14,9 @@ use App\Core\Interfaces\ConnectionInterface;
         abstract public function send();
 
         /**
-         * @param ConnectionInterface $dbh
+         * @param GatewayInterface $dbh
          */
-        public function __construct(ConnectionInterface $dbh) {
+        public function __construct(GatewayInterface $dbh) {
             $this->dbh = $dbh;
         }
 
@@ -64,7 +64,7 @@ use App\Core\Interfaces\ConnectionInterface;
 
             $this->dbh->connect();
             $result = $this->dbh->execute($query);
-            $this->dbh->close();
+            $this->dbh->disconnect();
 
             return $result;
         }

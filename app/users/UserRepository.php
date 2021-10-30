@@ -1,9 +1,8 @@
 <?php
 namespace App\Users;
 
-use ReflectionObject;
 use Exceptions\Db\UserNotFoundException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Users\Interfaces\UserRepositoryInterface;
 
@@ -18,10 +17,10 @@ class UserRepository implements UserRepositoryInterface {
     private $qb;
 
     /**
-     * @param ConnectionInterface $dbh
+     * @param GatewayInterface $dbh
      * @param QueryBuilderInterface $qb
      */
-    public function __construct(ConnectionInterface $dbh, QueryBuilderInterface $qb) {
+    public function __construct(GatewayInterface $dbh, QueryBuilderInterface $qb) {
         $this->dbh = $dbh;
         $this->qb = $qb;
     }
@@ -127,23 +126,6 @@ class UserRepository implements UserRepositoryInterface {
     }
 
     /**
-     * Mapea el objeto user con el objeto devuelto por la base de datos;
-     *
-     * @param User $user
-     * @param mixed $object
-     * @return void
-     */
-    public function map(User $user, $object) {
-
-        if (\is_object($object)) {
-            $reflected = new ReflectionObject($object);
-            $response = $reflected->getProperties();
-        }
-
-        $user->setClassParams($object, true);
-    }
-
-    /**
      * Ejecuta una consulta en nuestra base de datos
      *
      * @param array $query
@@ -153,7 +135,7 @@ class UserRepository implements UserRepositoryInterface {
 
         $this->dbh->connect();
         $row = $this->dbh->execute($query);
-        $this->dbh->close();
+        $this->dbh->disconnect();
 
         return $row;
     }

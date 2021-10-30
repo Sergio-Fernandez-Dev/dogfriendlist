@@ -1,28 +1,16 @@
 <?php
 namespace App\Core;
 
-require_once '../app/core/interfaces/ConnectionInterface.php';
-
 use PDO;
 use PDOException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
 
 /**
  * La clase DBHandler se encarga de establecer las conexiones a la base de datos
  * y de ejecutar las consultas.
  */
 
-class DBHandler implements ConnectionInterface {
-    /**
-     * @var string
-     */
-    private $charset;
-
-    /**
-     * @var PDO
-     */
-    private $conn;
-
+class DB implements GatewayInterface {
     /**
      * @var string
      */
@@ -41,12 +29,22 @@ class DBHandler implements ConnectionInterface {
     /**
      * @var string
      */
+    private $user;
+
+    /**
+     * @var string
+     */
     private $pass;
 
     /**
      * @var string
      */
-    private $user;
+    private $charset;
+
+    /**
+     * @var PDO
+     */
+    private $conn;
 
     /**
      * Se construye un objeto Conexión con los parámetros
@@ -88,8 +86,8 @@ class DBHandler implements ConnectionInterface {
      *
      * @return null
      */
-    public function close() {
-        $this->conn;
+    public function disconnect() {
+        $this->conn = null;
 
         return null;
     }
@@ -115,13 +113,13 @@ class DBHandler implements ConnectionInterface {
 
         if ($stmt->rowCount() > 1) {
 
-            while ($row = $stmt->fetchAll(PDO::FETCH_OBJ)) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
 
         } elseif ($stmt->rowCount() == 1) {
 
-            if ($row = $stmt->fetchObject('User')) {
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = $row;
             }
 

@@ -41,7 +41,7 @@ $this->assertNotNull(self::$conn);
 
 public function testClosedConnectionReturnsNullValue(): void
 {
-self::$conn = self::$dbh->close();
+self::$conn = self::$dbh->disconnect();
 $this->assertNull(self::$conn);
 }
 } */

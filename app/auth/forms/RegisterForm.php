@@ -3,7 +3,7 @@ namespace App\Auth\Forms;
 
 use App\Auth\Forms\Form;
 use Exceptions\Form\FormException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 
 class RegisterForm extends Form {
@@ -36,7 +36,7 @@ class RegisterForm extends Form {
      * @param array $data
      * @param QueryBuilderInterface $qb
      */
-    public function __construct(array $data, QueryBuilderInterface $qb, ConnectionInterface $dbh) {
+    public function __construct(array $data, QueryBuilderInterface $qb, GatewayInterface $dbh) {
 
         parent::__construct($dbh);
 
@@ -53,7 +53,7 @@ class RegisterForm extends Form {
     /**
      * Envía el formulario a la base de datos y filtra la respuesta
      *
-     * @param ConnectionInterface $dbh
+     * @param GatewayInterface $dbh
      * @return mixed
      *
      * @throws FormException
