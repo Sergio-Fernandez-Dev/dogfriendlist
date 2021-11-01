@@ -10,7 +10,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
         /**
          * @var string
          */
-        protected $table_name;
+        protected $table;
 
         /**
          * @var Queryq_BuilderInterface
@@ -23,15 +23,15 @@ use App\Core\Interfaces\QueryBuilderInterface;
         protected $db;
 
         /**
-         * @param string $table_name
+         * @param string $table
          * @param Queryq_BuilderInterface $q_builder
          */
-        public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder, string $table_name) {
+        public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder, string $table) {
 
             $this->db = $db;
             $this->q_builder = $q_builder;
 
-            $this->q_builder->setTableName($table_name);
+            $this->q_builder->setTableName($table);
         }
 
         /**
@@ -127,10 +127,16 @@ use App\Core\Interfaces\QueryBuilderInterface;
         /**
          * @param $data
          */
-        protected abstract function make($data);
+        protected abstract function make(array $data);
     }
 
 ?>
+
+
+
+
+
+
 
 
 
