@@ -2,12 +2,13 @@
 namespace App\Core;
 
 use stdClass;
+use App\Core\Interfaces\QueryBuilderInterface;
 
 /**
  * La clase QueryBuilder se encarga de construir
  * sentencias SQL mediante la combinación de sus métodos.
  */
-class QueryBuilder {
+class QueryBuilder implements QueryBuilderInterface {
     /**
      * @var mixed
      */
@@ -28,15 +29,19 @@ class QueryBuilder {
     /**
      * @var string
      */
-    private $table_name;
+    private $table;
 
     /**
-     * @param $table_name
+     * Establece el nombre de la tabla sobre la que
+     * se realizarán las consultas. Este método debe
+     * ser llamado antes de ejecutar cualquier consulta,
+     * preferiblemente en el constructor de la clase que lo implemente.
+     *
+     * @param string $table
      */
-    public function __construct($table_name) {
-
-        $this->table_name = (string) $table_name;
-        $this->_createEmptyQueryObject();
+    public function setTableName(string $table) {
+        $this->table = $table;
+        $this->_createEmptyQueryObject($table);
     }
 
     /**
@@ -47,7 +52,7 @@ class QueryBuilder {
      *
      * @return QueryBuilder
      */
-    public function sql(string $query): QueryBuilder {
+    public function raw(string $query) {
         $this->query->base = $query;
         $this->_build($this->query->base);
 
@@ -61,7 +66,7 @@ class QueryBuilder {
      *
      * @return QueryBuilder
      */
-    public function insert(array $data): QueryBuilder {
+    public function insert(array $data) {
 
         $columns = [];
         $values = [];
@@ -73,7 +78,7 @@ class QueryBuilder {
 
         $values = $this->_secureValues($values);
 
-        $this->query->base = "INSERT INTO $this->table_name (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $values) . ")";
+        $this->query->base = "INSERT INTO $this->table (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $values) . ")";
         $this->query->type = 'insert';
 
         $this->_build($this->query->base);
@@ -88,9 +93,9 @@ class QueryBuilder {
      *
      * @return QueryBuilder
      */
-    public function select(): QueryBuilder {
+    public function select() {
 
-        $this->query->base = "SELECT * FROM $this->table_name";
+        $this->query->base = "SELECT * FROM $this->table";
         $this->query->type = 'select';
 
         $this->_build($this->query->base);
@@ -101,12 +106,12 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo SELECT DINSTINCT
      *
-     * @param array|null $fields
+     * @param array|null $columns
      * @return QueryBuilder
      */
-    public function selectDistinct(...$fields): QueryBuilder {
+    public function selectDistinct(...$columns) {
 
-        if (empty($fields)) {
+        if (empty($columns)) {
             throw new \Exception("SELECT DISTINCT necesita recibir algún campo para realizar la consulta");
         }
 
@@ -114,7 +119,7 @@ class QueryBuilder {
             throw new \Exception("SELECT DISTINCT no puede utilizarse junto a una sentencia SELECT");
         }
 
-        $this->query->base = "SELECT DISTINCT " . implode(", ", $fields) . " FROM $this->table_name";
+        $this->query->base = "SELECT DISTINCT " . implode(", ", $columns) . " FROM $this->table";
         $this->query->type = 'select';
 
         $this->_build($this->query->base);
@@ -129,9 +134,9 @@ class QueryBuilder {
      *
      *  @return QueryBuilder
      */
-    public function update(array $data): QueryBuilder {
+    public function update(array $data) {
 
-        $this->_createEmptyQueryObject();
+        $this->_createEmptyQueryObject($this->table);
 
         $string = "";
 
@@ -143,7 +148,7 @@ class QueryBuilder {
         $string = \trim($string, ','); //Borramos la última coma
         $string = \trim($string, ' '); //Borramos el primer espacio
 
-        $this->query->base = "UPDATE $this->table_name SET $string";
+        $this->query->base = "UPDATE $this->table SET $string";
         $this->query->type = 'update';
 
         $this->_build($this->query->base);
@@ -158,11 +163,11 @@ class QueryBuilder {
      *
      * @return QueryBuilder
      */
-    public function delete(string $table): QueryBuilder {
+    public function delete() {
 
-        $this->_createEmptyQueryObject();
+        $this->_createEmptyQueryObject($this->table);
 
-        $this->query->base = "DELETE FROM $table";
+        $this->query->base = "DELETE FROM $this->table";
         $this->query->type = 'delete';
 
         $this->_build($this->query->base);
@@ -173,13 +178,13 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo WHERE.
      *
-     * @param string $field
+     * @param string $column
      * @param string $operator
      * @param string $value
      *
      * @return QueryBuilder
      */
-    public function where(string $field, string $operator, $value): QueryBuilder {
+    public function where(string $column, string $operator, $value) {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
             throw new \Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
@@ -191,10 +196,10 @@ class QueryBuilder {
 
         if (\strcasecmp($value, 'IS NULL') == 0 || \strcasecmp($value, 'NOT NULL') == 0) {
             $value = \strtoupper($value);
-            $this->query->where[] = " WHERE $field $value";
+            $this->query->where[] = " WHERE $column $value";
         } else {
             $value = $this->_secureValues($value);
-            $this->query->where[] = " WHERE $field $operator $value";
+            $this->query->where[] = " WHERE $column $operator $value";
         }
 
         $this->_build(end($this->query->where));
@@ -205,13 +210,13 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo AND.
      *
-     * @param string $field
+     * @param string $column
      * @param string $operator
      * @param string $value
      *
      * @return QueryBuilder
      */
-    public function andWhere(string $field, string $operator, $value): QueryBuilder {
+    public function andWhere(string $column, string $operator, $value) {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
             throw new \Exception("AND can only be added to SELECT, UPDATE OR DELETE");
@@ -222,7 +227,7 @@ class QueryBuilder {
         }
 
         $value = $this->_secureValues($value);
-        $this->query->andWhere[] = " AND $field $operator $value";
+        $this->query->andWhere[] = " AND $column $operator $value";
         $this->_build(end($this->query->andWhere));
 
         return $this;
@@ -231,13 +236,13 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo OR.
      *
-     * @param string $field
+     * @param string $column
      * @param string $operator
      * @param string $value
      *
      * @return QueryBuilder
      */
-    public function orWhere(string $field, string $operator, $value): QueryBuilder {
+    public function orWhere(string $column, string $operator, $value) {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
             throw new \Exception("OR can only be added to SELECT, UPDATE OR DELETE");
@@ -248,7 +253,7 @@ class QueryBuilder {
         }
 
         $value = $this->_secureValues($value);
-        $this->query->orWhere[] = " OR $field $operator $value";
+        $this->query->orWhere[] = " OR $column $operator $value";
         $this->_build(end($this->query->orWhere));
 
         return $this;
@@ -257,13 +262,13 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo NOT.
      *
-     * @param string $field
+     * @param string $column
      * @param string $operator
      * @param string $value
      *
      * @return QueryBuilder
      */
-    public function whereNot(string $field, string $operator, $value): QueryBuilder {
+    public function whereNot(string $column, string $operator, $value) {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
             throw new \Exception("NOT can only be added to SELECT, UPDATE OR DELETE");
@@ -274,7 +279,7 @@ class QueryBuilder {
         }
 
         $value = $this->_secureValues($value);
-        $this->query->whereNot[] = " WHERE NOT $field $operator $value";
+        $this->query->whereNot[] = " WHERE NOT $column $operator $value";
         $this->_build(end($this->query->whereNot));
 
         return $this;
@@ -288,7 +293,7 @@ class QueryBuilder {
      *
      * @return QueryBuilder
      */
-    public function limit(int $start, int $offset = null): QueryBuilder {
+    public function limit(int $start, int $offset = null) {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) {
             throw new \Exception("LIMIT can only be added to SELECT");
@@ -308,19 +313,19 @@ class QueryBuilder {
     /**
      * Construye una sentencia del tipo ORDER BY.
      *
-     * @param string $field
+     * @param string $column
      * @param string $order
      *
      * @return QueryBuilder
      */
-    public function orderBy(string $field, string $order = 'ASC'): QueryBuilder {
+    public function orderBy(string $column, string $order = 'ASC') {
 
         if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) {
             throw new \Exception("ORDER BY can only be added to SELECT");
         }
 
         $order = \strtoupper($order);
-        $this->query->orderBy = " ORDER BY $field $order";
+        $this->query->orderBy = " ORDER BY $column $order";
         $this->_build($this->query->orderBy);
 
         return $this;
@@ -340,7 +345,7 @@ class QueryBuilder {
             $values_to_bind = $this->values_to_bind;
 
             $this->position = 0;
-            $this->_createEmptyQueryObject();
+            $this->_createEmptyQueryObject($this->table);
 
             return ['query' => $query, 'values' => $values_to_bind];
         }
@@ -352,9 +357,10 @@ class QueryBuilder {
      *
      * @return void
      */
-    private function _createEmptyQueryObject() {
+    private function _createEmptyQueryObject($table) {
         $this->query = new stdClass();
         $this->query->type = null;
+        $this->table = $table;
     }
 
     /**

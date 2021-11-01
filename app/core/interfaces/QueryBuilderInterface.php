@@ -1,136 +1,80 @@
 <?php
-    namespace App\Core\Interfaces;
+namespace App\Core\Interfaces;
 
-    use App\Core\QueryBuilder;
+interface QueryBuilderInterface {
 
-    interface QueryBuilderInterface {
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function andWhere(string $field, string $operator, $value): QueryBuilder;
+    /**
+     * @param string $table
+     */
+    public function setTableName(string $table);
 
-        /**
-         * @param string $alias
-         */
-        public function as (string $alias): QueryBuilder;
+    /**
+     * @param string $query
+     */
+    public function raw(string $query);
 
-        /**
-         * @param string $table
-         */
-        public function delete(string $table): QueryBuilder;
+    /**
+     * @param array $data
+     */
+    public function insert(array $data);
 
-        /**
-         * @param string $table
-         */
-        public function from(string $table): QueryBuilder;
+    public function select();
 
-        public function get(): array;
+    /**
+     * @param mixed $fields
+     */
+    public function selectDistinct(...$columns);
 
-        /**
-         * @param string $table
-         * @param mixed $value
-         * @param mixed $fields
-         */
-        public function insert(string $table, array $values, ?array $fields): QueryBuilder;
+    /**
+     * @param array $data
+     */
+    public function update(array $data);
 
-        /**
-         * @param string $table
-         * @param string $type
-         */
-        public function join(string $table, string $type): QueryBuilder;
+    public function delete();
 
-        /**
-         * @param int $start
-         * @param int $offset
-         */
-        public function limit(int $start, int $offset): QueryBuilder;
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param mixed $value
+     */
+    public function where(string $column, string $operator, $value);
 
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function on(string $field, string $operator, $value): QueryBuilder;
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param mixed $value
+     */
+    public function andWhere(string $column, string $operator, $value);
 
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function orWhere(string $field, string $operator, $value): QueryBuilder;
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param mixed $value
+     */
+    public function orWhere(string $column, string $operator, $value);
 
-        /**
-         * @param string $field
-         * @param string $order
-         */
-        public function orderBy(string $field, string $order): QueryBuilder;
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param mixed $value
+     */
+    public function whereNot(string $column, string $operator, $value);
 
-        /**
-         * @param array $fields
-         */
-        public function select(array $fields): QueryBuilder;
+    /**
+     * @param int $start
+     * @param int $offset
+     */
+    public function limit(int $start, int $offset);
 
-        /**
-         * @param array $fields
-         */
-        public function selectDistinct(array $fields): QueryBuilder;
+    /**
+     * @param string $column
+     * @param string $order
+     */
+    public function orderBy(string $column, string $order);
 
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function set(string $field, string $operator, $value): QueryBuilder;
+    public function get(): array;
 
-        /**
-         * @param string $query
-         */
-        public function sql(string $query): QueryBuilder;
-
-        /**
-         * @param string $table
-         */
-        public function update(string $table): QueryBuilder;
-
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function where(string $field, string $operator, $value): QueryBuilder;
-
-        /**
-         * @param string $field
-         * @param string $operator
-         * @param mixed $value
-         */
-        public function whereNot(string $field, string $operator, $value): QueryBuilder;
-    }
+}
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
