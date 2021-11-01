@@ -42,7 +42,9 @@ use App\Core\Interfaces\QueryBuilderInterface;
         public function add(EntityInterface $modelObject) {
 
             $query = $this->q_builder->insert($modelObject->getClassParams());
+
             $this->db->persist($query);
+            $this->db->disconnect();
         }
 
         /**
@@ -58,6 +60,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
                 ->get();
 
             $result = $this->db->retrieve($query);
+            $this->db->disconnect();
 
             $modelObject = $this->make($result);
 
@@ -76,6 +79,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
                 ->get();
 
             $result = $this->db->retrieve($query);
+            $this->db->disconnect();
 
             $object_list = [];
 
@@ -88,7 +92,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
 
         /**
          * Actualiza en nuestra base de datos
-         * los cambios hechos en nuestro objeto.
+         * los cambios hechos en el objeto pasado como parámetro.
          *
          * @param EntityInterface $modelObject
          */
@@ -97,13 +101,27 @@ use App\Core\Interfaces\QueryBuilderInterface;
             $query = $this->q_builder->update($modelObject->getClassParams())
                 ->where('id', '=', $modelObject->getId())
                 ->get();
+
+            $this->db->persist($query);
+            $this->db->disconnect();
         }
 
         /**
+         * Borra el objeto pasado como parámetro
+         * y su correspondiente registro en la base de datos.
+         *
          * @param int $id
          */
-        public function remove(int $id) {
-            //TO-DO
+        public function remove(EntityInterface $modelObject) {
+
+            $query = $this->q_builder->delete()
+                ->where('id', '=', $modelObject->getId())
+                ->get();
+
+            $this->db->persist($query);
+            $this->db->disconnect();
+
+            unset($modelObject);
         }
 
         /**
@@ -113,6 +131,8 @@ use App\Core\Interfaces\QueryBuilderInterface;
     }
 
 ?>
+
+
 
 
 
