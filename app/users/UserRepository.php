@@ -2,6 +2,7 @@
 namespace App\Users;
 
 use App\Users\User;
+use App\Users\UserFactory;
 use App\Users\Interfaces\UserInterface;
 use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\GatewayInterface;
@@ -24,7 +25,7 @@ class UserRepository implements UserRepositoryInterface {
      * @param QueryBuilderInterface $qb
      */
     public function __construct(GatewayInterface $db, QueryBuilderInterface $qb) {
-        $this->dbh = $db;
+        $this->db = $db;
         $this->qb = $qb;
     }
 
@@ -41,11 +42,11 @@ class UserRepository implements UserRepositoryInterface {
             ->where('Id', '=', $id)
             ->get();
 
-        $result = $this->db->connect()
-            ->retrieve($query)
-            ->disconnect();
+        $this->db->connect();
+        $user = $this->db->retrieve($query);
+        $this->db->disconnect();
 
-        return UserFactory::make($result);
+        return UserFactory::make($user);
     }
 
     /**
@@ -56,7 +57,7 @@ class UserRepository implements UserRepositoryInterface {
      *
      * @throws UserNotFoundException
      */
-    public function save(UserInterface $user) {
+    public function save($user) {
 
 //Si el usuario existe
         if ($this->_checkIfItExists($user->getId())) {
@@ -100,7 +101,9 @@ class UserRepository implements UserRepositoryInterface {
 
         }
 
-        $this->_execute($query);
+        $this->db->connect();
+        $this->db->persist($query);
+        $this->db->disconnect();
 
 //Comprobamos que el usuario se ha creado
         if ($this->_checkIfItExists($user->getId())) {
@@ -143,19 +146,6 @@ class UserRepository implements UserRepositoryInterface {
         $this->dbh->disconnect();
 
         return $row;
-    }
-
-    /**
-     * Crea un nuevo usuario con los parámetros obtenidos de la base de datos
-     *
-     * @param array $rows
-     * @return mixed
-     */
-    private function _setUser($rows) {
-        $user = new User();
-        $user->setClassParams($rows, true);
-
-        return $user;
     }
 
     /**

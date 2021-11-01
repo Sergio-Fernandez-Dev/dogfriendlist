@@ -13,7 +13,8 @@ class UserFactory implements FactoryInterface {
      */
     public static function make(array $data) {
 
-        $user = (new User())->setClassParams($data, true);
+        $user = new User();
+        $user->setClassParams($data, true);
 
         return $user;
     }

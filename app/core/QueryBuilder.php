@@ -2,13 +2,12 @@
 namespace App\Core;
 
 use stdClass;
-use App\Core\Interfaces\QueryBuilderInterface;
 
 /**
  * La clase QueryBuilder se encarga de construir
  * sentencias SQL mediante la combinación de sus métodos.
  */
-class QueryBuilder implements QueryBuilderInterface {
+class QueryBuilder {
     /**
      * @var mixed
      */
@@ -26,7 +25,17 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     private $position = 0;
 
-    public function __construct() {
+    /**
+     * @var string
+     */
+    private $table_name;
+
+    /**
+     * @param $table_name
+     */
+    public function __construct($table_name) {
+
+        $this->table_name = (string) $table_name;
         $this->_createEmptyQueryObject();
     }
 
@@ -48,22 +57,25 @@ class QueryBuilder implements QueryBuilderInterface {
     /**
      * Construye una sentencia del tipo INSERT
      *
-     * @param string $table
-     * @param array $values
-     * @param array|null $fields
+     * @param array $data
      *
      * @return QueryBuilder
      */
-    public function insert(string $table, array $values, ?array $fields = null): QueryBuilder {
-        $values = $this->_secureValues($values);
+    public function insert(array $data): QueryBuilder {
 
-        if (!isset($fields)) {
-            $this->query->base = "INSERT INTO $table VALUES (" . implode(", ", $values) . ")";
-        } else {
-            $this->query->base = "INSERT INTO $table (" . implode(", ", $fields) . ") VALUES (" . implode(", ", $values) . ")";
+        $columns = [];
+        $values = [];
+
+        foreach ($data as $key => $value) {
+            $columns[] = $key;
+            $values[] = $value;
         }
 
+        $values = $this->_secureValues($values);
+
+        $this->query->base = "INSERT INTO $this->table_name (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $values) . ")";
         $this->query->type = 'insert';
+
         $this->_build($this->query->base);
 
         return $this;
@@ -76,18 +88,11 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @return QueryBuilder
      */
-    public function select(?array $fields = null): QueryBuilder {
+    public function select(): QueryBuilder {
 
-        if ('select' == $this->query->type) {
-            $this->query->base = ", " . implode(", ", $fields);
-
-        } elseif (\null === $fields || implode($fields) == '*') {
-            $this->query->base = "SELECT *";
-        } else {
-            $this->query->base = "SELECT " . implode(", ", $fields);
-        }
-
+        $this->query->base = "SELECT * FROM $this->table_name";
         $this->query->type = 'select';
+
         $this->_build($this->query->base);
 
         return $this;
@@ -99,15 +104,19 @@ class QueryBuilder implements QueryBuilderInterface {
      * @param array|null $fields
      * @return QueryBuilder
      */
-    public function selectDistinct(?array $fields = null): QueryBuilder {
+    public function selectDistinct(...$fields): QueryBuilder {
 
-        if (\null === $fields || implode($fields) == '*') {
-            $this->query->base = "SELECT DISTINCT *";
-        } else {
-            $this->query->base = "SELECT DISTINCT " . implode(", ", $fields);
+        if (empty($fields)) {
+            throw new \Exception("SELECT DISTINCT necesita recibir algún campo para realizar la consulta");
         }
 
+        if (in_array($this->query->type, ['select'])) {
+            throw new \Exception("SELECT DISTINCT no puede utilizarse junto a una sentencia SELECT");
+        }
+
+        $this->query->base = "SELECT DISTINCT " . implode(", ", $fields) . " FROM $this->table_name";
         $this->query->type = 'select';
+
         $this->_build($this->query->base);
 
         return $this;
@@ -120,10 +129,23 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      *  @return QueryBuilder
      */
-    public function update(string $table): QueryBuilder {
+    public function update(array $data): QueryBuilder {
+
         $this->_createEmptyQueryObject();
-        $this->query->base = "UPDATE $table";
+
+        $string = "";
+
+        foreach ($data as $key => $value) {
+            $value = $this->_secureValues($value);
+            $string .= " $key = $value,";
+        }
+
+        $string = \trim($string, ','); //Borramos la última coma
+        $string = \trim($string, ' '); //Borramos el primer espacio
+
+        $this->query->base = "UPDATE $this->table_name SET $string";
         $this->query->type = 'update';
+
         $this->_build($this->query->base);
 
         return $this;
@@ -137,112 +159,13 @@ class QueryBuilder implements QueryBuilderInterface {
      * @return QueryBuilder
      */
     public function delete(string $table): QueryBuilder {
+
         $this->_createEmptyQueryObject();
+
         $this->query->base = "DELETE FROM $table";
         $this->query->type = 'delete';
+
         $this->_build($this->query->base);
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo SET.
-     *
-     * @param string $field
-     * @param string $operator
-     * @param string $value
-     *
-     * @return QueryBuilder
-     */
-    public function set(string $field, string $operator, $value): QueryBuilder {
-
-        if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) {
-            throw new \Exception("SET solo puede ser añadido a UPDATE");
-        }
-
-        $value = $this->_secureValues($value);
-
-        if (empty($this->query->set)) {
-            $this->query->set[] = " SET $field $operator $value";
-        } else {
-            $this->query->set[] = ", $field $operator $value";
-        }
-
-        $this->_build(end($this->query->set));
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo SET con un array de argumentos
-     *
-     * @param array $fields
-     * @param string $operator
-     * @param array $values
-     * @return mixed
-     */
-    public function setFromArray(array $fields, string $operator, array $values): QueryBuilder {
-
-        if (!isset($this->query->type) || !in_array($this->query->type, ['update'])) {
-            throw new \Exception("SET solo puede ser añadido a UPDATE");
-        }
-
-        if (\count($fields) != \count($values)) {
-            throw new \Exception("El número de campos debe coincidir con el número de valores");
-        }
-
-        $count = \count($fields);
-
-        $values = $this->_secureValues($values);
-
-        for ($i = 0; $i < $count; $i++) {
-
-            if (empty($this->query->set)) {
-                $this->query->set[] = " SET $fields[$i] $operator $values[$i]";
-            } else {
-                $this->query->set[] = ", $fields[$i] $operator $values[$i]";
-            }
-
-            $this->_build(end($this->query->set));
-        }
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo AS.
-     *
-     * @param string $alias
-     *
-     * @return QueryBuilder
-     */
-    public function as (string $alias): QueryBuilder {
-
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
-            throw new \Exception("AS can only be added to SELECT, UPDATE OR DELETE");
-        }
-
-        $this->query->as = " AS $alias";
-        $this->_build($this->query->as);
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo FROM
-     *
-     * @param string $table
-     *
-     * @return QueryBuilder
-     */
-    public function from(string $table): QueryBuilder {
-
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) {
-            throw new \Exception("FROM can only be added to SELECT");
-        }
-
-        $this->query->from = " FROM $table";
-        $this->_build($this->query->from);
 
         return $this;
     }
@@ -262,7 +185,7 @@ class QueryBuilder implements QueryBuilderInterface {
             throw new \Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
         }
 
-        if (isset($this->query->where) && !isset($this->query->join)) {
+        if (isset($this->query->where)) {
             throw new \Exception("WHERE can't be used again. Try with AND Command");
         }
 
@@ -399,49 +322,6 @@ class QueryBuilder implements QueryBuilderInterface {
         $order = \strtoupper($order);
         $this->query->orderBy = " ORDER BY $field $order";
         $this->_build($this->query->orderBy);
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo JOIN.
-     *
-     * @param string $table
-     * @param string $type
-     *
-     * @return QueryBuilder
-     */
-    public function join(string $table, string $type = 'INNER'): QueryBuilder {
-
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
-            throw new \Exception("JOIN can only be added to SELECT, UPDATE OR DELETE");
-        }
-
-        $type = \strtoupper($type);
-        $this->query->join[] = " $type JOIN $table";
-        $this->_build(end($this->query->join));
-
-        return $this;
-    }
-
-    /**
-     * Construye una sentencia del tipo ON.
-     *
-     * @param string $field
-     * @param string $operator
-     * @param string $value
-     *
-     * @return QueryBuilder
-     */
-    public function on(string $field, string $operator, $value): QueryBuilder {
-
-        if (!isset($this->query->join)) {
-            throw new \Exception("ON can only be added to JOIN");
-        }
-
-        $value = $this->_secureValues($value);
-        $this->query->on[] = " ON $field $operator $value";
-        $this->_build(end($this->query->on));
 
         return $this;
     }

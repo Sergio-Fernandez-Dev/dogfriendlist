@@ -17,3 +17,4 @@ composer.phar
 
 /db/mariadb-data/*
 app/test.php
+/trash/
