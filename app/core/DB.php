@@ -3,6 +3,7 @@ namespace App\Core;
 
 use PDO;
 use PDOException;
+use UnderflowException;
 use App\Core\Interfaces\GatewayInterface;
 
 /**
@@ -128,7 +129,7 @@ class DB implements GatewayInterface {
             }
 
         } else {
-            $result = null;
+            throw new UnderflowException('La tabla a la que se intenta acceder está vacía.');
         }
 
         return $result;
