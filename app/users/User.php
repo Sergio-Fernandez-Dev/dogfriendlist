@@ -6,11 +6,6 @@ use App\Users\Interfaces\UserInterface;
 class User implements UserInterface {
 
     /**
-     * @var string
-     */
-    private $table = 'Users';
-
-    /**
      * @var int
      */
     private $id;
@@ -123,7 +118,7 @@ class User implements UserInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, ?bool $override = false): void {
+    public function setClassParams(array $data, ?bool $override = true): void {
 
         foreach ($data as $key => $value) {
 
@@ -134,13 +129,6 @@ class User implements UserInterface {
             $this->$key = $value;
         }
 
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTableName() {
-        return $this->table;
     }
 
     /**
@@ -235,7 +223,7 @@ class User implements UserInterface {
     }
 
     /**
-     * @return date
+     * @return string
      */
     public function getCreatedAt() {
         return $this->created_at;
