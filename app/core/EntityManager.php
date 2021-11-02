@@ -4,8 +4,9 @@
     use App\Core\Interfaces\EntityInterface;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
+use App\Core\Interfaces\EntityManagerInterface;
 
-    abstract class EntityManager {
+    abstract class EntityManager implements EntityManagerInterface {
 
         /**
          * @var string
@@ -136,6 +137,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
     }
 
 ?>
+
 
 
 

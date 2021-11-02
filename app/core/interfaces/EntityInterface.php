@@ -10,8 +10,6 @@
          */
         public function setClassParams(array $data, bool $override);
 
-        public function getTableName();
-
         public function getId();
 
         /**
@@ -21,6 +19,7 @@
     }
 
 ?>
+
 
 
 

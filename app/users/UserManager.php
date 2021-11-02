@@ -4,8 +4,9 @@ namespace App\Users;
 use App\Core\EntityManager;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
+use App\Users\Interfaces\UserManagerInterface;
 
-class UserManager extends EntityManager {
+class UserManager extends EntityManager implements UserManagerInterface {
 
     /**
      * @param GatewayInterface $db
@@ -41,6 +42,13 @@ class UserManager extends EntityManager {
      * @param string $country
      */
     public function findByCountry(string $country) {
+        //TO-DO
+    }
+
+    /**
+     * @param int $role
+     */
+    public function findByRole(int $role) {
         //TO-DO
     }
 
