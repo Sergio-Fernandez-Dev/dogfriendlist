@@ -73,7 +73,7 @@ class User implements UserInterface {
     /**
      * @var string
      */
-    private $activation_key;
+    private $activation_key = null;
 
     /**
      * @var date
@@ -105,6 +105,15 @@ class User implements UserInterface {
         $properties['role'] = (int) $this->getRole();
         $properties['activation_key'] = $this->getActivationKey();
         $properties['created_at'] = $this->getCreatedAt();
+
+//Si el valor es nulo o está vacío, lo eliminamos del array;
+        foreach ($properties as $key => $value) {
+
+            if (!isset($properties[$key])) {
+                unset($properties[$key]);
+            }
+
+        }
 
         return $properties;
     }

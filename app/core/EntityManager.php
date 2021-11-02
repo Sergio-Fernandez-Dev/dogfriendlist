@@ -13,7 +13,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
         protected $table;
 
         /**
-         * @var Queryq_BuilderInterface
+         * @var QueryBuilderInterface
          */
         protected $q_builder;
 
@@ -24,7 +24,7 @@ use App\Core\Interfaces\QueryBuilderInterface;
 
         /**
          * @param string $table
-         * @param Queryq_BuilderInterface $q_builder
+         * @param QueryBuilderInterface $q_builder
          */
         public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder, string $table) {
 
@@ -41,7 +41,12 @@ use App\Core\Interfaces\QueryBuilderInterface;
          */
         public function add(EntityInterface $modelObject) {
 
-            $query = $this->q_builder->insert($modelObject->getClassParams());
+            $query = $this->q_builder->insert($modelObject->getClassParams())
+                ->get();
+
+            \print_r($query['query']);
+            echo '----------------------------------------------';
+            \print_r($query['values']);
 
             $this->db->persist($query);
             $this->db->disconnect();
@@ -131,6 +136,16 @@ use App\Core\Interfaces\QueryBuilderInterface;
     }
 
 ?>
+
+
+
+
+
+
+
+
+
+
 
 
 

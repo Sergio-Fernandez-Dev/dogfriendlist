@@ -347,6 +347,8 @@ class QueryBuilder implements QueryBuilderInterface {
             $this->position = 0;
             $this->_createEmptyQueryObject($this->table);
 
+            print_r($this->values_to_bind);
+
             return ['query' => $query, 'values' => $values_to_bind];
         }
 
@@ -360,6 +362,7 @@ class QueryBuilder implements QueryBuilderInterface {
     private function _createEmptyQueryObject($table) {
         $this->query = new stdClass();
         $this->query->type = null;
+        $this->values_to_bind = [];
         $this->table = $table;
     }
 

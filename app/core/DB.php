@@ -141,7 +141,7 @@ class DB implements GatewayInterface {
      *
      * @param array $query
      *
-     * @return array|object
+     * @return array
      */
     private function _execute(array $query) {
 

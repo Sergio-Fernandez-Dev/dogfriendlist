@@ -13,7 +13,7 @@ class UserManager extends EntityManager {
      */
     public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder) {
 
-        parent::__construct($db, $q_builder, 'Usuarios');
+        parent::__construct($db, $q_builder, 'Users');
     }
 
     /**
