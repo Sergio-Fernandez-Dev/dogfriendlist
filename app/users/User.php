@@ -80,10 +80,6 @@ class User implements UserInterface {
      */
     private $created_at;
 
-    public function __construct() {
-        $this->created_at = date('Y-m-d H:i:s');
-    }
-
     /**
      * Devuelve un array con todas las propiedades de la clase.
      *
@@ -334,13 +330,6 @@ class User implements UserInterface {
      */
     public function setActivationKey($activation_key) {
         $this->activation_key = $activation_key;
-    }
-
-    /**
-     * @param $created_at
-     */
-    public function setCreatedAt($created_at) {
-        $this->created_at = $created_at;
     }
 
 }

@@ -32,71 +32,67 @@
         public function getCreatedAt();
 
         /**
-         * @param $nickname
+         * @param string $nickname
          */
-        public function setNickname($nickname);
+        public function setNickname(string $nickname);
 
         /**
-         * @param $email
+         * @param string $email
          */
-        public function setEmail($email);
+        public function setEmail(string $email);
 
         /**
-         * @param $visibility
+         * @param int $visibility
          */
-        public function setVisibility($visibility);
+        public function setVisibility(int $visibility);
 
         /**
-         * @param $city
+         * @param string $city
          */
-        public function setCity($city);
+        public function setCity(string $city);
 
         /**
-         * @param $country
+         * @param string $country
          */
-        public function setCountry($country);
+        public function setCountry(string $country);
 
         /**
-         * @param $name
+         * @param string $name
          */
-        public function setName($name);
+        public function setName(string $name);
 
         /**
-         * @param $surname
+         * @param string $surname
          */
-        public function setSurname($surname);
+        public function setSurname(string $surname);
 
         /**
-         * @param $img
+         * @param string $img
          */
-        public function setImg($img);
+        public function setImg(string $img);
 
         /**
-         * @param $about_me
+         * @param string $about_me
          */
-        public function setAboutMe($about_me);
+        public function setAboutMe(string $about_me);
 
         /**
-         * @param $pass_hash
+         * @param string $pass_hash
          */
-        public function setPassHash($pass_hash);
+        public function setPassHash(string $pass_hash);
 
         /**
-         * @param $role
+         * @param int $role
          */
-        public function setRole($role);
+        public function setRole(int $role);
 
         /**
-         * @param $activation_key
+         * @param string $activation_key
          */
-        public function setActivationKey($activation_key);
-
-        /**
-         * @param $created_at
-         */
-        public function setCreatedAt($created_at);
+        public function setActivationKey(string $activation_key);
     }
-
 ?>
+
+
 
 

@@ -109,10 +109,10 @@ class DB implements GatewayInterface {
      * Devuelve un array correspondiente a todas las filas encontradas en la db
      * para la consulta realizada.
      *
-     * @param array $query
+     * @param mixed $query
      * @return mixed
      */
-    public function retrieve(array $query) {
+    public function retrieve($query) {
 
         $stmt = $this->_execute($query);
 
@@ -139,11 +139,11 @@ class DB implements GatewayInterface {
     /**
      * Ejecuta las consultas a la base de datos
      *
-     * @param array $query
+     * @param mixed $query
      *
-     * @return array
+     * @return mixed
      */
-    private function _execute(array $query) {
+    private function _execute($query) {
 
         if (!isset($this->conn)) {$this->connect();}
 
