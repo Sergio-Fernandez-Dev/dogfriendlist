@@ -80,22 +80,9 @@ class User implements UserInterface {
      *
      * @return array
      */
-    public function getClassParams(): array
-    {
-        $properties['id'] = (int) $this->getId();
-        $properties['nickname'] = $this->getNickname();
-        $properties['email'] = $this->getEmail();
-        $properties['visibility'] = (int) $this->getVisibility();
-        $properties['city'] = $this->getCity();
-        $properties['country'] = $this->getCountry();
-        $properties['name'] = $this->getName();
-        $properties['surname'] = $this->getSurname();
-        $properties['img'] = $this->getImg();
-        $properties['about_me'] = $this->getAboutMe();
-        $properties['pass_hash'] = $this->getPassHash();
-        $properties['role'] = (int) $this->getRole();
-        $properties['activation_key'] = $this->getActivationKey();
-        $properties['created_at'] = $this->getCreatedAt();
+    public function getClassParams() {
+
+        $properties = \get_object_vars($this);
 
 //Si el valor es nulo o está vacío, lo eliminamos del array;
         foreach ($properties as $key => $value) {
@@ -118,7 +105,7 @@ class User implements UserInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, ?bool $override = true): void {
+    public function setClassParams(array $data, ?bool $override = true) {
 
         foreach ($data as $key => $value) {
 
