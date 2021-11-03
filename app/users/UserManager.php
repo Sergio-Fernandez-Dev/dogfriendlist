@@ -18,38 +18,103 @@ class UserManager extends EntityManager implements UserManagerInterface {
     }
 
     /**
+     * Utiliza el nombre de usuario para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $nickname
      */
     public function findByNickname(string $nickname) {
-        //TO-DO
+
+        $query = $this->q_builder->select()
+            ->where('nickname', '=', $nickname)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $user = $this->make($result);
+
+        return $user;
+
     }
 
     /**
+     * Utiliza el email del usuario para buscar en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $email
      */
     public function findByEmail(string $email) {
-        //TO-DO
+
+        $query = $this->q_builder->select()
+            ->where('email', '=', $email)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $user = $this->make($result);
+
+        return $user;
     }
 
     /**
+     * Utiliza la ciudad del usuario para buscar en la base de datos y crea
+     * un objeto con el resultado de la consulta.
      * @param string $city
      */
     public function findByCity(string $city) {
-        //TO-DO
+
+        $query = $this->q_builder->select()
+            ->where('city', '=', $city)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $user = $this->make($result);
+
+        return $user;
     }
 
     /**
+     * Utiliza el país del usuario para buscar en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $country
      */
     public function findByCountry(string $country) {
-        //TO-DO
+
+        $query = $this->q_builder->select()
+            ->where('country', '=', $country)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $user = $this->make($result);
+
+        return $user;
     }
 
     /**
+     * Utiliza el rol del usuario para buscar en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param int $role
      */
     public function findByRole(int $role) {
-        //TO-DO
+
+        $query = $this->q_builder->select()
+            ->where('role', '=', $role)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $user = $this->make($result);
+
+        return $user;
     }
 
     /**
