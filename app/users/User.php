@@ -78,17 +78,22 @@ class User implements UserInterface {
     /**
      * Devuelve un array con todas las propiedades de la clase.
      *
+     * @param bool $only_valuated
      * @return array
      */
-    public function getClassParams() {
+    public function getClassParams(bool $only_valuated = true) {
 
         $properties = \get_object_vars($this);
 
-//Si el valor es nulo o está vacío, lo eliminamos del array;
-        foreach ($properties as $key => $value) {
+        if ($only_valuated) {
 
-            if (!isset($properties[$key])) {
-                unset($properties[$key]);
+//Si el valor es nulo o está vacío, lo eliminamos del array;
+            foreach ($properties as $key => $value) {
+
+                if (!isset($properties[$key])) {
+                    unset($properties[$key]);
+                }
+
             }
 
         }
