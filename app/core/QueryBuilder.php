@@ -52,9 +52,14 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @return QueryBuilder
      */
-    public function raw(string $query) {
+    public function raw(string $query, ...$values_to_bind) {
+
         $this->query->base = $query;
+        $this->query->type = 'raw';
+
         $this->_build($this->query->base);
+
+        $this->_secureValues($values_to_bind);
 
         return $this;
     }
@@ -186,11 +191,11 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function where(string $column, string $operator, $value) {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select', 'update', 'delete'])) {
             throw new \Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
         }
 
-        if (isset($this->query->where)) {
+        if (isset($this->query->where) && !in_array($this->query->type, ['raw'])) {
             throw new \Exception("WHERE can't be used again. Try with AND Command");
         }
 
@@ -218,11 +223,11 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function andWhere(string $column, string $operator, $value) {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select', 'update', 'delete'])) {
             throw new \Exception("AND can only be added to SELECT, UPDATE OR DELETE");
         }
 
-        if (!isset($this->query->where) && !isset($this->query->whereNot)) {
+        if (!isset($this->query->where) && !isset($this->query->whereNot) && !in_array($this->query->type, ['raw'])) {
             throw new \Exception("AND can only be added to WHERE commmand");
         }
 
@@ -244,11 +249,11 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function orWhere(string $column, string $operator, $value) {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select', 'update', 'delete'])) {
             throw new \Exception("OR can only be added to SELECT, UPDATE OR DELETE");
         }
 
-        if (!isset($this->query->where) && !isset($this->query->whereNot)) {
+        if (!isset($this->query->where) && !in_array($this->query->type, ['raw'])) {
             throw new \Exception("OR can only be added to WHERE");
         }
 
@@ -270,11 +275,11 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function whereNot(string $column, string $operator, $value) {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select', 'update', 'delete'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select', 'update', 'delete'])) {
             throw new \Exception("NOT can only be added to SELECT, UPDATE OR DELETE");
         }
 
-        if (isset($this->query->where) && !isset($this->query->join)) {
+        if (isset($this->query->where) && !in_array($this->query->type, ['raw'])) {
             throw new \Exception("WHERE NOT can't be used after WHERE command");
         }
 
@@ -295,7 +300,7 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function limit(int $start, int $offset = null) {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select'])) {
             throw new \Exception("LIMIT can only be added to SELECT");
         }
 
@@ -320,7 +325,7 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function orderBy(string $column, string $order = 'ASC') {
 
-        if (!isset($this->query->type) || !in_array($this->query->type, ['select'])) {
+        if (!isset($this->query->type) || !in_array($this->query->type, ['raw', 'select'])) {
             throw new \Exception("ORDER BY can only be added to SELECT");
         }
 
