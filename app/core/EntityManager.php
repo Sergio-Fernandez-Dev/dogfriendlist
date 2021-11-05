@@ -45,10 +45,6 @@ abstract class EntityManager implements EntityManagerInterface {
         $query = $this->q_builder->insert($modelObject->getClassParams())
             ->get();
 
-        \print_r($query['query']);
-        echo '----------------------------------------------';
-        \print_r($query['values']);
-
         $this->db->persist($query);
         $this->db->disconnect();
     }
@@ -137,3 +133,4 @@ abstract class EntityManager implements EntityManagerInterface {
 }
 
 ?>
+

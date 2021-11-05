@@ -5,7 +5,7 @@
         /**
          * @param bool $only_valuated
          */
-        public function getClassParams(bool $only_valuated);
+        public function getClassParams(bool $only_valuated = true);
 
         /**
          * @param array $data
@@ -22,6 +22,7 @@
     }
 
 ?>
+
 
 
 

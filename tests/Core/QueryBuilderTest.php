@@ -18,12 +18,22 @@ class QueryBuilderTest extends TestCase {
         $this->qb->setTableName('Users');
     }
 
-    public function testSqlReturnsQueryPassedByParameter() {
+    public function testRawReturnsQueryPassedByParameter() {
 
         $expected = "SELECT * FROM Users";
         $query = $this->qb->raw($expected)->get();
 
         $this->assertEquals($expected . ";", $query['query']);
+    }
+
+    public function testRawCombinedWithAnotherFunctionReturnsRightBindedParams() {
+
+        $expected = "SELECT * FROM Users WHERE name = :0 OR name = :1 AND city = :2" . ";";
+        $query = $this->qb->raw("SELECT * FROM Users WHERE name = :0 OR name = :1", "Sergio", "Sara")
+            ->andWhere('city', '=', 'Madrid')
+            ->get();
+
+        $this->assertEquals($expected, $query['query']);
     }
 
     public function testInsertReturnsExpectedSqlString() {

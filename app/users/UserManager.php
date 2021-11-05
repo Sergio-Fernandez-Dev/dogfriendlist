@@ -126,7 +126,7 @@ class UserManager extends EntityManager implements UserManagerInterface {
     public function make(array $data) {
 
         $user = new User();
-        $user->setClassParams($data, true);
+        $user->setClassParams($data);
 
         return $user;
     }

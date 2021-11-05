@@ -40,15 +40,51 @@ class Spot implements EntityInterface {
      */
     private $created_at;
 
-    public function getClassParams() {
-        //TO-DO
+    /**
+     * Devuelve un array con todas las propiedades de la clase.
+     *
+     * @param bool $only_valuated
+     * @return array
+     */
+    public function getClassParams(bool $only_valuated = true) {
+
+        $properties = \get_object_vars($this);
+
+        if ($only_valuated) {
+
+//Si el valor es nulo o está vacío, lo eliminamos del array;
+            foreach ($properties as $key => $value) {
+
+                if (!isset($properties[$key])) {
+                    unset($properties[$key]);
+                }
+
+            }
+
+        }
+
+        return $properties;
     }
 
     /**
-     * @param array $data
-     * @param bool $override
+     * Establece las propiedades de clase dinámicamente
+     * en base a un array pasado por parámetro.
+     *
+     * @param array $data Lista de valores con los que rellenaremos nuestras propiedades de clase.
+     * @param bool $override Permite sobreescribir los valores por defecto cuando recibimos un valor vacío.
+     *
+     * @return void
      */
-    public function setClassParams(array $data, bool $override) {
+    public function setClassParams(array $data, ?bool $override = true) {
+
+        foreach ($data as $key => $value) {
+
+            if (empty($value) && !$override) {
+                continue;
+            }
+
+            $this->$key = $value;
+        }
 
     }
 
