@@ -30,12 +30,15 @@ route::add('/register',
         $form = new RegisterForm($_POST, $u_manager);
 
         try {
-            $form->send($db);
+            $user = $form->send($db);
         } catch (FormException $e) {
             $exception = $e->getMessage();
 
             return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
         }
+
+        $user->setClassParams($form->getFields());
+        $u_manager->add($user);
 
     },
     'POST'

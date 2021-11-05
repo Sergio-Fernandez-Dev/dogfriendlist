@@ -1,9 +1,9 @@
 <?php
 namespace App\Users;
 
-use App\Users\Interfaces\UserInterface;
+use App\Core\Interfaces\EntityInterface;
 
-class User implements UserInterface {
+class User implements EntityInterface {
 
     /**
      * @var int
@@ -110,7 +110,7 @@ class User implements UserInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, ?bool $override = true) {
+    public function setClassParams(array $data, bool $override = true) {
 
         foreach ($data as $key => $value) {
 

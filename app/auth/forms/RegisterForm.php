@@ -3,6 +3,7 @@ namespace App\Auth\Forms;
 
 use App\Auth\Forms\Form;
 use Exceptions\Form\FormException;
+use App\Core\Interfaces\EntityInterface;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Users\Interfaces\UserManagerInterface;
@@ -49,7 +50,7 @@ class RegisterForm extends Form {
      * Envía el formulario a la base de datos y filtra la respuesta
      *
      * @param GatewayInterface $db
-     * @return mixed
+     * @return EntityInterface
      *
      * @throws FormException
      */
@@ -75,7 +76,9 @@ class RegisterForm extends Form {
     }
 
     /**
-     * @return mixed
+     * Devuelve los campos necesarios para registrar un nuevo usuario.
+     *
+     * @return array
      */
     public function getFields() {
         $fields = [
