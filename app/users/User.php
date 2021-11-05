@@ -13,12 +13,12 @@ class User implements UserInterface {
     /**
      * @var string
      */
-    private $nickname;
+    private $nickname = null;
 
     /**
      * @var string
      */
-    private $email;
+    private $email = null;
 
     /**
      * @var int
@@ -58,7 +58,7 @@ class User implements UserInterface {
     /**
      * @var string
      */
-    private $pass_hash;
+    private $pass_hash = null;
 
     /**
      * @var int

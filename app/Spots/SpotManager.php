@@ -2,11 +2,25 @@
 namespace App\Spots;
 
 use App\Core\EntityManager;
+use App\Core\Interfaces\GatewayInterface;
+use App\Core\Interfaces\QueryBuilderInterface;
 use App\Spots\Interfaces\SpotManagerInterface;
 
 class SpotManager extends EntityManager implements SpotManagerInterface {
 
     /**
+     * @param GatewayInterface $db
+     * @param QueryBuilderInterface $q_builder
+     */
+    public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder) {
+
+        parent::__construct($db, $q_builder, 'Spots');
+    }
+
+    /**
+     * Utiliza el nombre de usuario que creó el spot para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param int $user_id
      */
     public function findByUser(int $user_id) {
@@ -24,6 +38,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Utiliza la dirección del spot para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $address
      */
     public function findByAddress(string $address) {
@@ -41,6 +58,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Utiliza la ciudad del spot para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $city
      */
     public function findByCity(string $city) {
@@ -58,6 +78,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Utiliza el país del spot para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param string $country
      */
     public function findByCountry(string $country) {
@@ -75,6 +98,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Utiliza la categgoría del spot para buscar un registro en la base de datos y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param int $category_id
      */
     public function findByCategory(int $category_id) {
@@ -92,6 +118,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Busca en la base de datos los spots más cercanos a la ubicación del usuario y crea
+     * un objeto con el resultado de la consulta.
+     *
      * @param float $long
      * @param float $lat
      */
@@ -101,6 +130,9 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     }
 
     /**
+     * Crea un objeto Spot con los parámetros
+     * pasados como argumento.
+     *
      * @param $data
      */
     public function make($data) {

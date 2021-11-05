@@ -5,6 +5,7 @@ use App\Auth\Forms\Form;
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
+use App\Users\Interfaces\UserManagerInterface;
 
 class RegisterForm extends Form {
     /**
@@ -28,17 +29,12 @@ class RegisterForm extends Form {
     private $password2;
 
     /**
-     * @var QueryBuilderInterface
-     */
-    private $qb;
-
-    /**
      * @param array $data
      * @param QueryBuilderInterface $qb
      */
-    public function __construct(array $data, QueryBuilderInterface $qb, GatewayInterface $dbh) {
+    public function __construct(array $data, UserManagerInterface $manager) {
 
-        parent::__construct($dbh);
+        parent::__construct($manager);
 
         $data = $this->_getData($data);
 
@@ -47,13 +43,12 @@ class RegisterForm extends Form {
         isset($data['password']) ? $this->password = \md5($data['password']) : $this->password = null;
         isset($data['password2']) ? $this->password2 = \md5($data['password2']) : $this->password2 = null;
 
-        $this->qb = $qb;
     }
 
     /**
      * Envía el formulario a la base de datos y filtra la respuesta
      *
-     * @param GatewayInterface $dbh
+     * @param GatewayInterface $db
      * @return mixed
      *
      * @throws FormException
@@ -62,23 +57,21 @@ class RegisterForm extends Form {
 
         $this->_validateEmail($this->email);
 
-        $query = $this->_checkEmail();
-        $result = $this->_execute($query);
+        $user = $this->manager->findByEmail($this->email);
 
-        if (null != ($result)) {
+        if (null != $user->getEmail()) {
             throw new FormException('La dirección de correo ya ha sido registrada anteriormente');
         }
 
-        $query = $this->_checkNickname();
-        $result = $this->_execute($query);
+        $user = $this->manager->findByNickname($this->nickname);
 
-        if (null != ($result)) {
+        if (null != $user->getNickname()) {
             throw new FormException('El nombre de usuario ya existe');
         }
 
         $this->_checkPassword();
 
-        return $result;
+        return $user;
     }
 
     /**
@@ -92,34 +85,6 @@ class RegisterForm extends Form {
         ];
 
         return $fields;
-    }
-
-    /**
-     * Comprueba si el email ya ha sido registrado
-     *
-     * @return mixed
-     */
-    private function _checkEmail() {
-        $query = $this->qb->select(['*'])
-            ->from('Users')
-            ->where('EMAIL', '=', $this->email)
-            ->get();
-
-        return $query;
-    }
-
-    /**
-     * Comprueba si el nombre de usuario ya ha sido registrado
-     *
-     * @return mixed
-     */
-    private function _checkNickname() {
-        $query = $this->qb->select(['*'])
-            ->from('Users')
-            ->where('Nickname', '=', $this->nickname)
-            ->get();
-
-        return $query;
     }
 
     /**

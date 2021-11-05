@@ -1,11 +1,10 @@
 <?php
 require_once '../vendor/autoload.php';
 
-use App\Users\User;
 use App\Core\DB;
 use App\Core\QueryBuilder;
+use App\Users\UserManager;
 use App\Core\Router as route;
-use App\Users\UserRepository;
 use App\Auth\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
@@ -25,22 +24,18 @@ route::add('/register',
 
 route::add('/register',
     function () {
-        $dbh = new DB();
+        $db = new DB();
         $qb = new QueryBuilder();
-        $form = new RegisterForm($_POST, $qb, $dbh);
-        
+        $u_manager = new UserManager($db, $qb);
+        $form = new RegisterForm($_POST, $u_manager);
+
         try {
-            $form->send($dbh);
+            $form->send($db);
         } catch (FormException $e) {
             $exception = $e->getMessage();
 
             return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
         }
-
-        $user = new User();
-        $user->setClassParams()
-
-        $repo = new UserRepository($dbh, $qb);
 
     },
     'POST'
