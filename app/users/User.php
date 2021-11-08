@@ -4,15 +4,26 @@ namespace App\Users;
 use App\Core\Interfaces\EntityInterface;
 
 class User implements EntityInterface {
+
     /**
-     * @var string
+     * @var int
      */
-    private $about_me = null;
+    private int $id;
 
     /**
      * @var string
      */
-    private $activation_key;
+    private $nickname = null;
+
+    /**
+     * @var string
+     */
+    private $email = null;
+
+    /**
+     * @var int
+     */
+    private int $visibility = 1;
 
     /**
      * @var string
@@ -25,19 +36,14 @@ class User implements EntityInterface {
     private $country = null;
 
     /**
-     * @var date
+     * @var string
      */
-    private $created_at;
+    private $name = null;
 
     /**
      * @var string
      */
-    private $email;
-
-    /**
-     * @var int
-     */
-    private $id;
+    private $surname = null;
 
     /**
      * @var string
@@ -47,58 +53,49 @@ class User implements EntityInterface {
     /**
      * @var string
      */
-    private $name = null;
+    private $about_me = null;
 
     /**
      * @var string
      */
-    private $nickname;
-
-    /**
-     * @var string
-     */
-    private $pass_hash;
+    private $password = null;
 
     /**
      * @var int
      */
-    private $role = 0;
+    private int $role = 0;
 
     /**
      * @var string
      */
-    private $surname = null;
+    private $activation_key = null;
 
     /**
-     * @var int
+     * @var string
      */
-    private $visibility = 1;
-
-    public function __construct() {
-        $this->created_at = date('Y-m-d H:i:s');
-    }
+    private $created_at;
 
     /**
      * Devuelve un array con todas las propiedades de la clase.
      *
+     * @param bool $only_valuated
      * @return array
      */
-    public function getClassParams(): array
-    {
-        $properties['id'] = (int) $this->getId();
-        $properties['nickname'] = $this->getNickname();
-        $properties['email'] = $this->getEmail();
-        $properties['visibility'] = (int) $this->getVisibility();
-        $properties['city'] = $this->getCity();
-        $properties['country'] = $this->getCountry();
-        $properties['name'] = $this->getName();
-        $properties['surname'] = $this->getSurname();
-        $properties['img'] = $this->getImg();
-        $properties['about_me'] = $this->getAboutMe();
-        $properties['pass_hash'] = $this->getPassHash();
-        $properties['role'] = (int) $this->getRole();
-        $properties['activation_key'] = $this->getActivationKey();
-        $properties['created_at'] = $this->getCreatedAt();
+    public function getClassParams(bool $only_valuated = true) {
+
+        $properties = \get_object_vars($this);
+
+        foreach ($properties as $key => $value) {
+
+//Si el valor es nulo o está vacío, lo eliminamos del array.
+            if ($only_valuated) {
+                if (!isset($properties[$key])) {
+                    unset($properties[$key]);
+                }
+
+            }
+
+        }
 
         return $properties;
     }
@@ -112,7 +109,7 @@ class User implements EntityInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, ?bool $override = false): void {
+    public function setProperties(array $data, bool $override = true) {
 
         foreach ($data as $key => $value) {
 
@@ -126,17 +123,31 @@ class User implements EntityInterface {
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAboutMe() {
-        return $this->about_me;
+    public function getId() {
+        return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getActivationKey() {
-        return $this->activation_key;
+    public function getNickname() {
+        return $this->nickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVisibility() {
+        return $this->visibility;
     }
 
     /**
@@ -154,24 +165,17 @@ class User implements EntityInterface {
     }
 
     /**
-     * @return date
+     * @return string
      */
-    public function getCreatedAt() {
-        return $this->created_at;
+    public function getName() {
+        return $this->name;
     }
 
     /**
      * @return string
      */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): mixed {
-        return $this->id;
+    public function getSurname() {
+        return $this->surname;
     }
 
     /**
@@ -184,15 +188,8 @@ class User implements EntityInterface {
     /**
      * @return string
      */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNickname() {
-        return $this->nickname;
+    public function getAboutMe() {
+        return $this->about_me;
     }
 
     /**
@@ -212,29 +209,43 @@ class User implements EntityInterface {
     /**
      * @return string
      */
-    public function getSurname() {
-        return $this->surname;
+    public function getActivationKey() {
+        return $this->activation_key;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getVisibility() {
-        return $this->visibility;
+    public function getCreatedAt() {
+        return $this->created_at;
     }
 
     /**
-     * @param $about_me
+     * @param int $id
      */
-    public function setAboutMe($about_me) {
-        $this->about_me = $about_me;
+    public function setId(int $id) {
+        $this->id = $id;
     }
 
     /**
-     * @param $activation_key
+     * @param $nickname
      */
-    public function setActivationKey($activation_key) {
-        $this->activation_key = $activation_key;
+    public function setNickname($nickname) {
+        $this->nickname = $nickname;
+    }
+
+    /**
+     * @param $email
+     */
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    /**
+     * @param $visibility
+     */
+    public function setVisibility($visibility) {
+        $this->visibility = $visibility;
     }
 
     /**
@@ -252,24 +263,17 @@ class User implements EntityInterface {
     }
 
     /**
-     * @param $created_at
+     * @param $name
      */
-    public function setCreatedAt($created_at) {
-        $this->created_at = $created_at;
+    public function setName($name) {
+        $this->name = $name;
     }
 
     /**
-     * @param $email
+     * @param $surname
      */
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void {
-        $this->id = $id;
+    public function setSurname($surname) {
+        $this->surname = $surname;
     }
 
     /**
@@ -280,17 +284,10 @@ class User implements EntityInterface {
     }
 
     /**
-     * @param $name
+     * @param $about_me
      */
-    public function setName($name) {
-        $this->name = $name;
-    }
-
-    /**
-     * @param $nickname
-     */
-    public function setNickname($nickname) {
-        $this->nickname = $nickname;
+    public function setAboutMe($about_me) {
+        $this->about_me = $about_me;
     }
 
     /**
@@ -308,17 +305,10 @@ class User implements EntityInterface {
     }
 
     /**
-     * @param $surname
+     * @param $activation_key
      */
-    public function setSurname($surname) {
-        $this->surname = $surname;
-    }
-
-    /**
-     * @param $visibility
-     */
-    public function setVisibility($visibility) {
-        $this->visibility = $visibility;
+    public function setActivationKey($activation_key) {
+        $this->activation_key = $activation_key;
     }
 
 }

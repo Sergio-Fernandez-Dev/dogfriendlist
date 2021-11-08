@@ -1,28 +1,16 @@
 <?php
 namespace App\Core;
 
-require_once '../app/core/interfaces/ConnectionInterface.php';
-
 use PDO;
 use PDOException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
 
 /**
- * La clase DBHandler se encarga de establecer las conexiones a la base de datos
+ * La clase DB se encarga de establecer las conexiones a la base de datos
  * y de ejecutar las consultas.
  */
 
-class DBHandler implements ConnectionInterface {
-    /**
-     * @var string
-     */
-    private $charset;
-
-    /**
-     * @var PDO
-     */
-    private $conn;
-
+class DB implements GatewayInterface {
     /**
      * @var string
      */
@@ -41,12 +29,22 @@ class DBHandler implements ConnectionInterface {
     /**
      * @var string
      */
+    private $user;
+
+    /**
+     * @var string
+     */
     private $pass;
 
     /**
      * @var string
      */
-    private $user;
+    private $charset;
+
+    /**
+     * @var PDO
+     */
+    private $conn;
 
     /**
      * Se construye un objeto Conexión con los parámetros
@@ -88,20 +86,63 @@ class DBHandler implements ConnectionInterface {
      *
      * @return null
      */
-    public function close() {
-        $this->conn;
+    public function disconnect() {
+
+        $this->conn = null;
 
         return null;
     }
 
     /**
+     * Almacena un objeto en nuestra base de datos.
+     * @param array $query
+     */
+    public function persist(array $query) {
+
+        $stmt = $this->_execute($query);
+
+        return $stmt;
+    }
+
+    /**
+     * Devuelve un array correspondiente a todas las filas encontradas en la db
+     * para la consulta realizada.
+     *
+     * @param mixed $query
+     * @return mixed
+     */
+    public function retrieve($query) {
+
+        $stmt = $this->_execute($query);
+
+        if ($stmt->rowCount() > 1) {
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = $row;
+            }
+
+        } elseif ($stmt->rowCount() == 1) {
+
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result = $row;
+            }
+
+        } else {
+            $result = [];
+        }
+
+        return $result;
+
+    }
+
+    /**
      * Ejecuta las consultas a la base de datos
      *
-     * @param array $query
+     * @param mixed $query
      *
-     * @return array|object
+     * @return mixed
      */
-    public function execute(array $query) {
+    private function _execute($query) {
 
         if (!isset($this->conn)) {$this->connect();}
 
@@ -109,27 +150,13 @@ class DBHandler implements ConnectionInterface {
         {
             $stmt = $this->conn->prepare($query['query']);
             $stmt->execute($query['values']);
+
+            return $stmt;
+
         } catch (PDOException $e) {
             die("No se ha podido ejecutar la consulta:" . $e->getMessage());
         }
 
-        if ($stmt->rowCount() > 1) {
-
-            while ($row = $stmt->fetchAll(PDO::FETCH_OBJ)) {
-                $result[] = $row;
-            }
-
-        } elseif ($stmt->rowCount() == 1) {
-
-            if ($row = $stmt->fetchObject('User')) {
-                $result = $row;
-            }
-
-        } else {
-            $result = null;
-        }
-
-        return $result;
     }
 
 }

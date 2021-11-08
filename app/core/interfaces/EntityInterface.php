@@ -2,13 +2,16 @@
     namespace App\Core\Interfaces;
 
     interface EntityInterface {
-        public function getClassParams();
+        /**
+         * @param bool $only_valuated
+         */
+        public function getClassParams(bool $only_valuated = true);
 
         /**
          * @param array $data
          * @param bool $override
          */
-        public function setClassParams(array $data, bool $override);
+        public function setProperties(array $data, bool $override = true);
 
         public function getId();
 
@@ -19,6 +22,12 @@
     }
 
 ?>
+
+
+
+
+
+
 
 
 

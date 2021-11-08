@@ -2,22 +2,23 @@
     namespace App\Auth\Forms;
 
     use Exceptions\Form\FormException;
-use App\Core\Interfaces\ConnectionInterface;
+use App\Core\Interfaces\GatewayInterface;
+use App\Core\Interfaces\EntityManagerInterface;
 
     abstract class Form {
 
         /**
          * @var mixed
          */
-        protected $dbh;
+        protected $manager;
 
         abstract public function send();
 
         /**
-         * @param ConnectionInterface $dbh
+         * @param GatewayInterface $dbh
          */
-        public function __construct(ConnectionInterface $dbh) {
-            $this->dbh = $dbh;
+        public function __construct(EntityManagerInterface $manager) {
+            $this->manager = $manager;
         }
 
         /**
@@ -53,20 +54,6 @@ use App\Core\Interfaces\ConnectionInterface;
                 throw new FormException("Introduce una dirección de correo válida");
             }
 
-        }
-
-        /**
-         * Abre y cierra una conexión con la base de datos y realiza una consulta
-         *
-         * @param string $query
-         */
-        protected function _execute($query) {
-
-            $this->dbh->connect();
-            $result = $this->dbh->execute($query);
-            $this->dbh->close();
-
-            return $result;
         }
 
         /**
