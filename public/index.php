@@ -4,25 +4,22 @@ require_once '../vendor/autoload.php';
 
 use App\Core\Router as route;
 
-route::add('/',
+route::add('/', 'GET',
     function () {
         return render('index.php', true, ['title' => 'Index', 'user' => 'Sergio']);
-    },
-    'GET'
+    }
 );
 
-route::add('/auth/([a-zA-Z0-9]*)',
+route::add('/auth/([a-zA-Z0-9]*)', ['GET', 'POST'],
     function ($action) {
         return require_once '../app/auth/auth.php';
-    },
-    ['GET', 'POST']
+    }
 );
 
-route::add('/test',
+route::add('/test', 'GET',
     function () {
         require_once '../app/test.php';
-    },
-    'GET'
+    }
 );
 
 route::run('');

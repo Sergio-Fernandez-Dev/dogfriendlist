@@ -99,9 +99,9 @@ class DB implements GatewayInterface {
      */
     public function persist(array $query) {
 
-        $this->_execute($query);
+        $stmt = $this->_execute($query);
 
-        return true;
+        return $stmt;
     }
 
     /**

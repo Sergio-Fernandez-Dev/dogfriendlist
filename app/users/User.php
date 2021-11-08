@@ -8,7 +8,7 @@ class User implements EntityInterface {
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
@@ -23,7 +23,7 @@ class User implements EntityInterface {
     /**
      * @var int
      */
-    private $visibility = 1;
+    private int $visibility = 1;
 
     /**
      * @var string
@@ -58,12 +58,12 @@ class User implements EntityInterface {
     /**
      * @var string
      */
-    private $pass_hash = null;
+    private $password = null;
 
     /**
      * @var int
      */
-    private $role = 0;
+    private int $role = 0;
 
     /**
      * @var string
@@ -71,7 +71,7 @@ class User implements EntityInterface {
     private $activation_key = null;
 
     /**
-     * @var date
+     * @var string
      */
     private $created_at;
 
@@ -85,11 +85,10 @@ class User implements EntityInterface {
 
         $properties = \get_object_vars($this);
 
-        if ($only_valuated) {
+        foreach ($properties as $key => $value) {
 
-//Si el valor es nulo o está vacío, lo eliminamos del array;
-            foreach ($properties as $key => $value) {
-
+//Si el valor es nulo o está vacío, lo eliminamos del array.
+            if ($only_valuated) {
                 if (!isset($properties[$key])) {
                     unset($properties[$key]);
                 }
@@ -110,7 +109,7 @@ class User implements EntityInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, bool $override = true) {
+    public function setProperties(array $data, bool $override = true) {
 
         foreach ($data as $key => $value) {
 

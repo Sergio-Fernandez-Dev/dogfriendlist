@@ -138,7 +138,7 @@ class SpotManager extends EntityManager implements SpotManagerInterface {
     public function make($data) {
 
         $spot = new Spot();
-        $spot->setClassParams($data);
+        $spot->setProperties($data);
 
         return $spot;
     }

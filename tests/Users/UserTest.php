@@ -43,30 +43,30 @@ class UserTest extends TestCase {
     }
 
     public function testFunctionGetClassParamsReturnsAnArray(): void {
-        $this->user->setClassParams($this->data, true);
+        $this->user->setProperties($this->data, true);
         $result = $this->user->getClassParams();
 
         $this->assertIsArray($result);
     }
 
     public function testFunctionGetClassParamsReturnsRightValues(): void {
-        $this->user->setClassParams($this->data, true);
+        $this->user->setProperties($this->data, true);
 
         $result = $this->user->getClassParams();
 
         $this->assertEquals($this->data, $result);
     }
 
-    public function testFunctionSetClassParamsIsNotOverridingDefaultClassPropertiesIfEmptyValueIsGiven(): void {
+    public function testFunctionsetPropertiesIsNotOverridingDefaultClassPropertiesIfEmptyValueIsGiven(): void {
         $this->data['city'] = "";
 
-        $this->user->setClassParams($this->data, false);
+        $this->user->setProperties($this->data, false);
 
         $this->assertNull($this->user->getCity());
     }
 
-    public function testFunctionSetClassParamsIsSettingClassPropertiesFromGivenArray(): void {
-        $this->user->setClassParams($this->data, true);
+    public function testFunctionsetPropertiesIsSettingClassPropertiesFromGivenArray(): void {
+        $this->user->setProperties($this->data, true);
 
         $properties['id'] = $this->user->getId();
         $properties['nickname'] = $this->user->getNickname();
@@ -86,16 +86,16 @@ class UserTest extends TestCase {
         $this->assertEquals($this->data, $properties);
     }
 
-    public function testFunctionSetClassParamsOverridesDefaultClassPropertiesIfEmptyValueIsGiven(): void {
+    public function testFunctionsetPropertiesOverridesDefaultClassPropertiesIfEmptyValueIsGiven(): void {
         $this->data['city'] = "";
 
-        $this->user->setClassParams($this->data, true);
+        $this->user->setProperties($this->data, true);
 
         $this->assertEmpty($this->user->getCity());
     }
 
-    public function testSetclassparamsSetsIdLikeAnInteger(): void {
-        $this->user->setClassParams($this->data, true);
+    public function testsetPropertiesSetsIdLikeAnInteger(): void {
+        $this->user->setProperties($this->data, true);
 
         $result = $this->user->getId();
 

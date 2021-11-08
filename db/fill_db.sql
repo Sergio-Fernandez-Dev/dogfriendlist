@@ -8,7 +8,7 @@ INSERT INTO `Users` (
     surname, 
     img, 
     about_me, 
-    pass_hash, 
+    password, 
     role
 )
 VALUES (
@@ -32,7 +32,7 @@ INSERT INTO `Users` (
     city, 
     country, 
     about_me, 
-    pass_hash 
+    password
 )
 VALUES (
     'FakeUser', 

@@ -28,13 +28,13 @@ class Router {
      * @param string|array $method  Tipos de petición permitidos
      *
      */
-    public static function add($params, $action, $method = 'GET') {
+    public static function add($params, $method = 'GET', $action) {
         $params = \strtolower($params);
         array_push(self::$routes,
             [
                 'params' => $params,
-                'action' => $action,
                 'method' => $method,
+                'action' => $action,
             ]);
     }
 

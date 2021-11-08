@@ -9,12 +9,17 @@ use App\Users\Interfaces\UserManagerInterface;
 class UserManager extends EntityManager implements UserManagerInterface {
 
     /**
+     * @var array
+     */
+    private $immutables = ['id', 'nickname', 'created_at'];
+
+    /**
      * @param GatewayInterface $db
      * @param QueryBuilderInterface $q_builder
      */
     public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder) {
 
-        parent::__construct($db, $q_builder, 'Users');
+        parent::__construct($db, $q_builder, 'Users', $this->immutables);
     }
 
     /**
@@ -126,7 +131,7 @@ class UserManager extends EntityManager implements UserManagerInterface {
     public function make(array $data) {
 
         $user = new User();
-        $user->setClassParams($data);
+        $user->setProperties($data);
 
         return $user;
     }

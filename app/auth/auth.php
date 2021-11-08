@@ -8,43 +8,50 @@ use App\Core\Router as route;
 use App\Auth\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
-route::add('/login',
+route::add('/login', 'GET',
     function () {
         return render('auth/login-form.php', true, ['title' => 'Dogfriendlist - Login']);
-    },
-    'GET'
+    }
 );
 
-route::add('/register',
+/* route::add('/register', 'GET',
+function () {
+return render('auth/register-form.php', true, ['title' => 'Registro']);
+}
+); */
+
+route::add('/register', ['GET', 'POST'],
     function () {
-        return render('auth/register-form.php', true, ['title' => 'Registro']);
-    },
-    'GET'
-);
 
-route::add('/register',
-    function () {
-        $db = new DB();
-        $qb = new QueryBuilder();
-        $u_manager = new UserManager($db, $qb);
-        $form = new RegisterForm($_POST, $u_manager);
+        switch ($_SERVER['REQUEST_METHOD']) {
 
-        try {
-            $user = $form->send($db);
-        } catch (FormException $e) {
-            $exception = $e->getMessage();
+        case 'GET':
+            return render('auth/register-form.php', true, ['title' => 'Registro']);
 
-            return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
+        case 'POST':
+            $db = new DB();
+            $qb = new QueryBuilder();
+            $u_manager = new UserManager($db, $qb);
+            $form = new RegisterForm($_POST, $u_manager);
+
+            try {
+                $user = $form->send($db);
+            } catch (FormException $e) {
+                $exception = $e->getMessage();
+
+                return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
+            }
+
+            $user->setProperties($form->getFields());
+            $stmt = $u_manager->add($user);
+
+            //print_r($stmt);
         }
 
-        $user->setClassParams($form->getFields());
-        $u_manager->add($user);
-
-    },
-    'POST'
+    }
 );
 
-route::add('/all',
+route::add('/all', 'GET',
     function () {
         return print_r(route::getAll());
     },

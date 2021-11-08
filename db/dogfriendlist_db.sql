@@ -3,7 +3,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+02:00";
 
-DROP DATABASE `dogfriendlist`;
+DROP DATABASE IF EXISTS `dogfriendlist`;
 
 CREATE DATABASE `dogfriendlist` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `dogfriendlist`;
@@ -14,15 +14,15 @@ CREATE TABLE `Users` (
   `id` INT(8) NOT NULL UNIQUE,
   `nickname` VARCHAR(15) NOT NULL UNIQUE,
   `email` VARCHAR(50) NOT NULL UNIQUE,
-  `visibility` BIT NOT NULL DEFAULT 1,
+  `visibility` INT(1) NOT NULL DEFAULT 1,
   `city` VARCHAR(50) DEFAULT NULL,
   `country` VARCHAR(50) DEFAULT NULL,
   `name` VARCHAR(25) DEFAULT NULL,
   `surname` VARCHAR(50) DEFAULT NULL,
   `img` VARCHAR(255) NOT NULL DEFAULT 'users/common/default-profile-picture.jpg',
   `about_me` TEXT(350) DEFAULT NULL,
-  `pass_hash` VARCHAR(64) NOT NULL,
-  `role` VARCHAR(64) NOT NULL DEFAULT 0,
+  `password` VARCHAR(64) NOT NULL,
+  `role` INT(1) NOT NULL DEFAULT 0,
   `activation_key` VARCHAR(64) DEFAULT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

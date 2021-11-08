@@ -11,13 +11,14 @@ class RouterTest extends TestCase {
         $expected =
             [
             'params' => '/user',
-            'action' => $function,
             'method' => 'GET',
+            'action' => $function,
         ];
 
-        Router::add('/User', function () {
-            echo 'Hello';
-        }, 'GET');
+        Router::add('/User', 'GET',
+            function () {
+                echo 'Hello';
+            });
 
         $result = Router::getAll();
 

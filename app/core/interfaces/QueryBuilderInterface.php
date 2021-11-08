@@ -9,6 +9,21 @@
         public function setTableName(string $table);
 
         /**
+         * @return string
+         */
+        public function getTableName();
+
+        /**
+         * @param array $immutables
+         */
+        public function setImmutableValues(array $immutables);
+
+        /**
+         * @return array
+         */
+        public function getImmutableValues();
+
+        /**
          * @param string $query
          */
         public function raw(string $query, ...$values_to_bind);
@@ -77,5 +92,8 @@
     }
 
 ?>
+
+
+
 
 

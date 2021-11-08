@@ -18,6 +18,48 @@ class QueryBuilderTest extends TestCase {
         $this->qb->setTableName('Users');
     }
 
+    public function testTableNameCanBeSet() {
+
+        $this->qb->setTableName('Test');
+
+        $this->assertEquals('Test', $this->qb->getTableName());
+    }
+
+    public function testImmutablesCanBeSet() {
+
+        $values = ['id', 'name'];
+        $this->qb->setImmutableValues($values);
+
+        $this->assertContains('id', $this->qb->getImmutableValues());
+    }
+
+    public function testImmutablesAreNotIncludedInUpdateQuery() {
+
+        $values = ['id', 'name'];
+        $this->qb->setImmutableValues($values);
+        $data = [
+            'id'   => 1,
+            'name' => 'Sergio',
+            'city' => 'Oviedo',
+        ];
+
+        $expected = "UPDATE Users SET city = :0" . ";";
+        $query = $this->qb->update($data)->get();
+
+        $this->assertEquals($expected, $query['query']);
+
+    }
+
+    public function testImmutablesRemainsAfterChangeTableName() {
+
+        $values = ['id', 'name'];
+        $this->qb->setImmutableValues($values);
+
+        $this->qb->setTableName('Test');
+
+        $this->assertContains('name', $this->qb->getImmutableValues());
+    }
+
     public function testRawReturnsQueryPassedByParameter() {
 
         $expected = "SELECT * FROM Users";

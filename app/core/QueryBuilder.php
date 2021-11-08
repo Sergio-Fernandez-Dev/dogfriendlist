@@ -32,6 +32,11 @@ class QueryBuilder implements QueryBuilderInterface {
     private $table;
 
     /**
+     * @var mixed
+     */
+    private $immutables = [];
+
+    /**
      * Establece el nombre de la tabla sobre la que
      * se realizarán las consultas. Este método debe
      * ser llamado antes de ejecutar cualquier consulta,
@@ -41,7 +46,33 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function setTableName(string $table) {
         $this->table = $table;
-        $this->_createEmptyQueryObject($table);
+        $this->_createEmptyQueryObject($table, $this->immutables);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableName() {
+        return $this->table;
+    }
+
+    /**
+     * Establece los valores que deben permanecer inmutables
+     * en nuestra base de datos para evitar cambios no deseados
+     * al actualizar los datos de nuestras entidades.
+     *
+     * @param $immutables
+     */
+    public function setImmutableValues(array $immutables) {
+        $this->immutables = $immutables;
+        $this->_createEmptyQueryObject($this->table, $immutables);
+    }
+
+    /**
+     * @return array
+     */
+    public function getImmutableValues() {
+        return $this->immutables;
     }
 
     /**
@@ -141,13 +172,24 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function update(array $data) {
 
-        $this->_createEmptyQueryObject($this->table);
+        $this->_createEmptyQueryObject($this->table, $this->immutables);
 
         $string = "";
 
+// Los valores establecidos como inmutables no deberían poder actualizarse, por lo que se saltan.
         foreach ($data as $key => $value) {
-            $value = $this->_secureValues($value);
-            $string .= " $key = $value,";
+
+            if (!\in_array($key, $this->immutables)) {
+
+                $value = $this->_secureValues($value);
+                $string .= " $key = $value,";
+
+            } else {
+
+                continue;
+
+            }
+
         }
 
         $string = \trim($string, ','); //Borramos la última coma
@@ -170,7 +212,7 @@ class QueryBuilder implements QueryBuilderInterface {
      */
     public function delete() {
 
-        $this->_createEmptyQueryObject($this->table);
+        $this->_createEmptyQueryObject($this->table, $this->immutables);
 
         $this->query->base = "DELETE FROM $this->table";
         $this->query->type = 'delete';
@@ -350,9 +392,7 @@ class QueryBuilder implements QueryBuilderInterface {
             $values_to_bind = $this->values_to_bind;
 
             $this->position = 0;
-            $this->_createEmptyQueryObject($this->table);
-
-            print_r($this->values_to_bind);
+            $this->_createEmptyQueryObject($this->table, $this->immutables);
 
             return ['query' => $query, 'values' => $values_to_bind];
         }
@@ -364,11 +404,12 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @return void
      */
-    private function _createEmptyQueryObject($table) {
+    private function _createEmptyQueryObject($table, $immutables) {
         $this->query = new stdClass();
         $this->query->type = null;
         $this->values_to_bind = [];
         $this->table = $table;
+        $this->immutables = $immutables;
     }
 
     /**

@@ -75,7 +75,7 @@ class Spot implements EntityInterface {
      *
      * @return void
      */
-    public function setClassParams(array $data, ?bool $override = true) {
+    public function setProperties(array $data, ?bool $override = true) {
 
         foreach ($data as $key => $value) {
 

@@ -11,7 +11,7 @@
          * @param array $data
          * @param bool $override
          */
-        public function setClassParams(array $data, bool $override = true);
+        public function setProperties(array $data, bool $override = true);
 
         public function getId();
 
@@ -22,6 +22,7 @@
     }
 
 ?>
+
 
 
 
