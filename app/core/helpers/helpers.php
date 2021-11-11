@@ -26,7 +26,6 @@ function render(string $page, bool $base_page = true, ?array $params = null) {
         require_once \BASE_VIEW_PATH . $page;
     }
 
-    echo $_SERVER['REQUEST_METHOD'];
 }
 
 /**

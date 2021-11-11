@@ -1,0 +1,7 @@
+Bienvenido a Dogfriendlist.
+
+Estas a un paso de unirte a nuestra gran familia. Para activar tu cuenta copia y pega el siguiente link en tu navegador:
+
+http://localhost:3000/auth/confirm/$activation_key
+
+

@@ -113,7 +113,14 @@ class User implements EntityInterface {
 
         foreach ($data as $key => $value) {
 
+            //Si el parámetro está vacío y la sobreescritura está desactivada, saltamos al siguiente.
             if (empty($value) && !$override) {
+                continue;
+            }
+
+            //Si el parámetro es un password lo encriptamos y saltamos al siguiente.
+            if ($key == 'password') {
+                $this->setPassword($value);
                 continue;
             }
 
@@ -195,8 +202,8 @@ class User implements EntityInterface {
     /**
      * @return string
      */
-    public function getPassHash() {
-        return $this->pass_hash;
+    public function getPassword() {
+        return $this->password;
     }
 
     /**
@@ -293,8 +300,8 @@ class User implements EntityInterface {
     /**
      * @param $pass_hash
      */
-    public function setPassHash($pass_hash) {
-        $this->pass_hash = $pass_hash;
+    public function setPassword($password) {
+        $this->password = \md5($password);
     }
 
     /**
@@ -305,10 +312,13 @@ class User implements EntityInterface {
     }
 
     /**
+     * Creamos una clave de activación aleatoria utilizando el correo
+     * del usuario y la fecha del momento de creación.
+     * 
      * @param $activation_key
      */
-    public function setActivationKey($activation_key) {
-        $this->activation_key = $activation_key;
+    public function setActivationKey() {
+        $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s'));
     }
 
 }

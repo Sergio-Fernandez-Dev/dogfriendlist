@@ -5,8 +5,7 @@ require '../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable('../');
 $dotenv->safeLoad();
 
-$db_config =
-    [
+$db_config = [
     'driver'  => $_ENV['DB_DRIVER'],
     'host'    => $_ENV['DB_HOST'],
     'user'    => $_ENV['DB_USER'],

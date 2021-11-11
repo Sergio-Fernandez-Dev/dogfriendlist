@@ -1,6 +1,7 @@
 <?php
 namespace App\Users;
 
+use App\Users\User;
 use App\Core\EntityManager;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
@@ -20,6 +21,19 @@ class UserManager extends EntityManager implements UserManagerInterface {
     public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder) {
 
         parent::__construct($db, $q_builder, 'Users', $this->immutables);
+    }
+
+    /**
+     * @param $user
+     */
+    public function add($user) {
+
+        $user->setActivationKey();
+
+        parent::add($user);
+
+        return $user->getActivationKey();
+
     }
 
     /**

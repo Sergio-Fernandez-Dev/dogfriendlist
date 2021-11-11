@@ -41,8 +41,8 @@ class RegisterForm extends Form {
 
         isset($data['nickname']) ? $this->nickname = $data['nickname'] : $this->nickname = null;
         isset($data['email']) ? $this->email = $data['email'] : $this->email = null;
-        isset($data['password']) ? $this->password = \md5($data['password']) : $this->password = null;
-        isset($data['password2']) ? $this->password2 = \md5($data['password2']) : $this->password2 = null;
+        isset($data['password']) ? $this->password = $data['password'] : $this->password = null;
+        isset($data['password2']) ? $this->password2 = $data['password2'] : $this->password2 = null;
 
     }
 
@@ -82,9 +82,9 @@ class RegisterForm extends Form {
      */
     public function getFields() {
         $fields = [
-            'nickname'  => $this->nickname,
-            'email'     => $this->email,
-            'pass_hash' => $this->password,
+            'nickname' => $this->nickname,
+            'email'    => $this->email,
+            'password' => $this->password,
         ];
 
         return $fields;
