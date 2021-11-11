@@ -318,6 +318,7 @@ class User implements EntityInterface {
      * @param $activation_key
      */
     public function setActivationKey() {
+        
         $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s'));
     }
 

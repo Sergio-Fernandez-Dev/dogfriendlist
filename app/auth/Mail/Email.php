@@ -39,7 +39,7 @@ class Email extends PHPMailer {
     private $email_name;
 
     /**
-     * @param PHPMailer $mail
+     * @param bool $exceptions
      */
     public function __construct($exceptions = null) {
 
@@ -53,9 +53,7 @@ class Email extends PHPMailer {
         $this->address = $config['address'];
         $this->email_name = $config['name'];
 
-        $this->mail = $mail;
-
-        $this->SMTPDebug = SMTP::DEBUG_SERVER; //Enable verbose debug output
+        $this->SMTPDebug = SMTP::DEBUG_OFF; //Enable verbose debug output
         $this->SMTPAuth = true; //Enable SMTP authentication
         $this->isSMTP(); //Send using SMTP
         $this->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption

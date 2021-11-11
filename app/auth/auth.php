@@ -40,8 +40,11 @@ route::add('/register', ['GET', 'POST'],
             $email = new Email(true);
 
             try {
+
                 $user = $form->send($db);
+
             } catch (FormException $e) {
+
                 $exception = $e->getMessage();
 
                 return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
@@ -49,6 +52,37 @@ route::add('/register', ['GET', 'POST'],
 
             $user->setProperties($form->getFields());
             $u_manager->add($user);
+
+            $email->sendVerificationEmail($user);
+
+            session_start();
+            $_SESSION['user'] = $user;
+
+            return redirect('auth/confirm');
+        }
+
+    }
+);
+
+route::add('/confirm', ['GET', 'POST'],
+    function () {
+
+        session_start();
+        $user = $_SESSION['user'];
+
+        $email = new Email(true);
+        $msg = "";
+
+        switch ($_SERVER['REQUEST_METHOD']) {
+
+        case 'GET':
+
+            return render('auth/validation-email-sended.php', true, ['title' => 'Validación', 'user' => $user, 'msg' => $msg]);
+
+        case 'POST':
+
+            $email->sendVerificationEmail($user);
+            $msg = 'El correo ha sido enviado de nuevo';
 
         }
 

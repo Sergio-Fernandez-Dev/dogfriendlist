@@ -24,11 +24,16 @@ class UserManager extends EntityManager implements UserManagerInterface {
     }
 
     /**
-     * @param $user
+     * Añade un usuario a nuestra base de datos y crea una clave de activación
+     *
+     * @param User $user
+     * @return string
      */
     public function add($user) {
 
-        $user->setActivationKey();
+        if (null === $user->getActivationKey()) {
+            $user->setActivationKey();
+        }
 
         parent::add($user);
 
@@ -149,6 +154,7 @@ class UserManager extends EntityManager implements UserManagerInterface {
 
         return $user;
     }
+
 }
 
 ?>

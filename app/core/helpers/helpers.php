@@ -35,5 +35,5 @@ function render(string $page, bool $base_page = true, ?array $params = null) {
  */
 function redirect(string $route) {
     $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-    header("Location: $root.$route");
+    header("Location: $root" . "$route");
 }
