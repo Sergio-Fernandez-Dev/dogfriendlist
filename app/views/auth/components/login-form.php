@@ -1,4 +1,3 @@
-<?php echo $title ?>
 
 <form action="register" method="post">
 <?php

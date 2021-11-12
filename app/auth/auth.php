@@ -18,7 +18,7 @@ use Exceptions\Form\FormException;
         switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
-            return render('auth/login-form.php', title: $title);
+            return render('auth/login.php', title: $title);
 
         case 'POST':
             //Si role = 0 manda a reenviar correo de confirmación
@@ -36,7 +36,7 @@ route::add('/register', ['GET', 'POST'],
         switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
-            return render('auth/register-form.php', title: $title);
+            return render('auth/register.php', title: $title, exception: null);
 
         case 'POST':
             $db = new DB();
@@ -53,7 +53,7 @@ route::add('/register', ['GET', 'POST'],
 
                 $exception = $e->getMessage();
 
-                return render('auth/register-form.php', title: $title, exception: $exception);
+                return render('auth/register.php', title: $title, exception: $exception);
             }
 
             $user->setProperties($form->getFields());
@@ -109,9 +109,9 @@ route::add('/confirm', ['GET', 'POST'],
 
             if  ($activation_key == $user->getActivationKey()) {
 
-                $title = 'Validation Succeeded';
+                $title = 'Validacion exitosa';
 
-                return render('auth/validation-succeeded.php', title: $title);
+                return render('auth/validation-succeeded.php', base_page: false, title: $title);
 
             } else {
 

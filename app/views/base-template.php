@@ -9,13 +9,13 @@
 </head>
 <body>
     <header>
-        <?php require $header;?>
+        <?php require_once $header;?>
     </header>
 
-    <?php include $main_content;?>
+    <?php include_once $main_content;?>
     <footer></footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="statics/scripts.js"></script>
+    <script type="text/javascript" src="../statics/scripts.js"></script>
 </body>
 </html>
