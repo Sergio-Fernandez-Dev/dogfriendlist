@@ -28,7 +28,7 @@ class Router {
      * @param string|array $method  Tipos de petición permitidos
      *
      */
-    public static function add($params, $method = 'GET', $action) {
+    public static function add($params, $method, $action) {
         $params = \strtolower($params);
         array_push(self::$routes,
             [
@@ -90,6 +90,7 @@ class Router {
 //Si encuentra el path lo almacena, si no establece un path por defecto.
         if (isset($parsed_url['path'])) {
             $path = $parsed_url['path'];
+
         } else {
             $path = '/';
         }
@@ -100,6 +101,7 @@ class Router {
             if ('' != $basepath && '/' != $basepath) {
                 // Añade el path a los parámetros de búsqueda
                 $route['params'] = '(' . $basepath . ')' . $route['params'];
+
             }
 
             // Indicamos el principio y el final de la cadena mediante expresiones regulares

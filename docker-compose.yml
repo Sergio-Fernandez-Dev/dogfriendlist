@@ -10,7 +10,7 @@ services:
     depends_on: 
       - db
     environment:  
-      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9000 remote_enable=1
+      XDEBUG_CONFIG: remote_host=localhost remote_port=9000 remote_enable=1
     ports:
       - 3000:80
     volumes:

@@ -1,21 +1,30 @@
-<?php
+<?php declare (strict_types = 1);
 
 /**
- * Carga lasvistas y les pasa los argumentos
+ * Carga las vistas y les pasa los argumentos
  *
  * @param string $page
  * @param bool $base_page
  * @param array $params
  */
-function render(string $page, bool $base_page = true, ?array $params = null) {
-    $params;
+function render(string $page, bool $base_page = true, ...$params): void {
+
+    if (isset($params)) {
+
+        foreach ($params as $key => $value) {
+            $$key = $value;
+        }
+
+    }
 
     if ($base_page) {
 
-        if (isset($_SESSION)) {
+        if (isset($_SESSION['authenticated'])) {
+
             $header = COMPONENTS_PATH . 'logged-navbar.php';
 
         } else {
+
             $header = COMPONENTS_PATH . 'unlogged-navbar.php';
         }
 
@@ -33,7 +42,7 @@ function render(string $page, bool $base_page = true, ?array $params = null) {
  *
  * @param string $route
  */
-function redirect(string $route) {
+function redirect(string $route): void {
     $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
     header("Location: $root" . "$route");
 }

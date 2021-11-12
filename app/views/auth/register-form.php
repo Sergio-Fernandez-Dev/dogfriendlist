@@ -1,9 +1,9 @@
 <form action="register" method="post">
 <?php
 
-    if (isset($params['exception'])) {
-        echo '<div class="form-exception">' . $params['exception'] . '</div><br>';
-    }
+if (isset($exception)) {
+    echo '<div class="form-exception">' . $exception . '</div><br>';
+}
 
 ?>
     <fieldset>

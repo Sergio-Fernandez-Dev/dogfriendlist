@@ -9,13 +9,16 @@ use App\Core\Router as route;
 use App\Auth\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
-route::add('/login', ['GET', 'POST'],
+
+    route::add('/login', ['GET', 'POST'],
     function () {
+
+        $title = 'Login';
 
         switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
-            return render('auth/login-form.php', true, ['title' => 'Dogfriendlist - Login']);
+            return render('auth/login-form.php', title: $title);
 
         case 'POST':
             //Si role = 0 manda a reenviar correo de confirmación
@@ -24,13 +27,16 @@ route::add('/login', ['GET', 'POST'],
     }
 );
 
+
 route::add('/register', ['GET', 'POST'],
     function () {
+
+        $title = 'Registro';
 
         switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
-            return render('auth/register-form.php', true, ['title' => 'Registro']);
+            return render('auth/register-form.php', title: $title);
 
         case 'POST':
             $db = new DB();
@@ -47,7 +53,7 @@ route::add('/register', ['GET', 'POST'],
 
                 $exception = $e->getMessage();
 
-                return render('auth/register-form.php', true, ['title' => '- Registro', 'exception' => $exception]);
+                return render('auth/register-form.php', title: $title, exception: $exception);
             }
 
             $user->setProperties($form->getFields());
@@ -71,27 +77,72 @@ route::add('/confirm', ['GET', 'POST'],
         $user = $_SESSION['user'];
 
         $email = new Email(true);
-        $msg = "";
+        $title = 'Email enviado';
 
         switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
 
-            return render('auth/validation-email-sended.php', true, ['title' => 'Validación', 'user' => $user, 'msg' => $msg]);
+            return render('auth/validation-email-sended.php', title: $title, user: $user);
 
         case 'POST':
 
             $email->sendVerificationEmail($user);
-            $msg = 'El correo ha sido enviado de nuevo';
+            echo $user->getEmail();
 
+            return render('auth/validation-email-sended.php', title: $title, user: $user);
         }
 
+    }
+);
+
+    route::add("/confirm/([a-zA-Z0-9]*)", 'GET',
+    function ($activation_key) {
+
+        session_start();
+        $user = $_SESSION['user'];
+
+
+        switch ($_SERVER['REQUEST_METHOD']) {
+
+            case 'GET':
+
+            if  ($activation_key == $user->getActivationKey()) {
+
+                $title = 'Validation Succeeded';
+
+                return render('auth/validation-succeeded.php', title: $title);
+
+            } else {
+
+                $title = 'Validation Failed';
+                echo 'get';
+
+                //return render('auth/validation-faileded.php', title: $title, user: $user);
+            }
+                
+    
+            case 'POST':
+                echo 'post';
+        }
     }
 );
 
 route::add('/all', 'GET',
     function () {
         return print_r(route::getAll());
+    }
+);
+
+route::methodNotAllowed(
+    function() {
+        echo 'no existe el metodo';
+    }
+);
+
+route::pathNotFound(
+    function() {
+        echo 'path no encontrado';
     }
 );
 

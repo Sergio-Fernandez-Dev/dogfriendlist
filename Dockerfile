@@ -1,9 +1,8 @@
-FROM php:7.4-apache
-
-COPY /db/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY . /var/www/
+FROM php:8.1.0RC5-apache-buster
 
 WORKDIR /var/www
+
+COPY . /var/www/
 
 RUN apt-get update && apt-get upgrade -y
 

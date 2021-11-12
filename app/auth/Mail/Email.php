@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types = 1);
 namespace App\Auth\Mail;
 
 use App\Users\User;
@@ -9,39 +9,34 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Email extends PHPMailer {
 
     /**
-     * @var mixed
-     */
-    private $mail;
-
-    /**
-     * @var mixed
+     * @var string
      */
     private $host;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $username;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $password;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $address;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $email_name;
 
     /**
      * @param bool $exceptions
      */
-    public function __construct($exceptions = null) {
+    public function __construct(bool $exceptions = null) {
 
         parent::__construct($exceptions);
 
@@ -88,8 +83,6 @@ class Email extends PHPMailer {
             $this->CharSet = 'UTF-8';
 
             $this->send();
-
-            echo 'Message has been sent';
 
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$this->ErrorInfo}";
