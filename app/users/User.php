@@ -320,7 +320,7 @@ class User implements EntityInterface {
      */
     public function setActivationKey($custom_key = false) {
         
-        !$custom_key ? $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s')) : $this->activation_key = $custom_key;
+        $custom_key === false ? $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s')) : $this->activation_key = $custom_key;
     }
 
 }

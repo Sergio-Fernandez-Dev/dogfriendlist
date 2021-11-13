@@ -125,4 +125,13 @@ class UserTest extends TestCase {
 
         $this->assertEquals('hola', $actual);
     }
+
+    public function testSetactivationkeyChangesTheKeyValueToNull(): void {
+
+        $this->user->setActivationKey(null);
+
+        $actual = $this->user->getActivationKey();
+
+        $this->assertNull($actual);
+    }
 }
