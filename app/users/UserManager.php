@@ -24,6 +24,13 @@ class UserManager extends EntityManager implements UserManagerInterface {
     }
 
     /**
+     * @return QueryBuilderInterface
+     */
+    public function getQueryBuilder(): QueryBuilderInterface {
+        return $this->q_builder;
+    }
+
+    /**
      * Añade un usuario a nuestra base de datos y crea una clave de activación
      *
      * @param User $user

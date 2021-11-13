@@ -8,7 +8,7 @@ if (isset($exception)) {
 
 ?>
     <fieldset>
-        <label>Email:</label><br>
+        <label>Email o nombre de usuario:</label><br>
         <input type="email" class="auth-form" name="email" required><br>
         <label>Contraseña:</label><br>
         <input type="password" class="auth-form" name="" required><br>

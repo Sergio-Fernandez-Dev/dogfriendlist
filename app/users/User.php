@@ -78,7 +78,7 @@ class User implements EntityInterface {
     /**
      * Devuelve un array con todas las propiedades de la clase.
      *
-     * @param bool $only_valuated
+    keybool $only_valuated
      * @return array
      */
     public function getClassParams(bool $only_valuated = true) {
@@ -313,13 +313,14 @@ class User implements EntityInterface {
 
     /**
      * Creamos una clave de activación aleatoria utilizando el correo
-     * del usuario y la fecha del momento de creación.
+     * del usuario y la fecha del momento de creación o utilizamos el valor
+     * pasado como argumento.
      * 
-     * @param $activation_key
+     * @param $key
      */
-    public function setActivationKey() {
+    public function setActivationKey($custom_key = false) {
         
-        $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s'));
+        !$custom_key ? $this->activation_key = \md5($this->email . \date('d-m-Y H:i:s')) : $this->activation_key = $custom_key;
     }
 
 }

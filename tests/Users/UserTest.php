@@ -117,4 +117,12 @@ class UserTest extends TestCase {
         $this->assertIsInt($result);
     }
 
+    public function testSetactivationkeyChangesTheKeyValueWhenAKeyIsGiven(): void {
+
+        $this->user->setActivationKey('hola');
+
+        $actual = $this->user->getActivationKey();
+
+        $this->assertEquals('hola', $actual);
+    }
 }

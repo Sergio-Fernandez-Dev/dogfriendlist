@@ -4,7 +4,6 @@ namespace App\Auth\Forms;
 use App\Auth\Forms\Form;
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\EntityInterface;
-use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Users\Interfaces\UserManagerInterface;
 
@@ -49,7 +48,6 @@ class RegisterForm extends Form {
     /**
      * Envía el formulario a la base de datos y filtra la respuesta
      *
-     * @param GatewayInterface $db
      * @return EntityInterface
      *
      * @throws FormException
@@ -61,16 +59,17 @@ class RegisterForm extends Form {
         $user = $this->manager->findByEmail($this->email);
 
         if (null != $user->getEmail()) {
-            throw new FormException('La dirección de correo ya ha sido registrada anteriormente');
+            throw new FormException('La dirección de correo ya ha sido registrada anteriormente.');
         }
 
         $user = $this->manager->findByNickname($this->nickname);
 
         if (null != $user->getNickname()) {
-            throw new FormException('El nombre de usuario ya existe');
+            throw new FormException('El nombre de usuario ya existe.');
         }
 
         $this->_checkPassword();
+        $this->_validatePassword($this->password);
 
         return $user;
     }

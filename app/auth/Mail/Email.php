@@ -67,9 +67,11 @@ class Email extends PHPMailer {
 
         $page = \file_get_contents(BASE_VIEW_PATH . 'auth/email/verification-email.html');
         $body = \str_replace('$activation_key', $user->getActivationKey(), $page);
+        $body = \str_replace('$username', $user->getNickname(), $body);
 
         $text = \file_get_contents(BASE_VIEW_PATH . 'auth/email/verification-email.txt');
         $alt_body = \str_replace('$activation_key', $user->getActivationKey(), $text);
+        $alt_body = \str_replace('$username', $user->getNickname(), $alt_body);
 
         try {
 

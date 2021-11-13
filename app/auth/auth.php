@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Users\UserManager;
 use App\Core\Router as route;
 use App\Auth\Forms\RegisterForm;
+use App\Auth\Forms\LoginForm;
 use Exceptions\Form\FormException;
 
 
@@ -21,7 +22,24 @@ use Exceptions\Form\FormException;
             return render('auth/login.php', title: $title);
 
         case 'POST':
-            //Si role = 0 manda a reenviar correo de confirmación
+            $db = new DB();
+            $qb = new QueryBuilder();
+            $u_manager = new UserManager($db, $qb);
+            $form = new LoginForm($_POST, $u_manager);
+
+            try {
+
+                $user = $form->send();
+
+            } catch (FormException $e) {
+
+                $exception = $e->getMessage();
+
+                return render('auth/login.php', title: $title, exception: $exception);
+            }
+
+            echo 'todo bien';
+            
         }
 
     }
@@ -47,7 +65,7 @@ route::add('/register', ['GET', 'POST'],
 
             try {
 
-                $user = $form->send($db);
+                $user = $form->send();
 
             } catch (FormException $e) {
 
@@ -74,7 +92,7 @@ route::add('/confirm', ['GET', 'POST'],
     function () {
 
         session_start();
-        $user = $_SESSION['user'];
+        isset($_SESSION['user']) ? $user = $_SESSION['user'] : $user = null;
 
         $email = new Email(true);
         $title = 'Email enviado';
@@ -83,48 +101,72 @@ route::add('/confirm', ['GET', 'POST'],
 
         case 'GET':
 
-            return render('auth/validation-email-sended.php', title: $title, user: $user);
+            if (isset($user)) {
+                
+                return render('auth/validation-email-sended.php', base_page: false, title: $title, user: $user);    
+
+            } else {
+
+                redirect('');
+
+            }
 
         case 'POST':
+        
+            $user = $_SESSION['user'];
 
             $email->sendVerificationEmail($user);
-            echo $user->getEmail();
 
-            return render('auth/validation-email-sended.php', title: $title, user: $user);
+            return render('auth/validation-email-sended.php', base_page: false, title: $title, user: $user);
         }
 
     }
 );
 
-    route::add("/confirm/([a-zA-Z0-9]*)", 'GET',
+route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
     function ($activation_key) {
 
-        session_start();
-        $user = $_SESSION['user'];
-
+        $db = new DB();
+        $qb = new QueryBuilder();
+        $u_manager = new UserManager($db, $qb);
 
         switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'GET':
 
-            if  ($activation_key == $user->getActivationKey()) {
+                if (isset($_GET['user'])) {
 
-                $title = 'Validacion exitosa';
+                    $user = $u_manager->findByNickname($_GET['user']);
 
-                return render('auth/validation-succeeded.php', base_page: false, title: $title);
+                 if  ($activation_key == $user->getActivationKey()) {
 
-            } else {
-
-                $title = 'Validation Failed';
-                echo 'get';
-
-                //return render('auth/validation-faileded.php', title: $title, user: $user);
-            }
+                        $title = 'Validacion exitosa';
                 
-    
+                        $user->setRole(1);
+                        $user->setActivationKey(null);
+                        $u_manager->save($user);
+                
+                        return render('auth/validation-succeeded.php', base_page: false, title: $title);
+                    }  
+                }
+
+                $title = 'Validación errónea';
+
+                return render('auth/validation-failed.php', base_page: false, title: $title);
+
             case 'POST':
-                echo 'post';
+                session_start();
+        
+                $user = $_SESSION['user'];
+                
+                $user = $u_manager->findByEmail($_POST['email']);
+
+                redirect('auth/confirm');
+        
         }
+
+            
+                  
     }
 );
 
