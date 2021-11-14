@@ -6,8 +6,11 @@ use App\Core\Router as route;
 
 route::add('/', 'GET',
     function () {
+        session_start();
 
         $title = 'Index';
+
+        print_r($_SESSION['user']);
 
         return render('index.php', title: $title);
     }

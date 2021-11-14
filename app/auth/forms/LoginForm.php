@@ -7,7 +7,7 @@ use App\Users\Interfaces\UserManagerInterface;
 class LoginForm extends Form {
 
     /**
-     * @var mixed
+     * @var string
      */
     private $identification;
 
@@ -27,7 +27,7 @@ class LoginForm extends Form {
         $data = $this->_getData($data);
 
         isset($data['identification']) ? $this->identification = $data['identification'] : $this->identification = null;
-        isset($data['password']) ? $this->password = md5($data['password']) : $this->password = null;
+        isset($data['password']) ? $this->password = \md5($data['password']) : $this->password = null;
 
     }
 
@@ -35,6 +35,10 @@ class LoginForm extends Form {
      * @return mixed
      */
     public function send() {
+
+        if (null == $this->identification || null == $this->password) {
+            throw new FormException('Debes rellenar todos los campos.');
+        }
 
         $q_builder = $this->manager->getQueryBuilder();
 
@@ -50,7 +54,9 @@ class LoginForm extends Form {
         }
 
         if ($user->getPassword() != $this->password) {
-            throw new FormException('El password no es correcto.');
+            $pass = $user->getPassword();
+            $nick = $user->getNickname();
+            throw new FormException('La contraseña no es correcta');
         }
 
         if (0 == $user->getRole()) {

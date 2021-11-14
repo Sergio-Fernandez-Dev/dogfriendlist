@@ -1,3 +1,3 @@
-var validationButton = $('#resend-validation-button');
+var verificationButton = $('#resend-verification-button');
 
-validationButton.hide();
+verificationButton.hide();

@@ -118,12 +118,6 @@ class User implements EntityInterface {
                 continue;
             }
 
-            //Si el parámetro es un password lo encriptamos y saltamos al siguiente.
-            if ($key == 'password') {
-                $this->setPassword($value);
-                continue;
-            }
-
             $this->$key = $value;
         }
 

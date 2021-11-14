@@ -15,7 +15,7 @@ if (isset($exception)) {
         <input type="password" class="auth-form" name="password" required><br>
         <label>Repetir Contraseña:</label><br>
         <input type="password" class="auth-form" name="password2" required><br>
-        <input type="submit" name="submit" value="Registrar">
+        <input type="submit" name="submit" value="Registrate">
         o <a href="../auth/login">Iniciar Sesión</a>
     </fieldset>
 </form>

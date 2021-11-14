@@ -4,7 +4,6 @@ namespace App\Auth\Forms;
 use App\Auth\Forms\Form;
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\EntityInterface;
-use App\Core\Interfaces\QueryBuilderInterface;
 use App\Users\Interfaces\UserManagerInterface;
 
 class RegisterForm extends Form {
@@ -30,7 +29,7 @@ class RegisterForm extends Form {
 
     /**
      * @param array $data
-     * @param QueryBuilderInterface $qb
+     * @param UserManagerInterface $manager
      */
     public function __construct(array $data, UserManagerInterface $manager) {
 

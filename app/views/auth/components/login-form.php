@@ -1,5 +1,5 @@
 
-<form action="register" method="post">
+<form action="login" method="post">
 <?php
 
 if (isset($exception)) {
@@ -9,10 +9,10 @@ if (isset($exception)) {
 ?>
     <fieldset>
         <label>Email o nombre de usuario:</label><br>
-        <input type="email" class="auth-form" name="email" required><br>
+        <input type="text" class="auth-form" name="identification" required><br>
         <label>Contraseña:</label><br>
-        <input type="password" class="auth-form" name="" required><br>
-        <input type="submit" value="Login"> o <a href="../auth/register"> Registrate</a>
+        <input type="password" class="auth-form" name="password" required><br>
+        <input type="submit" name="submit" value="Login"> o <a href="../auth/register"> Regístrate</a>
     </fieldset>
 
 </form>

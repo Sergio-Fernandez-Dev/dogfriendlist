@@ -18,6 +18,7 @@ abstract class Form {
      * @param GatewayInterface $dbh
      */
     public function __construct(EntityManagerInterface $manager) {
+
         $this->manager = $manager;
     }
 
@@ -32,18 +33,16 @@ abstract class Form {
         $filtered_data = [];
 
         if (isset($data["submit"])) {
-
             foreach ($data as $key => $value) {
                 $filtered_data[$key] = $this->_filter($value);
             }
-
         }
 
         return $filtered_data;
     }
 
     /**
-     * Valida si el email introducido tiene el formato correcto
+     * Valida si el email introducido tiene el formato correcto.
      *
      * @param $email
      * @throws FormException
@@ -55,10 +54,10 @@ abstract class Form {
         if (!\preg_match($pattern, $email)) {
             throw new FormException("Introduce una dirección de correo válida");
         }
-
     }
 
     /**
+     * Valida si el password introducido tiene el formato correcto.
      * @param $password
      */
     protected function _validatePassword($password) {
@@ -68,7 +67,6 @@ abstract class Form {
         if (!\preg_match('#' . $pattern . '#', $password)) {
             throw new FormException("El password debe tener entre 8 y 15 caracteres y debe contener mayúsculas, minúsculas y al menos un número y un caracter especial");
         }
-
     }
 
     /**
@@ -82,13 +80,12 @@ abstract class Form {
     private function _filter($data) {
 
         $data = (string) $data;
-        $data = trim($data); // Elimina espacios antes y después de los data
+        $data = trim($data); // Elimina espacios antes y después de los datos
         $data = stripslashes($data); // Elimina backslashes \
         $data = htmlspecialchars($data); // Traduce caracteres especiales en entidades HTML
 
         return $data;
     }
-
 }
 
 ?>
