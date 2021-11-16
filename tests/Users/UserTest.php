@@ -22,7 +22,7 @@ class UserTest extends TestCase {
 
         $this->data = [
             'id'         => 1,
-            'nickname'   => 'Testing',
+            'username'   => 'Testing',
             'email'      => 'correo@prueba.com',
             'visibility' => 1,
             'city'       => 'Madrid',
@@ -67,7 +67,7 @@ class UserTest extends TestCase {
         $this->user->setProperties($this->data, true);
 
         $properties['id'] = $this->user->getId();
-        $properties['nickname'] = $this->user->getNickname();
+        $properties['username'] = $this->user->getUsername();
         $properties['email'] = $this->user->getEmail();
         $properties['visibility'] = $this->user->getVisibility();
         $properties['city'] = $this->user->getCity();

@@ -13,7 +13,7 @@ class User implements EntityInterface {
     /**
      * @var string
      */
-    private $nickname = null;
+    private $username = null;
 
     /**
      * @var string
@@ -133,8 +133,8 @@ class User implements EntityInterface {
     /**
      * @return string
      */
-    public function getNickname() {
-        return $this->nickname;
+    public function getUsername() {
+        return $this->username;
     }
 
     /**
@@ -229,10 +229,10 @@ class User implements EntityInterface {
     }
 
     /**
-     * @param $nickname
+     * @param $username
      */
-    public function setNickname($nickname) {
-        $this->nickname = $nickname;
+    public function setUsername($username) {
+        $this->username = $username;
     }
 
     /**

@@ -148,7 +148,7 @@ class QueryBuilderTest extends TestCase {
 
     public function testWhereReturnsExceptionIfQueryTypeIsWrong() {
         $this->expectException(Exception::class);
-        $this->qb->insert(['Nickname' => 'Test'])
+        $this->qb->insert(['Username' => 'Test'])
             ->where('Country', '=', 'Germany')
             ->get();
     }
@@ -188,7 +188,7 @@ class QueryBuilderTest extends TestCase {
 
     public function testAndwhereReturnsExceptionIfQueryTypeIsWrong() {
         $this->expectException(Exception::class);
-        $this->qb->insert(['Nickname' => 'Test'])
+        $this->qb->insert(['Username' => 'Test'])
             ->where('City', '=', 'Berlin')
             ->andWhere('Name', '=', 'Hannsel')
             ->get();
@@ -230,7 +230,7 @@ class QueryBuilderTest extends TestCase {
 
     public function testOrwhereReturnsExceptionIfQueryTypeIsWrong() {
         $this->expectException(Exception::class);
-        $this->qb->insert(['Nickname' => 'Test'])
+        $this->qb->insert(['Username' => 'Test'])
             ->where('City', '=', 'Berlin')
             ->orWhere('Name', '=', 'Hannsel')
             ->get();
@@ -271,7 +271,7 @@ class QueryBuilderTest extends TestCase {
 
     public function testWherenotReturnsExceptionIfQueryTypeIsWrong() {
         $this->expectException(Exception::class);
-        $this->qb->insert(['Nickname' => 'Test'])
+        $this->qb->insert(['Username' => 'Test'])
             ->whereNot('City', '=', 'Berlin')
             ->get();
     }

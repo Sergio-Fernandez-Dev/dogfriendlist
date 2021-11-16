@@ -1,5 +1,5 @@
 INSERT INTO `Users` (
-    nickname,
+    username,
     email, 
     visibility, 
     city, 
@@ -26,7 +26,7 @@ VALUES (
 );
 
 INSERT INTO `Users` (
-    nickname,
+    username,
     email, 
     visibility, 
     city, 

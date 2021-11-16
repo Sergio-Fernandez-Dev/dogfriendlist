@@ -1,36 +1,38 @@
 <?php
-    namespace App\Users\Interfaces;
+namespace App\Users\Interfaces;
 
-    use App\Core\Interfaces\EntityManagerInterface;
+use App\Core\Interfaces\EntityManagerInterface;
 
-    Interface UserManagerInterface extends EntityManagerInterface {
-        /**
-         * @param int $id
-         */
-        public function findByEmail(string $email);
+Interface UserManagerInterface extends EntityManagerInterface {
+    /**
+     * @param int $id
+     */
+    public function findByEmail(string $email);
 
-        /**
-         * @param string $nickname
-         */
-        public function findByNickname(string $nickname);
+    /**
+     * @param string $username
+     */
+    public function findByUsername(string $username);
 
-        /**
-         * @param string $country
-         */
-        public function findByCountry(string $country);
+    /**
+     * @param string $country
+     */
+    public function findByCountry(string $country);
 
-        /**
-         * @param string $city
-         */
-        public function findByCity(string $city);
+    /**
+     * @param string $city
+     */
+    public function findByCity(string $city);
 
-        /**
-         * @param int $role
-         */
-        public function findByRole(int $role);
-    }
+    /**
+     * @param int $role
+     */
+    public function findByRole(int $role);
+}
 
 ?>
+
+
 
 
 

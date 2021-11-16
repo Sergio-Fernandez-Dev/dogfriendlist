@@ -15,7 +15,7 @@ class RegisterForm extends Form {
     /**
      * @var string
      */
-    private $nickname;
+    private $username;
 
     /**
      * @var string
@@ -37,7 +37,7 @@ class RegisterForm extends Form {
 
         $data = $this->_getData($data);
 
-        isset($data['nickname']) ? $this->nickname = $data['nickname'] : $this->nickname = null;
+        isset($data['username']) ? $this->username = $data['username'] : $this->username = null;
         isset($data['email']) ? $this->email = $data['email'] : $this->email = null;
         isset($data['password']) ? $this->password = $data['password'] : $this->password = null;
         isset($data['password2']) ? $this->password2 = $data['password2'] : $this->password2 = null;
@@ -61,9 +61,9 @@ class RegisterForm extends Form {
             throw new FormException('La dirección de correo ya ha sido registrada anteriormente.');
         }
 
-        $user = $this->manager->findByNickname($this->nickname);
+        $user = $this->manager->findByUsername($this->username);
 
-        if (null != $user->getNickname()) {
+        if (null != $user->getUsername()) {
             throw new FormException('El nombre de usuario ya existe.');
         }
 
@@ -80,9 +80,9 @@ class RegisterForm extends Form {
      */
     public function getFields() {
         $fields = [
-            'nickname' => $this->nickname,
+            'username' => $this->username,
             'email'    => $this->email,
-            'password' => $this->password,
+            'password' => \md5($this->password),
         ];
 
         return $fields;

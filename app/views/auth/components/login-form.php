@@ -12,6 +12,7 @@ if (isset($exception)) {
         <input type="text" class="auth-form" name="identification" required><br>
         <label>Contraseña:</label><br>
         <input type="password" class="auth-form" name="password" required><br>
+        <label><input type="checkbox" name="remember_me" value="true">Recuérdame</label><br>
         <input type="submit" name="submit" value="Login"> o <a href="../auth/register"> Regístrate</a>
     </fieldset>
 

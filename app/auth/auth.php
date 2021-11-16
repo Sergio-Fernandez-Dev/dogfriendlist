@@ -39,9 +39,15 @@ use Exceptions\Form\FormException;
 
                 return render('auth/login.php', title: $title, exception: $exception);
             }
-            //Si el login se ha realizado coorectamente, almacenamos el usuario recibido en una variable de sesión.
+            //Si el login se ha realizado correctamente, almacenamos el usuario recibido en una variable de sesión.
             $_SESSION['user'] = $user;
             
+            //Si se ha seleccionado la casilla 'Recuérdame', creamos una cookie con el Id del usuario que expirará en 90 días.
+            if ($form->getRememberMe()) {
+                $_SESSION['remember_me'] = true;
+            }
+
+
             return redirect('');
         }
 
@@ -152,7 +158,7 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
                 //Si el link de activación incluye el nombre de usuario
                 if (isset($_GET['username'])) {
                     //Lo buscamos en la base de datos
-                    $user = $manager->findByNickname($_GET['username']);
+                    $user = $manager->findByUsername($_GET['username']);
                     //si la clave de activación de la url coincida con la clave adignada al usuario
                     if  ($activation_key == $user->getActivationKey()) {
 

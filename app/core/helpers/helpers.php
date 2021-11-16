@@ -19,7 +19,7 @@ function render(string $page, bool $base_page = true, ...$params): void {
 
     if ($base_page) {
 
-        if (isset($_SESSION['authenticated'])) {
+        if (isset($_SESSION['user'])) {
 
             $header = COMPONENTS_PATH . 'logged-navbar.php';
 

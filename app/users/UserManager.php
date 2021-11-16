@@ -12,7 +12,7 @@ class UserManager extends EntityManager implements UserManagerInterface {
     /**
      * @var array
      */
-    private $immutables = ['id', 'nickname', 'created_at'];
+    private $immutables = ['id', 'username', 'created_at'];
 
     /**
      * @param GatewayInterface $db
@@ -27,11 +27,13 @@ class UserManager extends EntityManager implements UserManagerInterface {
      * @return QueryBuilderInterface
      */
     public function getQueryBuilder(): QueryBuilderInterface {
+
         return $this->q_builder;
     }
 
     /**
-     * Añade un usuario a nuestra base de datos y crea una clave de activación
+     * Añade un usuario a nuestra base de datos, crea una clave de activación y una carpeta
+     * con la id de usuario en nuestro directorio de almacenamiento.
      *
      * @param User $user
      * @return string
@@ -42,22 +44,35 @@ class UserManager extends EntityManager implements UserManagerInterface {
             $user->setActivationKey();
         }
 
+        $this->_createUserFolder($user->getUsername());
+
         parent::add($user);
 
         return $user->getActivationKey();
+    }
 
+    /**
+     * Borra a un usuario de la base de datos junto a todos sus archivos relacionados.
+     *
+     * @param $user
+     */
+    public function remove($user) {
+
+        $this->_destroyUserFolder($user->getId());
+
+        parent::remove($user);
     }
 
     /**
      * Utiliza el nombre de usuario para buscar un registro en la base de datos y crea
      * un objeto con el resultado de la consulta.
      *
-     * @param string $nickname
+     * @param string $username
      */
-    public function findByNickname(string $nickname) {
+    public function findByUsername(string $username) {
 
         $query = $this->q_builder->select()
-            ->where('nickname', '=', $nickname)
+            ->where('username', '=', $username)
             ->get();
 
         $result = $this->db->retrieve($query);
@@ -162,6 +177,41 @@ class UserManager extends EntityManager implements UserManagerInterface {
         return $user;
     }
 
+    /**
+     * Crea una carpeta para almacenar los archivos relacionados con el usuario
+     *
+     * @param string $username
+     */
+    private function _createUserFolder(string $username) {
+
+        $user = $this->findByUsername($username);
+
+        if (!is_dir('../storage/users/' . $user->getId())) {
+            mkdir('../storage/users/' . $user->getId(), 0777);
+        }
+    }
+
+    /**
+     * Accede de forma recursiva a todas las subcarpetas de nuestra carpeta de usuario
+     * y borra cualquier archivo que encuentre. Una vez vaciada, borra la carpeta principal.
+     *
+     * @param int $user
+     */
+    private function _destroyUserFolder(int $id) {
+
+        $folder = "../storage/users/$id";
+
+        foreach (glob($folder . '/*') as $subfolder) {
+
+            if (is_dir($subfolder)) {
+                $this->_destroyUserFolder($subfolder);
+            } else {
+                unlink($subfolder);
+            }
+        }
+
+        rmdir($folder);
+    }
 }
 
 ?>
