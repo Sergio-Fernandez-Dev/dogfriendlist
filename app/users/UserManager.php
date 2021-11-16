@@ -44,9 +44,9 @@ class UserManager extends EntityManager implements UserManagerInterface {
             $user->setActivationKey();
         }
 
-        $this->_createUserFolder($user->getUsername());
-
         parent::add($user);
+
+        $this->_createUserFolder($user->getUsername());
 
         return $user->getActivationKey();
     }
@@ -58,7 +58,7 @@ class UserManager extends EntityManager implements UserManagerInterface {
      */
     public function remove($user) {
 
-        $this->_destroyUserFolder($user->getId());
+        $this->_destroyUserFolder('../storage/users/' . $user->getId());
 
         parent::remove($user);
     }
@@ -195,11 +195,9 @@ class UserManager extends EntityManager implements UserManagerInterface {
      * Accede de forma recursiva a todas las subcarpetas de nuestra carpeta de usuario
      * y borra cualquier archivo que encuentre. Una vez vaciada, borra la carpeta principal.
      *
-     * @param int $user
+     * @param string $folder
      */
-    private function _destroyUserFolder(int $id) {
-
-        $folder = "../storage/users/$id";
+    private function _destroyUserFolder($folder) {
 
         foreach (glob($folder . '/*') as $subfolder) {
 
