@@ -13,7 +13,8 @@ route::add('/', 'GET',
         if (isset($_SESSION['remember_me']) && !isset($_COOKIE['user_id'])) {
             $user = $_SESSION['user'];
             setcookie('user_id', $user->getId(), time() + 90 * 24 * 60 * 60);
-        }
+        } 
+        
         $title = 'Index';
 
         return render('index.php', title: $title);

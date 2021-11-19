@@ -1,9 +1,6 @@
 
-<div class="navbar-main-box">
-    <div id="logo-box">
-        <h2>DOGFRIENDLIST</h2>
-        <p>UNLOGGED NAVBAR</p>
-    </div>
+<nav class="nav">
+    <h1 class="nav__logo">DOGFRIENDLIST</h1>
     <div id="unlogged-navbar-buttons-box">
         <a href="../auth/login">Login</a>
         |

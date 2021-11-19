@@ -1,0 +1,67 @@
+body {
+    background-color: #EDD0C0;
+}
+
+/* ===================  Header =================== */
+
+.header {
+    background-color: #928A97;
+    width: 100%;
+    height: auto; 
+    display: block;
+}
+
+.header__logo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Dosis', sans-serif;
+    font-size: 5.5em;
+    letter-spacing: 0.5em;
+    color: #FFFFFF;
+    display: block;
+    text-align: center;
+}
+
+/* =================== Menú de navegación =================== */
+
+.nav {
+    background-color: #928A97;
+    width: 100%; 
+    align-items: center;
+}
+
+
+
+.nav__menu {
+    width: auto;
+    display: inline-block;
+}
+
+.nav__submenu {
+    display: inline-block;
+}
+
+.nav__button {
+    color: #FFFFFF;
+    position: relative;
+    padding-left: 1em;
+    padding-right: 1em;
+    display: inline-block;
+    text-align: center;
+}
+
+.nav__link {
+    display: block;
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.nav__link--cascade {
+    display: block;
+}
+
+
+/* Submenú de navegación */
+
+

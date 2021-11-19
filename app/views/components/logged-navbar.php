@@ -1,25 +1,38 @@
-<div class="navbar-main-box">
-    <div id="logo-box">
-        <h2>DOGFRIENDLIST</h2>
-        <p>LOGGED NAVBAR</p>
-    </div>
-    <div id="logged-navbar-buttons-box">
-        <nav id="navbar-menu">
-            <ul>
-                <li><a href="spot/new-spot">+</a></li>
-                |
-                <li><a href="favourites">Favoritos</a></li>
-                |
-                <!-- inicio menu desplegable -->
-                <ul>
-                    <li><a href="user/profile">Mi perfil</a></li>
-                    <li><a href="user/personal-spots">Mis spots</a></li>
-                    <li><a href="user/config">Configuración del perfil</a></li>
-                    <li><a href="auth/logout">Cerrar sesión</a></li>
-                </ul>
-                 <!-- fin menu desplegable -->
-            </ul>
 
-        </nav>
+<header class="header">
+    <h1 class="header__logo">DOGFRIENDLIST</h1>
+</header>
+<nav class="nav">
+    <div class="nav__menu">
+        <div class="nav__button">
+            <a class="nav__link" href="../spot/new">
+                <span class="material-icons md-48">add_location_alt</span>
+            </a>
+        </div>
+        <div class="nav__button">
+            <a class="nav__link" href="../user/favourites">
+                <span class="material-icons md-36">favorite</span>
+            </a>
+        </div>
+        <div class="nav__button">
+        <a class="nav__link" href="#">
+            <span class="material-icons">account_circle</span>
+        </a>
+        </div>
     </div>
-</div>
+
+    <!-- Menú desplegable -->
+
+    <div class="nav__submenu">
+        <span class="nav-link nav__link--cascade">Mi perfil</span>
+        <span class="nav-link nav__link--cascade">Mis spots</span>
+        <span class="nav-link nav__link--cascade">Cerrar sesión</span>
+    </div>
+
+         <!-- fin menu desplegable -->
+
+</nav>
+
+
+
+

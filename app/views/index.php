@@ -1,2 +1,3 @@
 
-<h3>ESTO ES EL INDEX</h3>
+<h2>Cerca de ti</h2>
+<?php render('geolocation/map.php')?>

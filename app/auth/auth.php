@@ -6,8 +6,8 @@ use App\Auth\Mail\Email;
 use App\Core\QueryBuilder;
 use App\Users\UserManager;
 use App\Core\Router as route;
-use App\Auth\Forms\RegisterForm;
 use App\Auth\Forms\LoginForm;
+use App\Auth\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
 
@@ -42,15 +42,13 @@ use Exceptions\Form\FormException;
             //Si el login se ha realizado correctamente, almacenamos el usuario recibido en una variable de sesión.
             $_SESSION['user'] = $user;
             
-            //Si se ha seleccionado la casilla 'Recuérdame', creamos una cookie con el Id del usuario que expirará en 90 días.
+            //Si se ha seleccionado la casilla 'Recuérdame', lo registramos en una variable de sesión.
             if ($form->getRememberMe()) {
                 $_SESSION['remember_me'] = true;
             }
 
-
             return redirect('');
         }
-
     }
 );
 
@@ -138,9 +136,7 @@ route::add('/confirm', ['GET', 'POST'],
 
             //mostramos la pagina de confirmación de envío del email
             return render('auth/verification-email-sended.php', base_page: false, title: $title, user: $user);
-        }
-
-        
+        }   
     }
 );
 
@@ -154,38 +150,38 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
         $manager = new UserManager($db, $qb);
 
         switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                //Si el link de activación incluye el nombre de usuario
-                if (isset($_GET['username'])) {
-                    //Lo buscamos en la base de datos
-                    $user = $manager->findByUsername($_GET['username']);
-                    //si la clave de activación de la url coincida con la clave adignada al usuario
-                    if  ($activation_key == $user->getActivationKey()) {
+        case 'GET':
+            //Si el link de activación incluye el nombre de usuario
+            if (isset($_GET['username'])) {
+                //Lo buscamos en la base de datos
+                $user = $manager->findByUsername($_GET['username']);
+                //si la clave de activación de la url coincida con la clave adignada al usuario
+                if  ($activation_key == $user->getActivationKey()) {
 
-                        $title = 'Validacion exitosa';
-                        //Cambiamos el rol a usuario activo, resesteamos la clave de activación 
-                        // y actualizamos al usuario en la base de datos.
-                        $user->setRole(1);
-                        $user->setActivationKey(null);
-                        $manager->save($user);
-                        //Establecemos como variable de sesión el cuerpo de nuestro mensaje de verificación
-                        //y hacemos una redirección a la página de login.
-                        $_SESSION['verification_body'] = 'auth/verification-succeeded.php';
+                    $title = 'Validacion exitosa';
+                    //Cambiamos el rol a usuario activo, resesteamos la clave de activación 
+                    // y actualizamos al usuario en la base de datos.
+                    $user->setRole(1);
+                    $user->setActivationKey(null);
+                    $manager->save($user);
+                    //Establecemos como variable de sesión el cuerpo de nuestro mensaje de verificación
+                    //y hacemos una redirección a la página de login.
+                    $_SESSION['verification_body'] = 'auth/verification-succeeded.php';
 
-                        return redirect('auth/login');
-                    }  
-                }
+                    return redirect('auth/login');
+                }  
+            }
 
-                $title = 'Validación errónea';
+            $title = 'Validación errónea';
 
-                return render('auth/verification-failed.php', base_page: false, title: $title);
+            return render('auth/verification-failed.php', base_page: false, title: $title);
 
-            case 'POST':             
-                $user = $manager->findByEmail($_POST['email']);
+        case 'POST':             
+            $user = $manager->findByEmail($_POST['email']);
 
-                $_SESSION['user'] = $user;
+            $_SESSION['user'] = $user;
 
-                redirect('auth/confirm');       
+            redirect('auth/confirm');       
         }              
     }
 );
