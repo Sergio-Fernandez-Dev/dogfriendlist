@@ -3,14 +3,17 @@ let map, userMarker;
 
 function initMap() {
   //Creamos el marcador que nos mostrará la localización del usuario.
-  userMarker = new google.maps.Marker('../statics/img/marker.png');
+  userMarker = new google.maps.Marker();
+  userMarker.setIcon('../statics/img/marker.png');
+
+  // Creamos un mapa con las coordenadas por defecto.
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 40.416, lng: -3.703 },
+    zoom: 14,
+  });
 
   $(document).ready(() => {
-    // Creamos un mapa con las coordenadas por defecto.
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 40.416, lng: -3.703 },
-      zoom: 14,
-    });
+    
     // Si el navegador permite la geolocalización
     if (navigator.geolocation) {
       // Obtenemos la posicion 
@@ -22,6 +25,7 @@ function initMap() {
           };
 
           // Colocamos nuestro marcador de usuario en la posición obtenida del navegador.
+
           userMarker.setPosition(pos);
           userMarker.setMap(map);
           map.setCenter(pos);
@@ -41,10 +45,11 @@ function initMap() {
 
 // En caso de no poder obtener la posición del usuario, crea un marcador con una etiqueta de advertencia.
 function handleLocationError(browserHasGeolocation, userMarker, pos) {
+
   userMarker.setPosition(pos);
   userMarker.setLabel(
     browserHasGeolocation   
-    ? "Advertencia: Activa la geolocalización para una mejor experiencia." 
+    ? "Adverten: Activa la geolocalización para una mejor experiencia." 
     : "Error: El navegador no permite la geolocalización."
   );
   userMarker.setMap(map);
