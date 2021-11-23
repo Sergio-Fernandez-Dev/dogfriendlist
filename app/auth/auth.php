@@ -52,6 +52,16 @@ use Exceptions\Form\FormException;
     }
 );
 
+route::add('/logout', 'GET',
+    function () {
+
+        session_start();
+        session_unset();
+        session_destroy();
+
+        return redirect('');
+    }
+);
 
 route::add('/register', ['GET', 'POST'],
     function () {
