@@ -1,7 +1,7 @@
 .body {
     background-color: #EDD0C0;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 1em;
+    font-size: 10px;
 }
 
 /* ===================  Header =================== */
@@ -9,35 +9,56 @@
 .header {
     background-color: #928A97;
     width: 100%;
-    height: auto; 
-    display: BLOCK;
-    justify-content: center;
+    height: 6em; 
+    display: block;
+    margin-bottom: 2em;
+}
+
+.header__content {
+    width: 90%;
+    height: 6em;
+    display: flex;
+    margin: 0 auto;
+    flex-flow: row nowrap;
+    justify-content: space-between;
 }
 
 .header__logo {
-    width: 80%;
-    margin: 0;
-    padding: 0;
+    width: auto;
     font-family: 'Dosis', sans-serif;
-    font-size: 5.5em;
+    font-size: 3em;
     letter-spacing: 0.5em;
     color: #FFFFFF;
-    display: block;
-    text-align: center;
+    margin: 0;
+    align-self: center;
+}
+
+/* Estilos para Unnlogged navbar  */
+
+.corner-block {
+    width: auto;
+    align-self: center;
+}
+
+.corner-block__link {
+    display: inline;
+    text-decoration: none;
+    font-size: 1.8em;
+    color: #FFFFFF;
+}
+.corner-block__separator {
+    display: inline;
+    color: #FFFFFF;
+    padding: 0.8em 0.8em;
 }
 
 /* =================== Menú de navegación =================== */
 
 .nav {
     background-color: #928A97;
-    width: 100%; 
-    min-height: 6em;
-    display: block;
-    margin-bottom: 2em;
-    padding-right: 2em;
+    width: auto;
+    align-self: center;
 }
-
-
 
 .nav__menu {
     width: auto;
@@ -85,28 +106,37 @@
     background-color: #FFFFFF;
     padding: 4em 2em 4em 2em;
     margin: 0 auto;
+    border-radius: 1em;
 }
 
 .index-box__title {
-    display: block;
     width:95%;
     align-self: center;
     text-align: left;
-    padding-bottom: 1em;
+    padding-bottom: 0.3m;
+    font-size: 2.8em;
 }
 
 .finder {
-    display: block;
     width:95%;
-    padding-bottom: 1em;
+    padding-bottom: 3em;
     align-self: center;
 }
 
+.finder__field {
+    font-size: 2em;
+}
+
+.finder__button {
+    font-size: 2em;
+}
+
 .map {
-    display: block;
-    height: 600px;
+    height: 60em;
     width: 95%;
     align-self: center;
+    border-radius: 1em;
+    border: 0.3em solid rgb(0, 0, 0);
   }
 
 /* Submenú de navegación */
