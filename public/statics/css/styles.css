@@ -1,7 +1,10 @@
+html {
+    font-size: 10px;
+}
+
 .body {
     background-color: #EDD0C0;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 10px;
 }
 
 /* ===================  Header =================== */
@@ -9,14 +12,14 @@
 .header {
     background-color: #928A97;
     width: 100%;
-    height: 6em; 
+    height: 6rem; 
     display: block;
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
 }
 
 .header__content {
     width: 90%;
-    height: 6em;
+    height: 6rem;
     display: flex;
     margin: 0 auto;
     flex-flow: row nowrap;
@@ -26,12 +29,13 @@
 .header__logo {
     width: auto;
     font-family: 'Dosis', sans-serif;
-    font-size: 3em;
-    letter-spacing: 0.5em;
+    font-size: 3rem;
+    letter-spacing: 0.5rem;
     color: #FFFFFF;
     margin: 0;
     align-self: center;
 }
+
 
 /* Estilos para Unnlogged navbar  */
 
@@ -43,16 +47,37 @@
 .corner-block__link {
     display: inline;
     text-decoration: none;
-    font-size: 1.8em;
+    font-size: 1.8rem;
     color: #FFFFFF;
 }
+
 .corner-block__separator {
     display: inline;
     color: #FFFFFF;
-    padding: 0.8em 0.8em;
+    padding: 0.8rem 0.8rem;
 }
 
-/* =================== Menú de navegación =================== */
+/* Estilos para Logged navbar  */
+
+.profile-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-menu__picture {
+    align-self:flex-end;
+    padding-left: 1rem;
+    padding-top: 1.8rem;
+}
+
+.profile-menu__submenu {
+    background-color: #928A97;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+
+/* Menú de navegación */
 
 .nav {
     background-color: #928A97;
@@ -62,38 +87,25 @@
 
 .nav__menu {
     width: auto;
-    display: block;
-    text-align: right;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    position: relative;
-}
-
-.nav__submenu {
-    display: block;
-    text-align: left;
-    position: absolute;
-    background-color: #928A97;
 }
 
 .nav__button {
     color: #FFFFFF;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 3rem;
+    padding-right: 3rem;
     display: inline-block;
 }
 
 .nav__link {
-    display: inline-block;
     color: #FFFFFF;
-    width: 100%;
+    text-decoration: none;
 }
 
 .nav__link--cascade {
     display: block;
-    letter-spacing: 0.2em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    letter-spacing: 0.2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 /* =================== Caja Mapa principal =================== */
@@ -104,9 +116,9 @@
     width: 90%;
     height: auto;
     background-color: #FFFFFF;
-    padding: 4em 2em 4em 2em;
+    padding: 4rem 2rem 4rem 2rem;
     margin: 0 auto;
-    border-radius: 1em;
+    border-radius: 1rem;
 }
 
 .index-box__title {
