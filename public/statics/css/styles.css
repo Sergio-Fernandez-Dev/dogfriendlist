@@ -3,8 +3,26 @@ html {
 }
 
 .body {
-    background-color: #EDD0C0;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 10rem;
+    background-color: #f3f1f3;
     font-family: 'Ubuntu', sans-serif;
+    margin: 0;
+}
+
+.footer {
+    width: 100%;
+    height: 30rem;
+    background-color: #EDD0C0;
+    margin: 6rem 0 0 0;
+    align-self: flex-end;
+}
+
+.h2 {
+    width: 95%;
+    align-self: center;
+    font-size: 2.8em;
 }
 
 /* ===================  Header =================== */
@@ -14,7 +32,7 @@ html {
     width: 100%;
     height: 6rem; 
     display: block;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .header__content {
@@ -68,12 +86,14 @@ html {
     align-self:flex-end;
     padding-left: 1rem;
     padding-top: 1.8rem;
+    color: #FFFFFF;
 }
 
 .profile-menu__submenu {
     background-color: #928A97;
     font-size: 1.5rem;
     padding: 1rem;
+    display: none;
 }
 
 
@@ -110,47 +130,110 @@ html {
 
 /* =================== Caja Mapa principal =================== */
 
-.index-box {
+.box {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 95%;
     height: auto;
-    background-color: #FFFFFF;
-    padding: 4rem 2rem 4rem 2rem;
     margin: 0 auto;
-    border-radius: 1rem;
 }
 
-.index-box__title {
-    width:95%;
+.box__separation-line {
+    width: inherit;
+    border-bottom:  0.1rem solid #928A97;
     align-self: center;
-    text-align: left;
-    padding-bottom: 0.3m;
-    font-size: 2.8em;
+    margin: 3rem 0;
 }
 
-.finder {
+
+/* Formularios */
+
+.form {
     width:95%;
-    padding-bottom: 3em;
+    align-content: center;
     align-self: center;
 }
 
-.finder__field {
-    font-size: 2em;
+.form--35rem {
+    width: 35rem;
 }
 
-.finder__button {
-    font-size: 2em;
+.form__button-box {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+
+.form__exception {
+    width: 100%;
+    padding: 2rem;
+    background-color: #ee737359;
+    border: 0.2rem solid #b60000;
+    color: #b60000;
+    font-size: 1.5rem;
+}
+
+.form__field {
+    width: 100%;
+    height: 4rem;
+    font-size: 2rem;
+    border: 0.1rem solid #928A97;
+    border-radius: 2rem;
+    background-color: #FFFFFF;
+    margin: 1rem 0;
+}
+
+.form__field--finder {
+    width: 50%;
+    padding-left: 2rem;
+    margin-right: 1rem;
+}
+
+.form__label {
+    font-size: 2rem;
+}
+
+.form__p {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    align-self: center;
+}
+
+.form__select {
+    width: auto;
+    height: 4rem;
+    font-size: 2rem;
+    border: 0.1rem solid #928A97;
+    border-radius: 2rem;
+    padding-left: 2rem;
+    margin-right: 1rem;
+    background-color: #FFFFFF;
+}
+
+
+.button {
+    min-width: 12rem;
+    height: 4rem;
+    font-size: 1.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 0.1rem solid #928A97;
+    border-radius: 2rem;
+    background-color: #A4D6C8;
+    color:#FFFFFF;
+}
+
+.button--medium {
+    width: 70%;
 }
 
 .map {
-    height: 60em;
+    height: 60rem;
     width: 95%;
     align-self: center;
-    border-radius: 1em;
-    border: 0.3em solid rgb(0, 0, 0);
+    border:  0.1rem solid #928A97;
   }
 
-/* Submenú de navegación */
 
 

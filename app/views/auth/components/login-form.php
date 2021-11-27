@@ -1,19 +1,27 @@
-
-<form action="login" method="post">
+<div class="box">
 <?php
-
-if (isset($exception)) {
-    echo '<div class="form-exception">' . $exception . '</div><br>';
+if (isset($login_title)) {
+    echo $login_title;
+    echo '<span class="box__separation-line"></span>';
 }
-
 ?>
-    <fieldset>
-        <label>Email o nombre de usuario:</label><br>
-        <input type="text" class="auth-form" name="identification" required><br>
-        <label>Contraseña:</label><br>
-        <input type="password" class="auth-form" name="password" required><br>
-        <label><input type="checkbox" name="remember_me" value="true">Recuérdame</label><br>
-        <input type="submit" name="submit" value="Login"> o <a href="../auth/register"> Regístrate</a>
-    </fieldset>
-
-</form>
+    <form class="form form--35rem" action="login" method="post">
+<?php
+if (isset($exception)) {
+    echo '<div class="form__exception">' . $exception . '</div><br>';
+}
+?>
+        <label class="form__label">Email o nombre de usuario:</label><br>
+        <input class="form__field" type="text" name="identification" required><br>
+        <label class="form__label">Contraseña:</label><br>
+        <input class="form__field" type="password" name="password" required><br>
+        <label class="form__label">
+            <input class="form__checkbox" type="checkbox" name="remember_me" value="true">
+            Recuérdame
+        </label><br>
+        <div class="form__button-box">
+            <input class="button button--medium" type="submit" name="submit" value="Login">
+            <p class="form__p"> o <a href="../auth/register"> Regístrate</a></p>
+        </div>
+    </form>
+</div>

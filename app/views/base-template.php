@@ -17,7 +17,7 @@
 
     <?php include_once $main_content;?>
 
-    <footer></footer>
+    <footer class="footer"></footer>
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="../statics/js/geolocation/map.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6FpvUP_f9paqKk-fii3jo95EOtyKFcSo&callback=initMap"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7qMBSnVThx9ylk-lVMZjn7xnnG6exRak&callback=initMap"
       async
     ></script>
 </body>

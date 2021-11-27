@@ -5,7 +5,9 @@ $profile_img = $user->getImg();
 
 <header class="header">
     <div class="header__content">
-        <h1 class="header__logo">DOGFRIENDLIST</h1>
+    <h1 class="header__logo">
+            <a class="nav__link" href="..">DOGFRIENDLIST</a>
+        </h1>
         <nav class="nav">
             <div class="nav__menu">
                 <div class="nav__button">
@@ -22,10 +24,8 @@ $profile_img = $user->getImg();
         </nav>
         <div class="profile-menu">
             <div class="profile-menu__picture">
-                <a class="nav__link" href="../user/favourites">
-                    <span class="material-icons">account_circle</span>
-                    <span class="material-icons">expand_more</span>
-                </a>
+                <span class="material-icons">account_circle</span>
+                <span class="material-icons">expand_more</span>
             </div>
                 <!-- Menú desplegable -->
             <div class="profile-menu__submenu">

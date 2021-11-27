@@ -4,9 +4,9 @@
 if (isset($verification)) {
     render($verification, base_page: false);
 } else {
-    echo '<h1>Login</h1>';
+    $login_title = '<h2 class="h2 h2--form">Login</h2>';
 }
 
 ?>
 <!-- A continuación renderizaremos el formulario de login -->
-<?php render('auth/components/login-form.php', base_page: false, exception:  $exception) ?>
+<?php render('auth/components/login-form.php', base_page: false, exception:  $exception, login_title: $login_title) ?>
