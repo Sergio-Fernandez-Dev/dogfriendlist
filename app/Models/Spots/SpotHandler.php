@@ -9,12 +9,17 @@ use App\Models\Spots\Interfaces\SpotHandlerInterface;
 class SpotHandler extends EntityHandler implements SpotHandlerInterface {
 
     /**
+     * @var array
+     */
+    private $immutables = ['id', 'user_id', 'created_at'];
+
+    /**
      * @param GatewayInterface $db
      * @param QueryBuilderInterface $q_builder
      */
     public function __construct(GatewayInterface $db, QueryBuilderInterface $q_builder) {
 
-        parent::__construct($db, $q_builder, 'Spots');
+        parent::__construct($db, $q_builder, 'Spots', $this->immutables);
     }
 
     /**
@@ -98,7 +103,7 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
     }
 
     /**
-     * Utiliza la categgoría del spot para buscar un registro en la base de datos y crea
+     * Utiliza la categoría del spot para buscar un registro en la base de datos y crea
      * un objeto con el resultado de la consulta.
      *
      * @param int $category_id
@@ -119,14 +124,47 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
 
     /**
      * Busca en la base de datos los spots más cercanos a la ubicación del usuario y crea
-     * un objeto con el resultado de la consulta.
+     * un array de objetos con el resultado de la consulta.
      *
      * @param float $long
      * @param float $lat
+     * @param float $distance
+     *
+     * @return array
      */
-    public function findByCloseness(float $long, float $lat) {
+    public function findByCloseness(float $lat, float $lng, float $distance = 1) {
 
-        //TO-DO
+        $box = $this->_getBoundaries($lat, $lng, $distance);
+
+        $query = $this->q_builder->raw(
+            'SELECT *, ( 6371 * ACOS(
+                COS( RADIANS(' . $lat . '))
+                * COS(RADIANS( lat ))
+                * COS(RADIANS( lng )
+                - RADIANS(' . $lng . '))
+                + SIN( RADIANS(' . $lat . '))
+                * SIN(RADIANS( lat ))
+               )
+            ) AS distance
+             FROM Spots
+             WHERE (lat BETWEEN ' . $box['min_lat'] . ' AND ' . $box['max_lat'] . ')
+             AND (lng BETWEEN ' . $box['min_lng'] . ' AND ' . $box['max_lng'] . ')
+             HAVING distance < ' . $distance . '
+             ORDER BY distance ASC',
+
+            $lat, $lng, $box, $distance)
+            ->get();
+
+        $result = $this->db->retrieve($query);
+        $this->db->disconnect();
+
+        $spot_list = [];
+
+        foreach ($result as $spot) {
+            $spot_list = $this->make($spot);
+        }
+
+        return $spot_list;
     }
 
     /**
@@ -134,6 +172,8 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
      * pasados como argumento.
      *
      * @param $data
+     *
+     * @return Spot
      */
     public function make($data) {
 
@@ -141,6 +181,47 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
         $spot->setProperties($data);
 
         return $spot;
+    }
+
+    /**
+     * @param $lat
+     * @param $lng
+     * @param $distance
+     *
+     * @return array
+     */
+    private function _getBoundaries($lat, $lng, $distance = 1) {
+        $earthRadius = 6371;
+
+        $return = [];
+
+        // Los angulos para cada dirección
+        $cardinalCoords = [
+            'north' => '0',
+            'south' => '180',
+            'east'  => '90',
+            'west'  => '270',
+        ];
+
+        $rLat = deg2rad($lat);
+        $rLng = deg2rad($lng);
+        $rAngDist = $distance / $earthRadius;
+
+        foreach ($cardinalCoords as $name => $angle) {
+            $rAngle = deg2rad($angle);
+            $rLatB = asin(sin($rLat) * cos($rAngDist) + cos($rLat) * sin($rAngDist) * cos($rAngle));
+            $rLonB = $rLng + atan2(sin($rAngle) * sin($rAngDist) * cos($rLat), cos($rAngDist) - sin($rLat) * sin($rLatB));
+
+            $return[$name] = ['lat' => (float) rad2deg($rLatB),
+                'lng'                   => (float) rad2deg($rLonB)];
+        }
+
+        return [
+            'min_lat' => $return['south']['lat'],
+            'max_lat' => $return['north']['lat'],
+            'min_lng' => $return['west']['lng'],
+            'max_lng' => $return['east']['lng'],
+        ];
     }
 
 }
