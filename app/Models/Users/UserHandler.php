@@ -1,13 +1,13 @@
 <?php
-namespace App\Users;
+namespace App\Models\Users;
 
-use App\Users\User;
-use App\Core\EntityManager;
+use App\Models\Users\User;
+use App\Core\EntityHandler;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
-use App\Users\Interfaces\UserManagerInterface;
+use App\Models\Users\Interfaces\UserHandlerInterface;
 
-class UserManager extends EntityManager implements UserManagerInterface {
+class UserHandler extends EntityHandler implements UserHandlerInterface {
 
     /**
      * @var array

@@ -1,7 +1,7 @@
 <?php
 namespace App\Core\Interfaces;
 
-interface EntityManagerInterface {
+interface EntityHandlerInterface {
 
     /**
      * @param EntityInterface $modelObject
@@ -30,3 +30,4 @@ interface EntityManagerInterface {
 }
 
 ?>
+

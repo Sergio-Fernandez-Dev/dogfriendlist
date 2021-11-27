@@ -32,6 +32,7 @@ function initMap() {
           userMarker.setPosition(pos);
           userMarker.setMap(map);
           map.setCenter(pos);
+          $.post("/auth/login", {lat: pos['lat'], lng: pos['lng']});
         },
         // Si no podemos establecer la posición llamamos a handleLocationError
         () => {

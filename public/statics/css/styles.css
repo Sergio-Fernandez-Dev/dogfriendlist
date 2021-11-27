@@ -182,11 +182,12 @@ html {
     border-radius: 2rem;
     background-color: #FFFFFF;
     margin: 1rem 0;
+    padding: 0 2rem;
 }
 
 .form__field--finder {
     width: 50%;
-    padding-left: 2rem;
+    padding: 0 2rem;
     margin-right: 1rem;
 }
 
@@ -224,15 +225,15 @@ html {
     color:#FFFFFF;
 }
 
-.button--medium {
-    width: 70%;
-}
+
 
 .map {
     height: 60rem;
     width: 95%;
     align-self: center;
     border:  0.1rem solid #928A97;
+    border-radius: 2rem;
+    margin-top: 1rem;
   }
 
 

@@ -6,9 +6,9 @@ use App\Core\Interfaces\EntityInterface;
 use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
-use App\Core\Interfaces\EntityManagerInterface;
+use App\Core\Interfaces\EntityHandlerInterface;
 
-abstract class EntityManager implements EntityManagerInterface {
+abstract class EntityHandler implements EntityHandlerInterface {
 
     /**
      * @var string
@@ -179,6 +179,7 @@ abstract class EntityManager implements EntityManagerInterface {
 }
 
 ?>
+
 
 
 

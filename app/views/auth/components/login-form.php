@@ -1,4 +1,4 @@
-<div class="box">
+
 <?php
 if (isset($login_title)) {
     echo $login_title;
@@ -20,7 +20,7 @@ if (isset($exception)) {
             Recuérdame
         </label><br>
         <div class="form__button-box">
-            <input class="button button--medium" type="submit" name="submit" value="Login">
+            <input class="button" type="submit" name="submit" value="Login">
             <p class="form__p"> o <a href="../auth/register"> Regístrate</a></p>
         </div>
     </form>

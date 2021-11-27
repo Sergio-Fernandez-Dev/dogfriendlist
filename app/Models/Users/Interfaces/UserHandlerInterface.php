@@ -1,9 +1,9 @@
 <?php
-namespace App\Users\Interfaces;
+namespace App\Models\Users\Interfaces;
 
-use App\Core\Interfaces\EntityManagerInterface;
+use App\Core\Interfaces\EntityHandlerInterface;
 
-Interface UserManagerInterface extends EntityManagerInterface {
+Interface UserHandlerInterface extends EntityHandlerInterface {
     /**
      * @param int $id
      */
@@ -31,6 +31,9 @@ Interface UserManagerInterface extends EntityManagerInterface {
 }
 
 ?>
+
+
+
 
 
 

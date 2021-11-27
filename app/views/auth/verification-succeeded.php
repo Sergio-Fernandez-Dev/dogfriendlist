@@ -1,3 +1,3 @@
-<h1>¡Un último paso!</h1>
+<h2 class="h2">¡Un último paso!</h2>
 <p>¡Introduce tus credenciales de acceso y disfruta!</p>
-<h2>Login</h2>
+

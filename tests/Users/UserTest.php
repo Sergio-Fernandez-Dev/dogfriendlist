@@ -2,7 +2,7 @@
 
 namespace Tests\Users;
 
-use App\Users\User;
+use App\Models\Users\User;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {

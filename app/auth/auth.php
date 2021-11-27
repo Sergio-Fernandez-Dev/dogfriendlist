@@ -4,10 +4,10 @@ require_once '../vendor/autoload.php';
 use App\Core\DB;
 use App\Auth\Mail\Email;
 use App\Core\QueryBuilder;
-use App\Users\UserManager;
+use App\Models\Users\UserHandler;
 use App\Core\Router as route;
-use App\Auth\Forms\LoginForm;
-use App\Auth\Forms\RegisterForm;
+use App\Forms\LoginForm;
+use App\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
 
@@ -28,8 +28,8 @@ use Exceptions\Form\FormException;
         case 'POST':
             $db = new DB();
             $qb = new QueryBuilder();
-            $manager = new UserManager($db, $qb);
-            $form = new LoginForm($_POST, $manager);
+            $handler = new UserHandler($db, $qb);
+            $form = new LoginForm($_POST, $handler);
             //Enviamos el formulario de login.
             try {
                 //Si todo es correcto nos devolverá una instancia de usuario.
@@ -76,8 +76,8 @@ route::add('/register', ['GET', 'POST'],
         case 'POST':
             $db = new DB();
             $qb = new QueryBuilder();
-            $manager = new UserManager($db, $qb);
-            $form = new RegisterForm($_POST, $manager);
+            $handler = new UserHandler($db, $qb);
+            $form = new RegisterForm($_POST, $handler);
             $email = new Email(true);
              //enviamos el formulario de registro
             try {
@@ -91,7 +91,7 @@ route::add('/register', ['GET', 'POST'],
             //Establecemos las propiedades de nuestro usuario en base a los datos tomados del formulario
             $user->setProperties($form->getFields());
             //Añadimos el usuario a la base de datos;
-            $manager->add($user);
+            $handler->add($user);
             //Enviamos email de validación al correo del usuario
             $email->sendVerificationEmail($user);
             //Creamos una variable de sesión con el usuario instanciado.
@@ -114,7 +114,7 @@ route::add('/confirm', ['GET', 'POST'],
         $email = new Email(true);
         $db = new DB();
         $qb = new QueryBuilder();
-        $manager = new UserManager($db, $qb);
+        $handler = new UserHandler($db, $qb);
 
         $title = 'Email enviado';
 
@@ -139,7 +139,7 @@ route::add('/confirm', ['GET', 'POST'],
             //con el email introducido por el usuario. Utilizaremos ese email para instanciar
             //un nuevo usuario.
             } elseif (isset($_POST['email'])) {
-                $user = $manager->findByEmail($_POST['email']);
+                $user = $handler->findByEmail($_POST['email']);
             }
             //Enviamos un email de verificación.
             $email->sendVerificationEmail($user);
@@ -157,14 +157,14 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
 
         $db = new DB();
         $qb = new QueryBuilder();
-        $manager = new UserManager($db, $qb);
+        $handler = new UserHandler($db, $qb);
 
         switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
             //Si el link de activación incluye el nombre de usuario
             if (isset($_GET['username'])) {
                 //Lo buscamos en la base de datos
-                $user = $manager->findByUsername($_GET['username']);
+                $user = $handler->findByUsername($_GET['username']);
                 //si la clave de activación de la url coincida con la clave adignada al usuario
                 if  ($activation_key == $user->getActivationKey()) {
 
@@ -173,7 +173,7 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
                     // y actualizamos al usuario en la base de datos.
                     $user->setRole(1);
                     $user->setActivationKey(null);
-                    $manager->save($user);
+                    $handler->save($user);
                     //Establecemos como variable de sesión el cuerpo de nuestro mensaje de verificación
                     //y hacemos una redirección a la página de login.
                     $_SESSION['verification_body'] = 'auth/verification-succeeded.php';
@@ -187,7 +187,7 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
             return render('auth/verification-failed.php', base_page: false, title: $title);
 
         case 'POST':             
-            $user = $manager->findByEmail($_POST['email']);
+            $user = $handler->findByEmail($_POST['email']);
 
             $_SESSION['user'] = $user;
 

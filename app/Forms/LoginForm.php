@@ -1,8 +1,8 @@
 <?php
-namespace App\Auth\Forms;
+namespace App\Forms;
 
 use Exceptions\Form\FormException;
-use App\Users\Interfaces\UserManagerInterface;
+use App\Models\Users\Interfaces\UserHandlerInterface;
 
 class LoginForm extends Form {
 
@@ -23,11 +23,11 @@ class LoginForm extends Form {
 
     /**
      * @param array $data
-     * @param UserManagerInterface $manager
+     * @param UserHandlerInterface $handler
      */
-    public function __construct(array $data, UserManagerInterface $manager) {
+    public function __construct(array $data, UserHandlerInterface $handler) {
 
-        parent::__construct($manager);
+        parent::__construct($handler);
 
         $data = $this->_getData($data);
 
@@ -46,14 +46,14 @@ class LoginForm extends Form {
             throw new FormException('Debes rellenar todos los campos.');
         }
 
-        $q_builder = $this->manager->getQueryBuilder();
+        $q_builder = $this->handler->getQueryBuilder();
 
         $query = $q_builder->select()
             ->where('email', '=', $this->identification)
             ->orWhere('username', '=', $this->identification)
             ->get();
 
-        $user = $this->manager->raw($query, 'retrieve');
+        $user = $this->handler->raw($query, 'retrieve');
 
         if (null == $user->getEmail() && null == $user->getUsername()) {
             throw new FormException('La dirección de correo o el usuario no existe.');

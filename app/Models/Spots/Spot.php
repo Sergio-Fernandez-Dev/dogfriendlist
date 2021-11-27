@@ -1,5 +1,5 @@
 <?php
-namespace App\Spots;
+namespace App\Models\Spots;
 
 use App\Core\Interfaces\EntityInterface;
 

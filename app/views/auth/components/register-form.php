@@ -1,22 +1,22 @@
-<form action="register" method="post">
+<form class="form form--35rem"action="register" method="post">
 <?php
 
 if (isset($exception)) {
-    echo '<div class="form-exception">' . $exception . '</div><br>';
+    echo '<div class="form__exception">' . $exception . '</div><br>';
 }
 
 ?>
-    <fieldset>
-        <label>Nombre de Usuario:</label><br>
-        <input type="text" class="auth-form" name="username" required><br>
-        <label>Email:</label><br>
-        <input type="email" class="auth-form" name="email" required><br>
-        <label>Contraseña:</label><br>
-        <input type="password" class="auth-form" name="password" required><br>
-        <label>Repetir Contraseña:</label><br>
-        <input type="password" class="auth-form" name="password2" required><br>
-        <input type="submit" name="submit" value="Registrate">
-        o <a href="../auth/login">Iniciar Sesión</a>
-    </fieldset>
+    <label class="form__label">Nombre de Usuario:</label><br>
+    <input class="form__field" type="text" name="username" required><br>
+    <label class="form__label">Email:</label><br>
+    <input class="form__field" type="email" name="email" required><br>
+    <label class="form__label">Contraseña:</label><br>
+    <input class="form__field" type="password" name="password" required><br>
+    <label class="form__label">Repetir Contraseña:</label><br>
+    <input class="form__field" type="password" name="password2" required><br>
+    <div class="form__button-box">
+        <input class="button" type="submit" name="submit" value="Regístrate">
+        <p class="form__p"> o <a href="../auth/login">Inicia Sesión</a></p>
+    </div>
 </form>
 

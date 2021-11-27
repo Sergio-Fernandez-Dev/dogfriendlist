@@ -1,25 +1,25 @@
 <?php
-namespace App\Auth\Forms;
+namespace App\Forms;
 
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\GatewayInterface;
-use App\Core\Interfaces\EntityManagerInterface;
+use App\Core\Interfaces\EntityHandlerInterface;
 
 abstract class Form {
 
     /**
      * @var mixed
      */
-    protected $manager;
+    protected $handler;
 
     abstract public function send();
 
     /**
      * @param GatewayInterface $dbh
      */
-    public function __construct(EntityManagerInterface $manager) {
+    public function __construct(EntityHandlerInterface $handler) {
 
-        $this->manager = $manager;
+        $this->handler = $handler;
     }
 
     /**

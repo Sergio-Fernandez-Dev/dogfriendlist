@@ -1,7 +1,7 @@
 <?php declare (strict_types = 1);
 namespace App\Auth\Mail;
 
-use App\Users\User;
+use App\Models\Users\User;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;

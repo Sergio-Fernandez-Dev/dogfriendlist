@@ -1,6 +1,7 @@
 <?php
 $user = $_SESSION['user'];
 $profile_img = $user->getImg();
+$user_id = $user->getId();
 ?>
 
 <header class="header">
@@ -11,12 +12,12 @@ $profile_img = $user->getImg();
         <nav class="nav">
             <div class="nav__menu">
                 <div class="nav__button">
-                    <a class="nav__link" href="../spot/new">
+                    <a class="nav__link" href="../new-spot">
                         <i class="material-icons">add_location_alt</i>
                     </a>
                 </div>
                 <div class="nav__button">
-                    <a class="nav__link" href="../user/favourites">
+                    <a class="nav__link" href="../user/<?php echo $user_id ?>/favourites">
                         <span class="material-icons">favorite</span>
                     </a>
                 </div>

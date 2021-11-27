@@ -1,10 +1,10 @@
 <?php
-namespace App\Auth\Forms;
+namespace App\Forms;
 
-use App\Auth\Forms\Form;
+use App\Forms\Form;
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\EntityInterface;
-use App\Users\Interfaces\UserManagerInterface;
+use App\Models\Users\Interfaces\UserHandlerInterface;
 
 class RegisterForm extends Form {
     /**
@@ -29,11 +29,11 @@ class RegisterForm extends Form {
 
     /**
      * @param array $data
-     * @param UserManagerInterface $manager
+     * @param UserHandlerInterface $handler
      */
-    public function __construct(array $data, UserManagerInterface $manager) {
+    public function __construct(array $data, UserHandlerInterface $handler) {
 
-        parent::__construct($manager);
+        parent::__construct($handler);
 
         $data = $this->_getData($data);
 
@@ -55,13 +55,13 @@ class RegisterForm extends Form {
 
         $this->_validateEmail($this->email);
 
-        $user = $this->manager->findByEmail($this->email);
+        $user = $this->handler->findByEmail($this->email);
 
         if (null != $user->getEmail()) {
             throw new FormException('La dirección de correo ya ha sido registrada anteriormente.');
         }
 
-        $user = $this->manager->findByUsername($this->username);
+        $user = $this->handler->findByUsername($this->username);
 
         if (null != $user->getUsername()) {
             throw new FormException('El nombre de usuario ya existe.');

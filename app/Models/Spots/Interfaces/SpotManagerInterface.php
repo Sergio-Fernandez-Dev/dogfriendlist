@@ -1,9 +1,9 @@
 <?php
-namespace App\Spots\Interfaces;
+namespace App\Models\Spots\Interfaces;
 
-use App\Core\Interfaces\EntityManagerInterface;
+use App\Core\Interfaces\EntityHandlerInterface;
 
-interface SpotManagerInterface extends EntityManagerInterface {
+interface SpotHandlerInterface extends EntityHandlerInterface {
 
     /**
      * @param int $user_id
@@ -39,4 +39,6 @@ interface SpotManagerInterface extends EntityManagerInterface {
 }
 
 ?>
+
+
 

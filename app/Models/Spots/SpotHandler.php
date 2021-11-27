@@ -1,12 +1,12 @@
 <?php
-namespace App\Spots;
+namespace App\Models\Spots;
 
-use App\Core\EntityManager;
+use App\Core\EntityHandler;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
-use App\Spots\Interfaces\SpotManagerInterface;
+use App\Models\Spots\Interfaces\SpotHandlerInterface;
 
-class SpotManager extends EntityManager implements SpotManagerInterface {
+class SpotHandler extends EntityHandler implements SpotHandlerInterface {
 
     /**
      * @param GatewayInterface $db
