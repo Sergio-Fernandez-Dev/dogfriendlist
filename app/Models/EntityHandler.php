@@ -1,12 +1,12 @@
 <?php
-namespace App\Core;
+namespace App\Models;
 
 use LogicException;
-use App\Core\Interfaces\EntityInterface;
 use Exceptions\Db\UserNotFoundException;
 use App\Core\Interfaces\GatewayInterface;
+use App\Models\Interfaces\EntityInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
-use App\Core\Interfaces\EntityHandlerInterface;
+use App\Models\Interfaces\EntityHandlerInterface;
 
 abstract class EntityHandler implements EntityHandlerInterface {
 
@@ -179,6 +179,9 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
+
+
 
 
 

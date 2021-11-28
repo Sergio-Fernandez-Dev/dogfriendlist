@@ -17,9 +17,9 @@ function render(string $page, bool $base_page = true, ...$params): void {
 
     if ($base_page) {
         if (isset($_SESSION['user'])) {
-            $header = COMPONENTS_PATH . 'logged-navbar.php';
+            $header = COMPONENTS_PATH . 'navbars/logged-navbar.php';
         } else {
-            $header = COMPONENTS_PATH . 'unlogged-navbar.php';
+            $header = COMPONENTS_PATH . 'navbars/unlogged-navbar.php';
         }
         $main_content = BASE_VIEW_PATH . $page;
         require_once \BASE_VIEW_TEMPLATE;
@@ -37,4 +37,17 @@ function render(string $page, bool $base_page = true, ...$params): void {
 function redirect(string $route): void {
     $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
     header("Location: $root" . "$route");
+}
+
+/**
+ * Impide el acceso a usuarios sin autenticación, redirigiéndolos
+ * a la ruta pasada como argumento
+ *
+ * @param $route
+ */
+function authRequired($route = "") {
+
+    if (!isset($_SESSION['user'])) {
+        redirect($route);
+    }
 }

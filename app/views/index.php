@@ -1,8 +1,8 @@
-
 <div class="box">
-    <form class="form" action="/search" method="post">
-        <input class="form__field form__field--finder" id="index-finder" type="search" placeholder="Madrid">
-        <select class="form__select">
+    <form class="form form--finder-style" action="/search" method="post">
+
+        <input class="form__field form__field--finder-style" id="index-finder" type="search" placeholder="Madrid">
+        <select class="form__select form__select--finder-style">
             <option class="form__option" selected value="0">Tipo de spot</option>
             <option class="form__option" value="1">Todos</option>
             <option class="form__option" value="2">Parques y zonas verdes</option>
@@ -17,5 +17,5 @@
     </form>
     <span class="box__separation-line"></span>
     <h2 class="h2">Cerca de ti:</h2>
-<?php render('geolocation/map.php', false);?>
+<?php render('components/geolocation/map.php', false);?>
 </div>

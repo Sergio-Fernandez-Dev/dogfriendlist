@@ -1,6 +1,5 @@
 <?php
 $user = $_SESSION['user'];
-$profile_img = $user->getImg();
 $user_id = $user->getId();
 ?>
 

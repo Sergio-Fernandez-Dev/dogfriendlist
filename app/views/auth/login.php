@@ -10,5 +10,5 @@ if (isset($verification)) {
 ?>
 <!-- A continuación renderizaremos el formulario de login -->
 <div class="box">
-<?php render('auth/components/login-form.php', base_page: false, exception:  $exception, login_title: $login_title) ?>
+<?php render('components/forms/login-form.php', base_page: false, exception:  $exception, login_title: $login_title) ?>
 </div>

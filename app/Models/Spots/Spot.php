@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Spots;
 
-use App\Core\Interfaces\EntityInterface;
+use App\Models\Interfaces\EntityInterface;
 
 class Spot implements EntityInterface {
 
@@ -26,9 +26,18 @@ class Spot implements EntityInterface {
     private $title;
 
     /**
-     * @var strting
+     * @var string
      */
     private $description;
+
+    /**
+     * @var float
+     */
+    private $lat;
+    /**
+     * @var float
+     */
+    private $lng;
 
     /**
      * @var string
@@ -156,6 +165,34 @@ class Spot implements EntityInterface {
      */
     public function setDescription($description) {
         $this->description = $description;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLat() {
+        return $this->lat;
+    }
+
+    /**
+     * @param float $lat
+     */
+    public function setLat($lat) {
+        $this->lat = $lat;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLng() {
+        return $this->lng;
+    }
+
+    /**
+     * @param float $lng
+     */
+    public function setLng($lng) {
+        $this->lng = $lng;
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\Interfaces;
+namespace App\Models\Interfaces;
 
 interface EntityHandlerInterface {
 
@@ -30,4 +30,5 @@ interface EntityHandlerInterface {
 }
 
 ?>
+
 

@@ -9,7 +9,7 @@ function initMap() {
   // Creamos un mapa con las coordenadas por defecto.
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.416, lng: -3.703 },
-    zoom: 14,
+    zoom: 16,
     mapId: "1b3b30d8e6caa90",
   });
 

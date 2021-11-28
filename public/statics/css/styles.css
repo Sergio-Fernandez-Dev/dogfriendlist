@@ -2,6 +2,8 @@ html {
     font-size: 10px;
 }
 
+
+
 .body {
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +22,7 @@ html {
 }
 
 .h2 {
-    width: 95%;
+    width: 100%;
     align-self: center;
     font-size: 2.8em;
 }
@@ -133,13 +135,13 @@ html {
 .box {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 90%;
     height: auto;
     margin: 0 auto;
 }
 
 .box__separation-line {
-    width: inherit;
+    width: 100%;
     border-bottom:  0.1rem solid #928A97;
     align-self: center;
     margin: 3rem 0;
@@ -149,20 +151,42 @@ html {
 /* Formularios */
 
 .form {
-    width:95%;
-    align-content: center;
-    align-self: center;
+    width:100%;
+    height: auto;
 }
 
 .form--35rem {
     width: 35rem;
+    flex-wrap: wrap;
+    align-self: center;
+    min-height: 600px;
+}
+
+.form--finder-style {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    margin-bottom: 2rem;
+}
+
+.form__a {
+    margin-left: 0.5rem;
 }
 
 .form__button-box {
     width: 100%;
     display: flex;
     flex-direction: row;
-    margin-top: 1rem;
+    margin: 1rem 0;
+}
+
+.form__button-box--column {
+    width: auto;
+    flex-direction: column;
+    align-self: flex-end;
+    margin-left: 2rem;
 }
 
 .form__exception {
@@ -181,40 +205,58 @@ html {
     border: 0.1rem solid #928A97;
     border-radius: 2rem;
     background-color: #FFFFFF;
-    margin: 1rem 0;
     padding: 0 2rem;
 }
 
-.form__field--finder {
+.form__field--finder-style {
     width: 50%;
-    padding: 0 2rem;
-    margin-right: 1rem;
+    margin-right: 2rem;  
 }
 
 .form__label {
+    display: inline-block;
     font-size: 2rem;
+    margin: 1rem 0;
 }
+
 
 .form__p {
     font-size: 1.5rem;
-    margin-left: 1rem;
+    margin-left: 2rem;
     align-self: center;
 }
 
 .form__select {
-    width: auto;
+    width: 25rem;
     height: 4rem;
     font-size: 2rem;
     border: 0.1rem solid #928A97;
     border-radius: 2rem;
     padding-left: 2rem;
-    margin-right: 1rem;
+
     background-color: #FFFFFF;
 }
 
+.form__select--finder-style {
+    margin-right: 2rem;  
+}
+
+.form__textarea-box {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.form__textarea-column {
+    width: 87%;
+    flex-direction: column;
+}
 
 .button {
-    min-width: 12rem;
+    width: 15rem;
     height: 4rem;
     font-size: 1.6rem;
     padding-left: 1rem;
@@ -225,16 +267,28 @@ html {
     color:#FFFFFF;
 }
 
+.button--25rem {
+    width: 25rem;
+}
 
+.button--red {
+    background-color: #ff7a7a;
+    margin-top: 2rem;
+}
 
 .map {
     height: 60rem;
-    width: 95%;
+    width: 100%;
     align-self: center;
     border:  0.1rem solid #928A97;
     border-radius: 2rem;
     margin-top: 1rem;
-  }
+}
 
+.textarea {
+    width: 100%;
+    padding: 2rem;
+    font-size: 2rem;
+}
 
 

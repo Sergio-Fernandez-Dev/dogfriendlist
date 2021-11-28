@@ -2,7 +2,7 @@
 namespace App\Models\Users;
 
 use App\Models\Users\User;
-use App\Core\EntityHandler;
+use App\Models\EntityHandler;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Models\Users\Interfaces\UserHandlerInterface;

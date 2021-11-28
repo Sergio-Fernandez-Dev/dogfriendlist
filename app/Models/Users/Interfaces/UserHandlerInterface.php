@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Users\Interfaces;
 
-use App\Core\Interfaces\EntityHandlerInterface;
+use App\Models\Interfaces\EntityHandlerInterface;
 
 Interface UserHandlerInterface extends EntityHandlerInterface {
     /**
@@ -31,6 +31,7 @@ Interface UserHandlerInterface extends EntityHandlerInterface {
 }
 
 ?>
+
 
 
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Spots;
 
-use App\Core\EntityHandler;
+use App\Models\EntityHandler;
 use App\Core\Interfaces\GatewayInterface;
 use App\Core\Interfaces\QueryBuilderInterface;
 use App\Models\Spots\Interfaces\SpotHandlerInterface;

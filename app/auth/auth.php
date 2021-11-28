@@ -14,8 +14,6 @@ use Exceptions\Form\FormException;
     route::add('/login', ['GET', 'POST'],
     function () {
 
-        session_start();
-
         $title = 'Login';
 
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -39,6 +37,7 @@ use Exceptions\Form\FormException;
 
                 return render('auth/login.php', title: $title, exception: $exception);
             }
+            session_start();
             //Si el login se ha realizado correctamente, almacenamos el usuario recibido en una variable de sesión.
             $_SESSION['user'] = $user;
             

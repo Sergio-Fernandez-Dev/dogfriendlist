@@ -3,7 +3,7 @@ namespace App\Forms;
 
 use Exceptions\Form\FormException;
 use App\Core\Interfaces\GatewayInterface;
-use App\Core\Interfaces\EntityHandlerInterface;
+use App\Models\Interfaces\EntityHandlerInterface;
 
 abstract class Form {
 

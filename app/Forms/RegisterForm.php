@@ -3,7 +3,7 @@ namespace App\Forms;
 
 use App\Forms\Form;
 use Exceptions\Form\FormException;
-use App\Core\Interfaces\EntityInterface;
+use App\Models\Interfaces\EntityInterface;
 use App\Models\Users\Interfaces\UserHandlerInterface;
 
 class RegisterForm extends Form {

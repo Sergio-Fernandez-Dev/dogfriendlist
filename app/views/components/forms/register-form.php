@@ -16,7 +16,7 @@ if (isset($exception)) {
     <input class="form__field" type="password" name="password2" required><br>
     <div class="form__button-box">
         <input class="button" type="submit" name="submit" value="Regístrate">
-        <p class="form__p"> o <a href="../auth/login">Inicia Sesión</a></p>
+        <p class="form__p"> o <a class="form__a" href="../auth/login">Inicia Sesión</a></p>
     </div>
 </form>
 

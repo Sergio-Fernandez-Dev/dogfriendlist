@@ -33,6 +33,8 @@ CREATE TABLE `Spots` (
   `id` INT(8) NOT NULL UNIQUE,
   `title` VARCHAR(25) NOT NULL UNIQUE,
   `description` TEXT(500) NOT NULL,
+  `lat` DECIMAL(6,3) NOT NULL,
+  `lng` DECIMAL(6,3) NOT NULL,
   `address` VARCHAR(125)CHARACTER SET cp1250 COLLATE cp1250_bin DEFAULT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` INT(8) NOT NULL,
@@ -59,13 +61,6 @@ CREATE TABLE `Comments` (
   `spot_id` INT(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Estructura de la tabla `Coordinates`
-
-CREATE TABLE `Coordinates` (
-  `spot_id` INT(8) NOT NULL,
-  `long` DECIMAL(6,3) NOT NULL,
-  `lat` DECIMAL(6,3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Estructura de la tabla `Ratings`
 
@@ -107,9 +102,6 @@ ALTER TABLE `Spots`
   ADD PRIMARY KEY (`id`),
   MODIFY `id` INT(8) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `Coordinates`
-  ADD PRIMARY KEY `FK_COORDINATES_SPOTS` (`spot_id`),
-  MODIFY `spot_id` INT(8) NOT NULL ;
 
 ALTER TABLE `Comments`
   ADD PRIMARY KEY (`id`),
@@ -144,11 +136,6 @@ ALTER TABLE `Spots`
   REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_SPOTS_CATEGORIES` FOREIGN KEY (`category_id`) 
   REFERENCES `Categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
-ALTER TABLE `Coordinates`
-  ADD CONSTRAINT `FK_COORDINATES_SPOTS` FOREIGN KEY (`spot_id`) 
-  REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `Comments`
   ADD CONSTRAINT `FK_COMMENTS_USERS` FOREIGN KEY (`user_id`) 

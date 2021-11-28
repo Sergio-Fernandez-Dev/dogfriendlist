@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Users;
 
-use App\Core\Interfaces\EntityInterface;
+use App\Models\Interfaces\EntityInterface;;
 
 class User implements EntityInterface {
 

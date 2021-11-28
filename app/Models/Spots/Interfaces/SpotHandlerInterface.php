@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Spots\Interfaces;
 
-use App\Core\Interfaces\EntityHandlerInterface;
+use App\Models\Interfaces\EntityHandlerInterface;
 
 interface SpotHandlerInterface extends EntityHandlerInterface {
 
@@ -34,11 +34,14 @@ interface SpotHandlerInterface extends EntityHandlerInterface {
      * @param float $long
      * @param float $lat
      */
-    public function findByCloseness(float $long, float $lat);
+    public function findByCloseness(float $long, float $lat, float $distance);
 
 }
 
 ?>
+
+
+
 
 
 
