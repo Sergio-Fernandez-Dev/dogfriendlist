@@ -1,4 +1,4 @@
-<?php declare (strict_types = 1);
+<?php
 
 /**
  * Carga las vistas y les pasa los argumentos
@@ -43,9 +43,9 @@ function redirect(string $route): void {
  * Impide el acceso a usuarios sin autenticación, redirigiéndolos
  * a la ruta pasada como argumento
  *
- * @param $route
+ * @param string $route
  */
-function authRequired($route = "") {
+function authRequired(string $route = ""): void {
 
     if (!isset($_SESSION['user'])) {
         redirect($route);
