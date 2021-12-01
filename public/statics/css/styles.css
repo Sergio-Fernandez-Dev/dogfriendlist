@@ -285,6 +285,11 @@ html {
     margin-top: 1rem;
 }
 
+.p {
+    font-size: 1.5rem;
+    justify-self: left;
+}
+
 .textarea {
     width: 100%;
     padding: 2rem;

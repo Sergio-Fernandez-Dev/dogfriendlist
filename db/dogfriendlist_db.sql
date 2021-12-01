@@ -100,7 +100,7 @@ ALTER TABLE `Spots`
 
   ALTER TABLE `Categories`
   ADD PRIMARY KEY (`id`),
-  MODIFY `id` INT(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` INT(8) NOT NULL;
 
 
 ALTER TABLE `Comments`

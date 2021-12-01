@@ -19,21 +19,25 @@
 <body class="body">
 
 <?php
-// Cargamos la cabecera y el cuerpo dinámicamente
-require_once $header;
+// Si se ha establecido $base_page como true, cargamos la cabecera y el footer,
+// si no solo cargaremos el contenido principal.
+if ($base_page) {
+    require_once $header;
+}
+
 include_once $main_content;
 
-?>
+if ($base_page) {
+    require_once $footer;
+}
 
-    <footer class="footer"></footer>
-
-<?php
 // Cargamos nuestros scripts dinámicamente
 foreach ($scripts as $script) {
     require_once $script;
 }
 
 ?>
+
 </body>
 </html>
 

@@ -22,9 +22,10 @@ function render(string $page, bool $base_page = true, ...$params): void {
             $header = COMPONENTS_PATH . 'navbars/unlogged-navbar.php';
         }
         $main_content = BASE_VIEW_PATH . $page;
+        $footer = COMPONENTS_PATH . 'footer/footer.php';
         require_once \BASE_VIEW_TEMPLATE;
     } else {
-        require_once \BASE_VIEW_PATH . $page;
+        $main_content = \BASE_VIEW_PATH . $page;
     }
 
 }

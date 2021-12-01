@@ -2,6 +2,15 @@
 let map, userMarker;
 
 function initMap() {
+  $.ajax({
+    type:"POST", // la variable type guarda el tipo de la peticion GET,POST,..
+    url:"/", //url guarda la ruta hacia donde se hace la peticion
+    data:{nombre:"pepe",edad:10}, // data recive un objeto con la informacion que se enviara al servidor
+    success:function(){ //success es una funcion que se utiliza si el servidor retorna informacion
+         console.log('correcto')
+     },
+    dataType: "json" // El tipo de datos esperados del servidor. Valor predeterminado: Intelligent Guess (xml, json, script, text, html).
+})
   //Creamos el marcador que nos mostrará la localización del usuario.
   const userMarker = new google.maps.Marker();
   userMarker.setIcon('../statics/img/marker2.png');
@@ -14,7 +23,7 @@ function initMap() {
   });
 
   $(document).ready(() => {
-    
+   
     // Si el navegador permite la geolocalización
     if (navigator.geolocation) {
       // Obtenemos la posicion 
@@ -32,7 +41,7 @@ function initMap() {
           userMarker.setPosition(pos);
           userMarker.setMap(map);
           map.setCenter(pos);
-          $.post("/auth/login", {lat: pos['lat'], lng: pos['lng']});
+         
         },
         // Si no podemos establecer la posición llamamos a handleLocationError
         () => {
@@ -75,4 +84,8 @@ function getAddressFromCoordinates(position){
       } 
     }
   );  
+}
+
+function chargeNearSpots(position) {
+  
 }

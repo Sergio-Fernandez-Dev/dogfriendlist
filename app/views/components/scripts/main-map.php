@@ -1,1 +1,5 @@
-<script src="../statics/js/geolocation/map.js"></script>
+<?php
+
+require_once "../public/statics/js/geolocation/map.php";
+
+?>
