@@ -912,7 +912,7 @@ default_socket_timeout = 60
 ;   Be sure to appropriately set the extension_dir directive.
 ;
 ;extension=bz2
-;extension=curl
+extension=curl
 ;extension=ffi
 ;extension=ftp
 ;extension=fileinfo
@@ -927,7 +927,7 @@ default_socket_timeout = 60
 extension=mysqli
 ;extension=oci8_12c  ; Use with Oracle Database 12c Instant Client
 ;extension=odbc
-;extension=openssl
+extension=openssl
 ;extension=pdo_firebird
 extension=pdo_mysql
 ;extension=pdo_oci
@@ -941,7 +941,7 @@ extension=pdo_sqlite
 ; See http://www.php.net/manual/en/snmp.installation.php
 ;extension=snmp
 
-;extension=soap
+extension=soap
 extension=sockets
 ;extension=sodium
 extension=sqlite3
@@ -960,7 +960,7 @@ cli_server.color = On
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
-;date.timezone =
+date.timezone = Europe/Madrid
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667

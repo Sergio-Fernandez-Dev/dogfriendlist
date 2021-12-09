@@ -11,7 +11,7 @@ use App\Forms\RegisterForm;
 use Exceptions\Form\FormException;
 
 
-    route::add('/login', ['GET', 'POST'],
+route::add('/login', ['GET', 'POST'],
     function () {
 
         $title = 'Login';

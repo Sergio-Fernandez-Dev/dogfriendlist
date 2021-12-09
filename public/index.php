@@ -9,6 +9,7 @@ use App\Core\Router as route;
 use App\Forms\SpotForm;
 use App\Models\Users\UserHandler;
 use Exceptions\Form\FormException;
+use Exceptions\Db\UserNotFoundException;
 
 route::add('/', ['GET', 'POST'],
     function () {
@@ -30,7 +31,7 @@ route::add('/', ['GET', 'POST'],
                 // con su id y un tiempo de expiración de 3 meses.
                 if (isset($_SESSION['remember_me']) && !isset($_COOKIE['user_id'])) {
                     $user = $_SESSION['user'];
-                   // setcookie('user_id', $user->getId(), time() + 90 * 24 * 60 * 60);
+                    setcookie('user_id', $user->getId(), time() + 90 * 24 * 60 * 60);
                 } 
 
                 //Si existe una cookie con la id de usuario pero no hay una sesión activa, 
@@ -41,26 +42,26 @@ route::add('/', ['GET', 'POST'],
                     $qb = new QueryBuilder();
                     $handler = new UserHandler($db, $qb);
 
-                    // $user = $handler->find($_COOKIE['user_id']);
-                    // $_SESSION['user'] = $user;
-                   
+                    try {
+                        $user = $handler->find($_COOKIE['user_id']);
+                        $_SESSION['user'] = $user;
+                    } catch (UserNotFoundException $e) {
+                        unset($_COOKIE['user_id']);
+                    }       
                 }
                 //Establecemos la función a la que llamaremos para crear nuestro mapa;
                 $callback = 'initMap';
                 return render('index.php', title: $title, scripts: $scripts, callback: $callback);
     
             case 'POST':
-                echo 'Hola';
                 
         }
-        
-        
     }
 );
 
 route::add('/new-spot', ['GET', 'POST'],
     function () {
-        
+
         session_start();
         authRequired();
     
@@ -88,6 +89,8 @@ route::add('/new-spot', ['GET', 'POST'],
                 
                     return render('new-spot.php', title: $title, exception: $exception);
                 }
+
+                
         }
     }
 );
@@ -95,33 +98,40 @@ route::add('/new-spot', ['GET', 'POST'],
 route::add('/charge-near-spots', 'POST',
     function () {
 
-        $db = new DB();
-        $qb = new QueryBuilder();
-        $handler = new SpotHandler($db, $qb);
+        // $db = new DB();
+        // $qb = new QueryBuilder();
+        // $handler = new SpotHandler($db, $qb);
 
-        $lat = $_POST['lat'];
-        $lng = $_POST['long'];
+        // $lat = $_POST['lat'];
+        // $lng = $_POST['long'];
 
-        $spot_list = $handler->findByCloseness($lat, $lng, 10);
-        $result = [];
+        // $spot_list = $handler->findByCloseness($lat, $lng, 10);
+        // $result = [];
 
-        foreach ($spot_list as $spot) {
-            $result[] = $spot->getClassParams(false);
-        }
+        // foreach ($spot_list as $spot) {
+        //     $result[] = $spot->getClassParams(false);
+        // }
 
-      json_encode($result);
- 
-        print_r($_POST);
+        // $result = 'hola';
+        // echo json_encode($result);
     }
 );
 
 route::add('/auth/([a-zA-Z0-9/]*)', ['GET', 'POST'],
-    function ($action) {
+    function () {
+        
         require_once '../app/Auth/auth.php';
     }
 );
 
-route::add('/test', 'GET',
+route::add('/geolocation/([a-zA-Z0-9-_/]*)', ['GET', 'POST'],
+    function () {
+
+        require_once '../app/Geolocation/geolocation.php';
+    }
+);
+
+route::add('/test', ['GET', 'POST'],
     function () {
 
         require_once '../app/test.php';

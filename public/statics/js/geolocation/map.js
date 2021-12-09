@@ -2,15 +2,7 @@
 let map, userMarker;
 
 function initMap() {
-  $.ajax({
-    type:"POST", // la variable type guarda el tipo de la peticion GET,POST,..
-    url:"/", //url guarda la ruta hacia donde se hace la peticion
-    data:{nombre:"pepe",edad:10}, // data recive un objeto con la informacion que se enviara al servidor
-    success:function(){ //success es una funcion que se utiliza si el servidor retorna informacion
-         console.log('correcto')
-     },
-    dataType: "json" // El tipo de datos esperados del servidor. Valor predeterminado: Intelligent Guess (xml, json, script, text, html).
-})
+
   //Creamos el marcador que nos mostrará la localización del usuario.
   const userMarker = new google.maps.Marker();
   userMarker.setIcon('../statics/img/marker2.png');
@@ -23,10 +15,10 @@ function initMap() {
   });
 
   $(document).ready(() => {
-   
+
     // Si el navegador permite la geolocalización
     if (navigator.geolocation) {
-      // Obtenemos la posicion 
+      // Obtenemos la posicion
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const pos = {
@@ -35,13 +27,14 @@ function initMap() {
           };
           //Obtenemos la dirección correspondiente a las coordenadas recibidas.
           getAddressFromCoordinates(pos);
+          chargeNearSpots(pos, map)
 
           // Colocamos nuestro marcador de usuario en la posición obtenida del navegador.
 
           userMarker.setPosition(pos);
           userMarker.setMap(map);
           map.setCenter(pos);
-         
+
         },
         // Si no podemos establecer la posición llamamos a handleLocationError
         () => {
@@ -61,8 +54,8 @@ function handleLocationError(browserHasGeolocation, userMarker, pos) {
 
   userMarker.setPosition(pos);
   userMarker.setLabel(
-    browserHasGeolocation   
-    ? "Advertencia: Activa la geolocalización para una mejor experiencia." 
+    browserHasGeolocation
+    ? "Advertencia: Activa la geolocalización para una mejor experiencia."
     : "Error: El navegador no permite la geolocalización."
   );
   userMarker.setMap(map);
@@ -81,11 +74,38 @@ function getAddressFromCoordinates(position){
         const placeholder = document.querySelector('#index-finder');
         placeholder.removeAttribute('placeholder');
         placeholder.setAttribute('placeholder', address);
-      } 
+      }
     }
-  );  
+  );
 }
 
-function chargeNearSpots(position) {
+function chargeNearSpots( position, map ) {
+  $.post( "../geolocation/charge-near-spots", 
+    {"coords" : { "lat" : position["lat"], "lng" : position["lng"] }})
+    .done(function( result ) {
+      
+      var spots = JSON.parse(result);
+      var spot_list = [];
+      var length = spots.length;
+
+      for (var i = 0; i < length; i++) {
+
+        const pos = {
+          lat: parseFloat(spots[i].lat),
+          lng: parseFloat(spots[i].lng),
+        }
+
+        let title = spots[i].title;
+
+        let marker = new google.maps.Marker({
+          position: pos,
+          map: map
+        });
+
+      
+
+      }
+
+    })
   
 }

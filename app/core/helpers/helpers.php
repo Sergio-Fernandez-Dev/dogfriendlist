@@ -17,15 +17,18 @@ function render(string $page, bool $base_page = true, ...$params): void {
 
     if ($base_page) {
         if (isset($_SESSION['user'])) {
-            $header = COMPONENTS_PATH . 'navbars/logged-navbar.php';
+            $header = \COMPONENTS_PATH . 'navbars/logged-navbar.php';
         } else {
-            $header = COMPONENTS_PATH . 'navbars/unlogged-navbar.php';
+            $header = \COMPONENTS_PATH . 'navbars/unlogged-navbar.php';
         }
-        $main_content = BASE_VIEW_PATH . $page;
-        $footer = COMPONENTS_PATH . 'footer/footer.php';
-        require_once \BASE_VIEW_TEMPLATE;
-    } else {
+
         $main_content = \BASE_VIEW_PATH . $page;
+        $footer = \COMPONENTS_PATH . 'footer/footer.php';
+
+        require_once \BASE_VIEW_TEMPLATE;
+
+    } else {
+        require_once \BASE_VIEW_PATH . $page;
     }
 
 }

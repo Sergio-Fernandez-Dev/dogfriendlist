@@ -1,3 +1,3 @@
-<?php
-echo 'test';
-?>
+<h1>hello</h1>
+
+

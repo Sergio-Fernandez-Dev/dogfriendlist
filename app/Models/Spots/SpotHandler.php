@@ -150,19 +150,13 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
              WHERE (lat BETWEEN ' . $box['min_lat'] . ' AND ' . $box['max_lat'] . ')
              AND (lng BETWEEN ' . $box['min_lng'] . ' AND ' . $box['max_lng'] . ')
              HAVING distance < ' . $distance . '
-             ORDER BY distance ASC',
-
-            $lat, $lng, $box, $distance)
+             ORDER BY distance ASC')
             ->get();
 
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $spot_list = [];
-
-        foreach ($result as $spot) {
-            $spot_list = $this->make($spot);
-        }
+        $spot_list[] = $this->make($result);
 
         return $spot_list;
     }
