@@ -85,6 +85,7 @@ function chargeNearSpots( position, map ) {
     .done(function( result ) {
       
       var spots = JSON.parse(result);
+      console.log(spots);
       var spot_list = [];
       var length = spots.length;
 
@@ -101,9 +102,6 @@ function chargeNearSpots( position, map ) {
           position: pos,
           map: map
         });
-
-      
-
       }
 
     })
