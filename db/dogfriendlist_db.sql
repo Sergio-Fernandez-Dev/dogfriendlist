@@ -31,7 +31,7 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Spots` (
   `id` INT(8) NOT NULL UNIQUE,
-  `title` VARCHAR(25) NOT NULL UNIQUE,
+  `title` VARCHAR(50) NOT NULL UNIQUE,
   `description` TEXT(500) NOT NULL,
   `lat` DECIMAL(6,3) NOT NULL,
   `lng` DECIMAL(6,3) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE `Categories` (
 
 CREATE TABLE `Comments` (
   `id` INT(8) NOT NULL,
-  `title` VARCHAR(25) NOT NULL,
+  `title` VARCHAR(50) NOT NULL,
   `comment` TEXT(500) NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` INT(8) NOT NULL,

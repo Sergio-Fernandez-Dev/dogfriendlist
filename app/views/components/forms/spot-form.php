@@ -5,12 +5,13 @@
                 <option class="form__option" selected value="0">Tipo de spot</option>
                 <option class="form__option" value="1">Todos</option>
                 <option class="form__option" value="2">Parques y zonas verdes</option>
-                <option class="form__option" value="3">Alojamiento</option>
-                <option class="form__option" value="4">Bares y restaurantes</option>
-                <option class="form__option" value="5">Tiendas de mascotas</option>
-                <option class="form__option" value="6">Clínicas veterinarias</option>
-                <option class="form__option" value="7">Guarderías caninas</option>
-                <option class="form__option" value="8">Otros</option>
+                <option class="form__option" value="3">Playas</option>
+                <option class="form__option" value="4">Alojamiento</option>
+                <option class="form__option" value="5">Bares y restaurantes</option>
+                <option class="form__option" value="6">Tiendas de mascotas</option>
+                <option class="form__option" value="7">Clínicas veterinarias</option>
+                <option class="form__option" value="8">Guarderías caninas</option>
+                <option class="form__option" value="9">Otros</option>
             </select><br>
     </div>
     <div class="form form--finder-style">
