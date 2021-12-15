@@ -6,7 +6,7 @@ use App\Core\QueryBuilder;
 use App\Core\Router as route;
 use App\Models\Spots\SpotHandler;
 
-route::add('/charge-near-spots', 'POST',
+route::add('/charge-spots', 'POST',
     function () {
 
         if (isset($_POST['coords'])) {
@@ -18,13 +18,30 @@ route::add('/charge-near-spots', 'POST',
             $lat = $coords['lat'];
             $lng = $coords['lng'];
 
-            $spot_list = $handler->findByCloseness($lat, $lng, 10);
+            $spot_list = $handler->findAll();
 
             foreach ($spot_list as $spot) {
                 $result[] = $spot->getClassParams(false);
             }
 
             echo json_encode($result);
+        }
+    }
+);
+
+route::add("/search", ['GET', 'POST'],
+    function () {
+        if (isset($_GET['place']) && isset($_GET['category'])) {
+            $query = [
+                'place'    => $_GET['place'],
+                'category' => $_GET['category'],
+            ];
+
+            $test = ['get' => 'si'];
+            echo json_encode($test);
+        } else {
+            $test = ['get' => 'no'];
+            echo json_encode($test);
         }
     }
 );

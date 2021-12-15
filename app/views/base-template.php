@@ -30,6 +30,7 @@ foreach ($scripts as $script) {
 }
 
 ?>
+<script src="../statics/js/scripts.js"></script>
 
 </body>
 </html>

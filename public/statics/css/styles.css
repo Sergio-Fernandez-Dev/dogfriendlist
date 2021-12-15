@@ -13,49 +13,41 @@ html {
     margin: 0;
 }
 
-.footer {
-    width: 100%;
-    height: 30rem;
-    background-color: #EDD0C0;
-    margin: 6rem 0 0 0;
-    align-self: flex-end;
-}
-
-.h2 {
-    width: 100%;
-    align-self: center;
-    font-size: 2.8em;
-}
-
-/* ===================  Header =================== */
-
-.header {
-    background-color: #928A97;
-    width: 100%;
-    height: 6rem; 
-    display: block;
-    margin-bottom: 4rem;
-}
-
-.header__content {
-    width: 90%;
-    height: 6rem;
+.box {
     display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: auto;
     margin: 0 auto;
-    flex-flow: row nowrap;
-    justify-content: space-between;
 }
 
-.header__logo {
-    width: auto;
-    font-family: 'Dosis', sans-serif;
-    font-size: 3rem;
-    letter-spacing: 0.5rem;
-    color: #FFFFFF;
-    margin: 0;
+.box__separation-line {
+    width: 100%;
+    border-bottom:  0.1rem solid #928A97;
     align-self: center;
+    margin: 3rem 0;
 }
 
+.button {
+    width: 15rem;
+    height: 4rem;
+    font-size: 1.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 0.1rem solid #928A97;
+    border-radius: 2rem;
+    background-color: #A4D6C8;
+    color:#FFFFFF;
+}
+
+.button--25rem {
+    width: 25rem;
+}
+
+.button--red {
+    background-color: #ff7a7a;
+    margin-top: 2rem;
+}
 
 /* Estilos para Unnlogged navbar  */
 
@@ -77,76 +69,13 @@ html {
     padding: 0.8rem 0.8rem;
 }
 
-/* Estilos para Logged navbar  */
-
-.profile-menu {
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-menu__picture {
-    align-self:flex-end;
-    padding-left: 1rem;
-    padding-top: 1.8rem;
-    color: #FFFFFF;
-}
-
-.profile-menu__submenu {
-    background-color: #928A97;
-    font-size: 1.5rem;
-    padding: 1rem;
-    display: none;
-}
-
-
-/* Menú de navegación */
-
-.nav {
-    background-color: #928A97;
-    width: auto;
-    align-self: center;
-}
-
-.nav__menu {
-    width: auto;
-}
-
-.nav__button {
-    color: #FFFFFF;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    display: inline-block;
-}
-
-.nav__link {
-    color: #FFFFFF;
-    text-decoration: none;
-}
-
-.nav__link--cascade {
-    display: block;
-    letter-spacing: 0.2rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-
-/* =================== Caja Mapa principal =================== */
-
-.box {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    height: auto;
-    margin: 0 auto;
-}
-
-.box__separation-line {
+.footer {
     width: 100%;
-    border-bottom:  0.1rem solid #928A97;
-    align-self: center;
-    margin: 3rem 0;
+    height: 30rem;
+    background-color: #EDD0C0;
+    margin: 6rem 0 0 0;
+    align-self: flex-end;
 }
-
 
 /* Formularios */
 
@@ -255,39 +184,135 @@ html {
     flex-direction: column;
 }
 
-.button {
-    width: 15rem;
-    height: 4rem;
-    font-size: 1.6rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border: 0.1rem solid #928A97;
-    border-radius: 2rem;
-    background-color: #A4D6C8;
-    color:#FFFFFF;
+.h2 {
+    width: 100%;
+    align-self: center;
+    font-size: 2.8em;
 }
 
-.button--25rem {
-    width: 25rem;
+/* ===================  Header =================== */
+
+.header {
+    background-color: #928A97;
+    width: 100%;
+    height: 6rem; 
+    display: block;
+    margin-bottom: 4rem;
 }
 
-.button--red {
-    background-color: #ff7a7a;
-    margin-top: 2rem;
+.header__content {
+    width: 90%;
+    height: 6rem;
+    display: flex;
+    margin: 0 auto;
+    flex-flow: row nowrap;
+    justify-content: space-between;
 }
 
+.header__logo {
+    width: auto;
+    font-family: 'Dosis', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.5rem;
+    color: #FFFFFF;
+    margin: 0;
+    align-self: center;
+}
+
+/* ================  Infowindows ================ */
+
+.infowindow {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-content: center;
+}
+
+.infowindow__title {
+    font-size: 1.8rem;
+    font-weight: bolder;
+}
+
+.infowindow__description {
+    font-size: 1.5rem;
+}
+
+/* ===================  Mapas =================== */
 .map {
     height: 60rem;
     width: 100%;
+    display: flex;
+    flex-direction: row;
     align-self: center;
+    justify-content: center;
     border:  0.1rem solid #928A97;
     border-radius: 2rem;
     margin-top: 1rem;
 }
 
+.map__p {
+    font-size: 1.5rem;
+    display: inline-block;
+    align-self: center;
+}
+
+/* Menú de navegación */
+
+.nav {
+    background-color: #928A97;
+    width: auto;
+    align-self: center;
+}
+
+.nav__menu {
+    width: auto;
+}
+
+.nav__button {
+    color: #FFFFFF;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    display: inline-block;
+}
+
+.nav__link {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.nav__link--cascade {
+    display: block;
+    letter-spacing: 0.2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
 .p {
     font-size: 1.5rem;
     justify-self: left;
+}
+
+
+/* Estilos para Logged navbar  */
+
+.profile-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-menu__picture {
+    align-self:flex-end;
+    padding-left: 1rem;
+    padding-top: 1.8rem;
+    color: #FFFFFF;
+}
+
+.profile-menu__submenu {
+    background-color: #928A97;
+    font-size: 1.5rem;
+    padding: 1rem;
+    display: none;
 }
 
 .textarea {
