@@ -88,32 +88,8 @@ route::add('/new-spot', ['GET', 'POST'],
                     $exception = $e->getMessage();
                 
                     return render('new-spot.php', title: $title, exception: $exception);
-                }
-
-                
+                }             
         }
-    }
-);
-
-route::add('/charge-near-spots', 'POST',
-    function () {
-
-        // $db = new DB();
-        // $qb = new QueryBuilder();
-        // $handler = new SpotHandler($db, $qb);
-
-        // $lat = $_POST['lat'];
-        // $lng = $_POST['long'];
-
-        // $spot_list = $handler->findByCloseness($lat, $lng, 10);
-        // $result = [];
-
-        // foreach ($spot_list as $spot) {
-        //     $result[] = $spot->getClassParams(false);
-        // }
-
-        // $result = 'hola';
-        // echo json_encode($result);
     }
 );
 

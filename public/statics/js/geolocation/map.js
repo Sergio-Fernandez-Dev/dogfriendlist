@@ -115,12 +115,14 @@ function getAddressFromCoordinates(position) {
 
 function getCoordinatesFromAddress(address, category) {
     //vaciamos la lista de marcadores 
-    for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-    let pos;
+    // for (let i = 0; i < markers.length; i++) {
+    //     markers[i].setMap(null);
+    // }
+    // markers = [];
+    clearMarkers();
     
-    markers = [];
+    let pos;
+
     const geocoder = new google.maps.Geocoder();
 
     geocoder.geocode({ 
@@ -140,11 +142,10 @@ function getCoordinatesFromAddress(address, category) {
 
             const position = {
                 lat: results[0].geometry.location.lat,
-                lng: results[0].geometry.location.lng}
-            
+                lng: results[0].geometry.location.lng
+            }
 
             chargeSpots(position, map, category);
-        
         
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
@@ -177,13 +178,15 @@ function checkEnterIsPressed(e) {
 function chargeSpots(position, map, category = 0) {
 
     $.post( "../geolocation/charge-spots", {
-        coords : { 
-            lat : position["lat"], 
-            lng : position["lng"] 
+        "coords" : { 
+            "lat" : position["lat"], 
+            "lng" : position["lng"] 
         },
-        category : category
+        "category" : category
     })
     .done((result) => {
+
+        clearMarkers();
         
         spot_list = JSON.parse(result);
 
@@ -198,17 +201,26 @@ function chargeSpots(position, map, category = 0) {
             lng: parseFloat(spot_list[i].lng),
             }
 
-            const marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
             position: pos,
             map: map
             });
-
-            const icon = selectMarkerType(spot_list[i].category_id);
+            let icon = selectMarkerType(spot_list[i].category_id);
             marker.setIcon(icon);
             attachInfowindow(spot_list[i].title, spot_list[i].description, marker, map, infowindow);
-
+            
+            markers.push(marker);
         }
     })       
+}
+
+
+function clearMarkers() {
+
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
 }
 
 

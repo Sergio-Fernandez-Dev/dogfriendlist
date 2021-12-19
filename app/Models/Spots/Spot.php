@@ -63,13 +63,10 @@ class Spot implements EntityInterface {
 
 //Si el valor es nulo o está vacío, lo eliminamos del array;
             foreach ($properties as $key => $value) {
-
                 if (!isset($properties[$key])) {
                     unset($properties[$key]);
                 }
-
             }
-
         }
 
         return $properties;
@@ -87,11 +84,9 @@ class Spot implements EntityInterface {
     public function setProperties(array $data, ?bool $override = true) {
 
         foreach ($data as $key => $value) {
-
             if (empty($value) && !$override) {
                 continue;
             }
-
             $this->$key = $value;
         }
 

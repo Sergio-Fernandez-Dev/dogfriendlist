@@ -20,6 +20,7 @@ route::add('/charge-spots', 'POST',
 
             if (isset($_POST['category']) && $_POST['category'] > 1) {
                 $spot_list = $handler->findByCategory($_POST['category']);
+
             } else {
                 $spot_list = $handler->findAll();
             }
