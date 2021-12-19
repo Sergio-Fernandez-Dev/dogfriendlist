@@ -1,6 +1,6 @@
 <div class="box">
-    <div class="form form--finder-style" id="finder-form" action="#">
-        <input class="form__field form__field--finder-style" id="finder-input" name="place" type="text" placeholder="Buscando ubicación">
+    <div class="form form--finder-style" id="finder-form">
+        <input class="form__field form__field--finder-style" id="finder-input" name="place" type="text" placeholder="Buscando ubicación" onkeydown="checkEnterIsPressed(event)">
         <select class="form__select form__select--finder-style" id="finder-category" name="category">
             <option class="form__option" selected value="0">Tipo de spot</option>
             <option class="form__option" value="1">Todos</option>
@@ -18,3 +18,4 @@
     <h2 class="h2">Cerca de ti:</h2>
 <?php render('components/geolocation/map.php', false);?>
 </div>
+

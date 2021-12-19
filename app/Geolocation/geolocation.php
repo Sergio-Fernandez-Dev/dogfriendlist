@@ -18,7 +18,11 @@ route::add('/charge-spots', 'POST',
             $lat = $coords['lat'];
             $lng = $coords['lng'];
 
-            $spot_list = $handler->findAll();
+            if (isset($_POST['category']) && $_POST['category'] > 1) {
+                $spot_list = $handler->findByCategory($_POST['category']);
+            } else {
+                $spot_list = $handler->findAll();
+            }
 
             foreach ($spot_list as $spot) {
                 $result[] = $spot->getClassParams(false);
@@ -29,19 +33,15 @@ route::add('/charge-spots', 'POST',
     }
 );
 
-route::add("/search", ['GET', 'POST'],
+route::add("/search", 'GET',
     function () {
-        if (isset($_GET['place']) && isset($_GET['category'])) {
-            $query = [
-                'place'    => $_GET['place'],
-                'category' => $_GET['category'],
-            ];
 
-            $test = ['get' => 'si'];
-            echo json_encode($test);
-        } else {
-            $test = ['get' => 'no'];
-            echo json_encode($test);
+        if (isset($_GET['lat']) && isset($_GET['lng']) && isset($_GET['category'])) {
+
+            $lat = $_GET['lat'];
+            $lng = $_GET['lng'];
+
+            echo json_encode($lat);
         }
     }
 );

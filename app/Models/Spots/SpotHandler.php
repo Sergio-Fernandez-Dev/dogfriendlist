@@ -117,9 +117,13 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $spot = $this->make($result);
+        $spot_list = [];
 
-        return $spot;
+        foreach ($result as $spot) {
+            $spot_list[] = $this->make($spot);
+        }
+
+        return $spot_list;
     }
 
     /**

@@ -124,7 +124,7 @@ class DB implements GatewayInterface {
         } elseif ($stmt->rowCount() == 1) {
 
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $result = $row;
+                $result[] = $row;
             }
 
         } else {
