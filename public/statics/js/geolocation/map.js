@@ -2,6 +2,7 @@
 let map;
 let userMarker;
 let spot_list;
+let placeholderAddress = null;
 let markers = [];
 
 
@@ -50,7 +51,7 @@ function initMap() {
             },
             // Si no podemos establecer la posición llamamos a handleLocationError
             () => {
-            handleLocationError(true, userMarker, pos);
+                handleLocationError(true, userMarker, pos);
             }
         );
         // Si el navegador no permite la geolocalización
@@ -66,8 +67,8 @@ function initMap() {
             chargeSpots(pos, map);
             // Llamamos a handleLocationError
             handleLocationError(false, userMarker, pos);
-            }
-        });
+        }
+    });
 }
 
 // En caso de no poder obtener la posición del usuario, crea un marcador con una etiqueta de advertencia.
@@ -108,15 +109,19 @@ function getAddressFromCoordinates(position) {
             const placeholder = document.querySelector('#finder-input');
             placeholder.removeAttribute('placeholder');
             placeholder.setAttribute('placeholder', address);
+            placeholderAddress = address;
         }
     });
 }
 
 
 function getCoordinatesFromAddress(address, category) {
-    //vaciamos la lista de marcadores 
     
-    let pos;
+    console.log(address);
+
+    if (address == "") {
+        address = placeholderAddress;
+    }
 
     const geocoder = new google.maps.Geocoder();
 
@@ -136,14 +141,14 @@ function getCoordinatesFromAddress(address, category) {
 
             chargeSpots(position, map, category);
 
-            let marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
+            if (placeholderAddress != address) {
+                let marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            }
 
-            markers.push(marker);
-
-            
+            markers.push(marker); 
         
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
