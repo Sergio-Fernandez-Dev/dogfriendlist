@@ -115,11 +115,6 @@ function getAddressFromCoordinates(position) {
 
 function getCoordinatesFromAddress(address, category) {
     //vaciamos la lista de marcadores 
-    // for (let i = 0; i < markers.length; i++) {
-    //     markers[i].setMap(null);
-    // }
-    // markers = [];
-    clearMarkers();
     
     let pos;
 
@@ -133,12 +128,6 @@ function getCoordinatesFromAddress(address, category) {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
             map.setZoom(17);
-            let marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-
-            markers.push(marker);
 
             const position = {
                 lat: results[0].geometry.location.lat,
@@ -146,15 +135,22 @@ function getCoordinatesFromAddress(address, category) {
             }
 
             chargeSpots(position, map, category);
+
+            let marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+
+            markers.push(marker);
+
+            
         
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
         } else {
             alert('Algo ha salido mal, inténtalo de nuevo');
-        }
-        
+        }      
     });
-
 }
         
 
@@ -177,6 +173,8 @@ function checkEnterIsPressed(e) {
 
 function chargeSpots(position, map, category = 0) {
 
+    clearMarkers();
+
     $.post( "../geolocation/charge-spots", {
         "coords" : { 
             "lat" : position["lat"], 
@@ -186,8 +184,6 @@ function chargeSpots(position, map, category = 0) {
     })
     .done((result) => {
 
-        clearMarkers();
-        
         spot_list = JSON.parse(result);
 
         var infowindow = new google.maps.InfoWindow();    

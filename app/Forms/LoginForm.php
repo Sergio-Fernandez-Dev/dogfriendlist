@@ -12,12 +12,12 @@ class LoginForm extends Form {
     private $identification;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $password;
 
     /**
-     * @var mixed
+     * @var bool
      */
     private $remember_me;
 
@@ -38,7 +38,11 @@ class LoginForm extends Form {
     }
 
     /**
-     * @return mixed
+     * Envía el formulario a la base de datos y filtra la respuesta
+     *
+     * @return EntityInterface
+     *
+     * @throws FormException
      */
     public function send() {
 
@@ -73,7 +77,7 @@ class LoginForm extends Form {
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getRememberMe() {
 

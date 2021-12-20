@@ -162,9 +162,13 @@ abstract class EntityHandler implements EntityHandlerInterface {
             $result = $this->db->retrieve($query);
             $this->db->disconnect();
 
-            $modelObject = $this->make($result);
+            $model_object_list = [];
 
-            return $modelObject;
+            foreach ($result as $model_object) {
+                $model_object_list = $this->make($model_object);
+            }
+
+            return $model_object_list;
 
         } else {
             throw new LogicException('El método de consulta debe ser tipo "retrieve" o "persist"');
@@ -179,6 +183,8 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
+
 
 
 

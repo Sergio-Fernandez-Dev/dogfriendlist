@@ -25,8 +25,10 @@ include_once $main_content;
 if (isset($footer)) {require_once $footer;}
 
 // Cargamos nuestros scripts dinámicamente
-foreach ($scripts as $script) {
-    require_once $script;
+if (isset($scripts)) {
+    foreach ($scripts as $script) {
+        require_once $script;
+    }
 }
 
 ?>
