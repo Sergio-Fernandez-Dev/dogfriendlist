@@ -40,17 +40,17 @@ class UserTest extends TestCase {
         unset($this->user);
     }
 
-    public function testGetclassparamsReturnsAnArray(): void {
+    public function testgetPropertiesReturnsAnArray(): void {
         $this->user->setProperties($this->data, true);
-        $result = $this->user->getClassParams();
+        $result = $this->user->getProperties();
 
         $this->assertIsArray($result);
     }
 
-    public function testGetclassparamsReturnsRightValues(): void {
+    public function testgetPropertiesReturnsRightValues(): void {
         $this->user->setProperties($this->data, true);
 
-        $result = $this->user->getClassParams();
+        $result = $this->user->getProperties();
 
         $this->assertEquals($this->data, $result);
     }

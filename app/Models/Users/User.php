@@ -8,7 +8,7 @@ class User implements EntityInterface {
     /**
      * @var int
      */
-    private int $id;
+    private int $id = 0;
 
     /**
      * @var string
@@ -81,7 +81,7 @@ class User implements EntityInterface {
     keybool $only_valuated
      * @return array
      */
-    public function getClassParams(bool $only_valuated = true) {
+    public function getProperties(bool $only_valuated = true) {
 
         $properties = \get_object_vars($this);
 

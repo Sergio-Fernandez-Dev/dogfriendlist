@@ -26,23 +26,10 @@ route::add('/charge-spots', 'POST',
             }
 
             foreach ($spot_list as $spot) {
-                $result[] = $spot->getClassParams(false);
+                $result[] = $spot->getProperties(false);
             }
 
             echo json_encode($result);
-        }
-    }
-);
-
-route::add("/search", 'GET',
-    function () {
-
-        if (isset($_GET['lat']) && isset($_GET['lng']) && isset($_GET['category'])) {
-
-            $lat = $_GET['lat'];
-            $lng = $_GET['lng'];
-
-            echo json_encode($lat);
         }
     }
 );

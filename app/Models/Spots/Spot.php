@@ -55,7 +55,7 @@ class Spot implements EntityInterface {
      * @param bool $only_valuated
      * @return array
      */
-    public function getClassParams(bool $only_valuated = true) {
+    public function getProperties(bool $only_valuated = true) {
 
         $properties = \get_object_vars($this);
 

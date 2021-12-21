@@ -45,7 +45,7 @@ abstract class EntityHandler implements EntityHandlerInterface {
      */
     public function add(EntityInterface $modelObject) {
 
-        $query = $this->q_builder->insert($modelObject->getClassParams())
+        $query = $this->q_builder->insert($modelObject->getProperties())
             ->get();
 
         $stmt = $this->db->persist($query);
@@ -109,7 +109,7 @@ abstract class EntityHandler implements EntityHandlerInterface {
      */
     public function save(EntityInterface $modelObject) {
 
-        $values = $modelObject->getClassParams();
+        $values = $modelObject->getProperties();
 
         $query = $this->q_builder->update($values)
             ->where('id', '=', $modelObject->getId())
@@ -183,6 +183,7 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
 
 
 
