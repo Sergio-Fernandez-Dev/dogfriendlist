@@ -20,9 +20,13 @@
 
 <?php
 // Cargamos la cabecera y el cuerpo dinámicamente
-if (isset($header)) {require_once $header;}
+if (isset($header)) {
+    require_once $header;
+}
 include_once $main_content;
-if (isset($footer)) {require_once $footer;}
+if (isset($footer)) {
+    require_once $footer;
+}
 
 // Cargamos nuestros scripts dinámicamente
 if (isset($scripts)) {
@@ -32,8 +36,6 @@ if (isset($scripts)) {
 }
 
 ?>
-<script src="../statics/js/scripts.js"></script>
-
 </body>
 </html>
 

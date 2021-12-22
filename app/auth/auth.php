@@ -55,8 +55,11 @@ route::add('/logout', 'GET',
     function () {
 
         session_start();
+        setcookie('user_id', 0, time() -60);
         session_unset();
         session_destroy();
+
+        
 
         return redirect('');
     }

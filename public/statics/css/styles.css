@@ -219,6 +219,11 @@ html {
     align-self: center;
 }
 
+.header__link {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
 /* ================  Infowindows ================ */
 
 .infowindow {
@@ -274,11 +279,21 @@ html {
     padding-left: 3rem;
     padding-right: 3rem;
     display: inline-block;
+    
 }
 
 .nav__link {
     color: #FFFFFF;
     text-decoration: none;
+    
+}
+
+.nav__link:hover {
+    color: #FFD2D2;
+}
+
+.nav__link:focus {
+    color: #A4D6C8
 }
 
 .nav__link--cascade {
@@ -287,6 +302,15 @@ html {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
+
+.nav__link--hoover {
+    color: #FFD2D2;
+}
+
+.nav__link--click {
+    color: #A4D6C8
+}
+
 
 .p {
     font-size: 1.5rem;
@@ -301,11 +325,20 @@ html {
     flex-direction: column;
 }
 
-.profile-menu__picture {
+.profile-menu__box {
     align-self:flex-end;
     padding-left: 1rem;
     padding-top: 1.8rem;
     color: #FFFFFF;
+    cursor: default;
+}
+
+.profile-menu__arrow {
+    cursor: pointer;
+}
+
+.profile-menu__arrow--hover {
+    color: #FFD2D2;
 }
 
 .profile-menu__submenu {
@@ -313,6 +346,11 @@ html {
     font-size: 1.5rem;
     padding: 1rem;
     display: none;
+}
+
+.profile-menu__submenu--visible {
+    display: inline-block;
+    z-index: 2;
 }
 
 .textarea {

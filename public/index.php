@@ -21,6 +21,7 @@ route::add('/', ['GET', 'POST'],
         $scripts = [
             SCRIPTS_PATH . 'main-map.php',
             SCRIPTS_PATH . 'google-api.php',
+            SCRIPTS_PATH . 'buttons.php'
         ];
 
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -83,7 +84,7 @@ route::add('/new-spot', ['GET', 'POST'],
                  //enviamos el formulario 
                 try {
                    //Si todo es correcto nos devuelve un spot con valor 'null';
-                    $user = $form->send();
+                    $spot = $form->send();
                 } catch (FormException $e) {
                     $exception = $e->getMessage();
                 
