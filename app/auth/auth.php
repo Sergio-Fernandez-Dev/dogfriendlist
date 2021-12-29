@@ -44,6 +44,7 @@ route::add('/login', ['GET', 'POST'],
             //Si se ha seleccionado la casilla 'Recuérdame', lo registramos en una variable de sesión.
             if ($form->getRememberMe()) {
                 $_SESSION['remember_me'] = true;
+                setcookie('user_id', $user->getId(), time() + 90 * 24 * 60 * 60, '/');
             }
 
             return redirect('');
@@ -55,11 +56,13 @@ route::add('/logout', 'GET',
     function () {
 
         session_start();
-        setcookie('user_id', 0, time() -60);
         session_unset();
         session_destroy();
 
-        
+        if (isset($_COOKIE['user_id'])) {
+            $id = $_COOKIE['user_id'];
+            setcookie('user_id', $id, time() - 60, '/');    
+        }
 
         return redirect('');
     }

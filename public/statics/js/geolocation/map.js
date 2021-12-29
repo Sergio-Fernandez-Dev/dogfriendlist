@@ -7,6 +7,10 @@ let markers = [];
 
 
 function initMap() {
+   chargeMap(false);
+}
+
+function chargeMap(clickable) {
     $('#map').append('<p class="map__p">CARGANDO MAPA...</p>');
 
     $(document).ready(() => {
@@ -39,6 +43,12 @@ function initMap() {
                 scrollwheel: true,
                 mapId: "1b3b30d8e6caa90",
             });
+            
+            if (clickable) {
+                google.maps.event.addListener(map, "click", (event) => {
+                    addMarker(event.latLng, map);
+                });
+            }
             //Obtenemos la dirección correspondiente a las coordenadas recibidas.
             getAddressFromCoordinates(pos);
             chargeSpots(pos, map)
@@ -67,7 +77,16 @@ function initMap() {
             chargeSpots(pos, map);
             // Llamamos a handleLocationError
             handleLocationError(false, userMarker, pos);
-        }
+        }     
+    });
+}
+
+
+function addMarker(location, map) {
+    
+    new google.maps.Marker({
+      position: location,
+      map: map,
     });
 }
 
@@ -106,7 +125,7 @@ function getAddressFromCoordinates(position) {
     .then((response) => {
         if (response.results[0]) {
             const address = response.results[0].formatted_address;
-            const placeholder = document.querySelector('#finder-input');
+            const placeholder = document.querySelector("#finder-form");
             placeholder.removeAttribute('placeholder');
             placeholder.setAttribute('placeholder', address);
             placeholderAddress = address;

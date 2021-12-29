@@ -1,0 +1,1 @@
+<script src="../statics/js/geolocation/new-spot-map.js"></script>

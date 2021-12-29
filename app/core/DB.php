@@ -97,7 +97,7 @@ class DB implements GatewayInterface {
      * Almacena un objeto en nuestra base de datos.
      * @param array $query
      */
-    public function persist(array $query) {
+    public function persist($query) {
 
         $stmt = $this->_execute($query);
 
@@ -111,7 +111,7 @@ class DB implements GatewayInterface {
      * @param array|string $query
      * @return array|string
      */
-    public function retrieve(array|string $query): array|string {
+    public function retrieve($query) {
 
         $stmt = $this->_execute($query);
 

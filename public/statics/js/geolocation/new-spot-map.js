@@ -1,0 +1,4 @@
+function newMap() {
+    chargeMap(true);
+}
+

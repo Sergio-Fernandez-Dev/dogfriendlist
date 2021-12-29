@@ -11,6 +11,7 @@ use App\Models\Users\UserHandler;
 use Exceptions\Form\FormException;
 use Exceptions\Db\UserNotFoundException;
 
+
 route::add('/', ['GET', 'POST'],
     function () {
         session_start();
@@ -27,18 +28,10 @@ route::add('/', ['GET', 'POST'],
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
 
-                //Si se ha seleccionado la opción 'Recuérdame', pero no se ha guardado la id de usuario
-                //en una cookie, significa que el usuario se acaba de loggear, por lo que iniciamos una cookie
-                // con su id y un tiempo de expiración de 3 meses.
-                if (isset($_SESSION['remember_me']) && !isset($_COOKIE['user_id'])) {
-                    $user = $_SESSION['user'];
-                    setcookie('user_id', $user->getId(), time() + 90 * 24 * 60 * 60);
-                } 
-
-                //Si existe una cookie con la id de usuario pero no hay una sesión activa, 
+                //Si existe una cookie con la id de usuario , 
                 // utilizamos la cookie para crear nuestra sesión de usuario, evitando la necesidad
                 // de volver a identificarse.
-                if (isset($_COOKIE['user_id']) && !isset($_SESSION['user'])) {
+                if (isset($_COOKIE['user_id'])) {
                     $db = new DB();
                     $qb = new QueryBuilder();
                     $handler = new UserHandler($db, $qb);
@@ -46,6 +39,15 @@ route::add('/', ['GET', 'POST'],
                     try {
                         $user = $handler->find($_COOKIE['user_id']);
                         $_SESSION['user'] = $user;
+                        $id = $_COOKIE['user_id'];
+                        
+                        //Si la cookie existe, pero la variable 'remeber_me' no está activa, significa
+                        //que el navegador ha sido cerrado.
+                        if (!isset($_SESSION['remember_me'])) {
+                            //Reseteamos el tiempo de expiración de la cookie.
+                             setcookie('user_id', $id, time() + 90 * 24 * 60 * 60, '/');
+                             $_SESSION['remember_me'] = true;
+                        }
                     } catch (UserNotFoundException $e) {
                         unset($_COOKIE['user_id']);
                     }       
@@ -65,6 +67,13 @@ route::add('/new-spot', ['GET', 'POST'],
 
         session_start();
         authRequired();
+
+        $scripts = [
+            SCRIPTS_PATH . 'main-map.php',
+            SCRIPTS_PATH . 'new-spot-map.php',
+            SCRIPTS_PATH . 'google-api.php',
+            SCRIPTS_PATH . 'buttons.php'
+        ];
     
         $user = $_SESSION['user'];
     
@@ -72,8 +81,8 @@ route::add('/new-spot', ['GET', 'POST'],
     
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
-            
-                return render('new-spot.php', title: $title);
+                $callback = 'newMap';
+                return render('new-spot.php', title: $title, scripts: $scripts, callback: $callback);
             
             case 'POST':
                 $db = new DB();
@@ -88,7 +97,7 @@ route::add('/new-spot', ['GET', 'POST'],
                 } catch (FormException $e) {
                     $exception = $e->getMessage();
                 
-                    return render('new-spot.php', title: $title, exception: $exception);
+                    return render('new-spot.php', title: $title, exception: $exception, scripts: $scripts);
                 }             
         }
     }

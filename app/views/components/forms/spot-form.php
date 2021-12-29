@@ -3,7 +3,6 @@
         <input class="form__field form__field--finder-style" type="text" name="title" placeholder="Título" required><br>
         <select class="form__select">
                 <option class="form__option" selected value="0">Tipo de spot</option>
-                <option class="form__option" value="1">Todos</option>
                 <option class="form__option" value="2">Parques y zonas verdes</option>
                 <option class="form__option" value="3">Playas</option>
                 <option class="form__option" value="4">Alojamiento</option>
@@ -15,7 +14,7 @@
             </select><br>
     </div>
     <div class="form form--finder-style">
-        <input class="form__field form__field--finder-style" type="text" name="address" placeholder="Dirección (opcional)"><br>
+        <input class="form__field form__field--finder-style" id="finder-form" type="text" name="address" placeholder="Dirección (opcional)"><br>
         <input class="button button--25rem" type="submit" name="search" value="Buscar">
     </div>
     <div class="box__separation-line"></div>
