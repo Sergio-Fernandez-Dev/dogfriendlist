@@ -40,13 +40,23 @@ html {
     color:#FFFFFF;
 }
 
+.button:active {
+    background-color: #EDD0C0;
+    
+}
+
 .button--25rem {
     width: 25rem;
+    
 }
 
 .button--red {
     background-color: #ff7a7a;
-    margin-top: 2rem;
+}
+
+
+.button:hover {
+    border: 0.05rem solid black;
 }
 
 /* Estilos para Unnlogged navbar  */
@@ -337,7 +347,7 @@ html {
     cursor: pointer;
 }
 
-.profile-menu__arrow--hover {
+.profile-menu__arrow:hover {
     color: #FFD2D2;
 }
 

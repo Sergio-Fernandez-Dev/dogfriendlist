@@ -30,14 +30,15 @@ function chargeMap(clickable) {
         // Si el navegador permite la geolocalización
         if (navigator.geolocation) {
         // Obtenemos la posicion
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
+        navigator.geolocation.getCurrentPosition((position) => {
+
             pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
             };
             //Creamos un mapa con las coordenadas del usuario
             map = new google.maps.Map(document.getElementById("map"), {
+
                 center: { lat: pos.lat, lng: pos.lng },
                 zoom: 17,
                 scrollwheel: true,
@@ -45,12 +46,12 @@ function chargeMap(clickable) {
             });
             
             if (clickable) {
-                google.maps.event.addListener(map, "click", (event) => {
-                    addMarker(event.latLng, map);
-                });
+                addNewSpot(map);
+            } else {
+                //Obtenemos la dirección correspondiente a las coordenadas recibidas.
+                getAddressFromCoordinates(pos);
             }
-            //Obtenemos la dirección correspondiente a las coordenadas recibidas.
-            getAddressFromCoordinates(pos);
+            
             chargeSpots(pos, map)
 
             // Colocamos nuestro marcador de usuario en la posición obtenida del navegador.
@@ -81,14 +82,6 @@ function chargeMap(clickable) {
     });
 }
 
-
-function addMarker(location, map) {
-    
-    new google.maps.Marker({
-      position: location,
-      map: map,
-    });
-}
 
 // En caso de no poder obtener la posición del usuario, crea un marcador con una etiqueta de advertencia.
 function handleLocationError(browserHasGeolocation, userMarker, pos) {
@@ -134,12 +127,14 @@ function getAddressFromCoordinates(position) {
 }
 
 
-function getCoordinatesFromAddress(address, category) {
-    
-    console.log(address);
+function getCoordinatesFromAddress(address, category, placeholder, icon = null) {
 
-    if (address == "") {
+    if (address == "" && placeholder) {
         address = placeholderAddress;
+    }
+
+    if (address == "" && !placeholder) {
+        return;
     }
 
     const geocoder = new google.maps.Geocoder();
@@ -160,14 +155,19 @@ function getCoordinatesFromAddress(address, category) {
 
             chargeSpots(position, map, category);
 
-            if (placeholderAddress != address) {
+            if (placeholderAddress != address && icon === null) {
                 let marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location
                 });
+                markers.push(marker); 
             }
 
-            markers.push(marker); 
+            if (icon !== null) {
+                let marker = createMarker(map, results[0].geometry.location, icon)
+                markers.push(marker);  
+            }
+
         
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
@@ -178,19 +178,24 @@ function getCoordinatesFromAddress(address, category) {
 }
         
 
-function prepareFinderQuery() {
+function prepareFinderQuery(placeholder) {
 
-    let address = $('#finder-input').val();
-    let category = $('#finder-category').val();
-    
-    getCoordinatesFromAddress(address, category);    
+    let address = $('input[name="address"]').val();
+    let category = $('select[name="category"]').val();
+
+    getCoordinatesFromAddress(address, category, placeholder);
 }
 
 
-function checkEnterIsPressed(e) {
+function checkEnterIsPressed(e, page) {
 
     if (e.key == 'Enter') {
-        prepareFinderQuery();
+        if (page = 'index') {
+            prepareFinderQuery(true);
+        }
+        if (page = 'new-spot') {
+            findNewSpot();
+        }
     }
 }
 
@@ -295,5 +300,43 @@ function attachInfowindow(title, description, marker, map, infowindow) {
 
         lastInfowindow = infowindow;
     });
+}
+
+function addNewSpot(map) {
+
+    google.maps.event.addListener(map, "click", (event) => {
+        
+        let coords = event.latLng;
+        let icon = Number($('select[name="category-new-spot"]').val());
+
+        if (!markers['custom']) {
+           createMarker(map, coords, icon);     
+            
+        } else {
+            markers['custom'].setMap(null);
+            delete markers['custom'];
+            createMarker(map, coords, icon);
+        }
+    });
+}
+
+function createMarker(map, coords, icon) {
+
+    let marker = new google.maps.Marker({
+        id: 'custom',
+        position: coords,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        icon: selectMarkerType(icon)
+    });     
+    
+    marker.addListener("click", () => {
+        marker.setMap(null);
+        delete markers['custom'];
+    });
+
+    markers['custom'] = marker;
+    return marker;
 }
 

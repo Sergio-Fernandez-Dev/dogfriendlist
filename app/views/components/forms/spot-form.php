@@ -1,9 +1,8 @@
-<form class="form" action="new-spot" method="post">
+<div class="form" id="new-spot-form" >
     <div class="form--finder-style">
         <input class="form__field form__field--finder-style" type="text" name="title" placeholder="Título" required><br>
-        <select class="form__select">
-                <option class="form__option" selected value="0">Tipo de spot</option>
-                <option class="form__option" value="2">Parques y zonas verdes</option>
+        <select class="form__select" name="category-new-spot">
+                <option class="form__option" selected value="2">Parques y zonas verdes</option>
                 <option class="form__option" value="3">Playas</option>
                 <option class="form__option" value="4">Alojamiento</option>
                 <option class="form__option" value="5">Bares y restaurantes</option>
@@ -14,8 +13,8 @@
             </select><br>
     </div>
     <div class="form form--finder-style">
-        <input class="form__field form__field--finder-style" id="finder-form" type="text" name="address" placeholder="Dirección (opcional)"><br>
-        <input class="button button--25rem" type="submit" name="search" value="Buscar">
+        <input class="form__field form__field--finder-style" id="new-spot-finder-form" type="text" name="address" placeholder="Dirección (opcional)" onkeydown="checkEnterIsPressed(event, 'new-spot')"><br>
+        <input class="button button--25rem" id="finder-button" type="button" value="Buscar" onclick="findNewSpot()">
     </div>
     <div class="box__separation-line"></div>
     
@@ -31,5 +30,5 @@
             <input class="button button--red" type="submit" name="cancel" value="Cancelar">
         </div>
     </div>
-</form>
+</div>
 
