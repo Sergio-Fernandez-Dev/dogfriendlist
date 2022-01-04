@@ -38,7 +38,9 @@ route::add('/', ['GET', 'POST'],
 
                     try {
                         $user = $handler->find($_COOKIE['user_id']);
-                        $_SESSION['user'] = $user;
+
+                        $user_data = formatUserData($user);
+                        $_SESSION['user'] = $user_data;
                         $id = $_COOKIE['user_id'];
                         
                         //Si la cookie existe, pero la variable 'remeber_me' no está activa, significa

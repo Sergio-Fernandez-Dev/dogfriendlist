@@ -1,7 +1,5 @@
 <?php
 $user = $_SESSION['user'];
-$user_id = $user->getId();
-$user_name = $user->getUsername();
 ?>
 
 <header class="header">
@@ -17,7 +15,7 @@ $user_name = $user->getUsername();
                     </a>
                 </div>
                 <div class="nav__button">
-                    <a class="nav__link" href="../user/<?php echo $user_id ?>/favourites">
+                    <a class="nav__link" href="../user/<?php echo $user['id'] ?>/favourites">
                         <span class="material-icons">favorite</span>
                     </a>
                 </div>
@@ -26,6 +24,7 @@ $user_name = $user->getUsername();
         <div class="profile-menu">
             <div class="profile-menu__box">
                 <span class="material-icons profile-menu__picture">account_circle</span>
+                <span class="p profile-menu__name"> <?php echo $user['username'] ?> </span>
                 <span class="material-icons profile-menu__arrow" id="arrow">expand_more</span>
             </div>
                 <!-- Menú desplegable -->

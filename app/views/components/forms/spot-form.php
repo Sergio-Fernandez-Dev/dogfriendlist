@@ -1,4 +1,10 @@
-<div class="form" id="new-spot-form" >
+<?php 
+
+    $user = $_SESSION['user'];
+
+    print_r($_SESSION['user']);
+?>
+<form class="form" id="new-spot-form" method="POST">
     <div class="form--finder-style">
         <input class="form__field form__field--finder-style" type="text" name="title" placeholder="Título" required><br>
         <select class="form__select" name="category-new-spot">
@@ -17,6 +23,11 @@
         <input class="button button--25rem" id="finder-button" type="button" value="Buscar" onclick="findNewSpot()">
     </div>
     <div class="box__separation-line"></div>
+
+    <input type="hidden" id="lat">
+    <input type="hidden" id="lng">
+    <input type="hidden" id="address">
+    <input type="hidden" id="user" value= <?php echo $user->getId(); ?> >
     
     <?php render('components/geolocation/map.php', base_page: false);?>
 
@@ -26,9 +37,10 @@
             <textarea class="textarea" name="description" cols="30" rows="10" required></textarea><br>
         </div>
         <div class="form__button-box form__button-box--column">
-            <input class="button" type="submit" name="submit" value="Crear spot">   
+            <input class="button" type="submit" name="submit" value="Crear spot" onclick="sendForm()">   
             <input class="button button--red" type="submit" name="cancel" value="Cancelar">
         </div>
     </div>
-</div>
+</form>
 
+<?php echo $_SESSION['user']->getId(); ?>

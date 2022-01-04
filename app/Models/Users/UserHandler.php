@@ -78,11 +78,11 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $user_list = [];
+        foreach ($result as $user) {
+            $user_list[] = $this->make($user);
+        }
 
-        $user = $this->make($result);
-
-        return $user;
+        return $user_list[0];
 
     }
 
@@ -101,9 +101,11 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $user = $this->make($result);
+        foreach ($result as $user) {
+            $user_list[] = $this->make($user);
+        }
 
-        return $user;
+        return $user_list[0];
     }
 
     /**
@@ -123,7 +125,7 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $user_list = [];
 
         foreach ($result as $user) {
-            $suser_list[] = $this->make($user);
+            $user_list[] = $this->make($user);
         }
 
         return $user_list;
@@ -147,7 +149,7 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $user_list = [];
 
         foreach ($result as $user) {
-            $suser_list[] = $this->make($user);
+            $user_list[] = $this->make($user);
         }
 
         return $user_list;
@@ -168,9 +170,13 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $user = $this->make($result);
+        $user_list = [];
 
-        return $user;
+        foreach ($result as $user) {
+            $user_list[] = $this->make($user);
+        }
+
+        return $user_list;
     }
 
     /**

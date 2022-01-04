@@ -38,8 +38,10 @@ route::add('/login', ['GET', 'POST'],
                 return render('auth/login.php', title: $title, exception: $exception);
             }
             session_start();
-            //Si el login se ha realizado correctamente, almacenamos el usuario recibido en una variable de sesión.
-            $_SESSION['user'] = $user;
+            //Si el login se ha realizado correctamente, almacenamos los datos del usuario recibido en una variable de sesión.
+            $user_data = formatUserData($user);
+
+            $_SESSION['user'] = $user_data;
             
             //Si se ha seleccionado la casilla 'Recuérdame', lo registramos en una variable de sesión.
             if ($form->getRememberMe()) {
@@ -101,6 +103,7 @@ route::add('/register', ['GET', 'POST'],
             $email->sendVerificationEmail($user);
             //Creamos una variable de sesión con el usuario instanciado.
             session_start();
+            
             $_SESSION['user'] = $user;
 
             return redirect('auth/confirm');

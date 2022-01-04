@@ -7,7 +7,7 @@
  * @param bool $base_page
  * @param array $params
  */
-function render(string $page, bool $base_page = true, ...$params): void {
+function render(string $page, bool $base_page = true, ...$params) {
 
     if (isset($params)) {
         foreach ($params as $key => $value) {
@@ -38,7 +38,7 @@ function render(string $page, bool $base_page = true, ...$params): void {
  *
  * @param string $route
  */
-function redirect(string $route): void {
+function redirect(string $route) {
     $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
     header("Location: $root" . "$route");
 }
@@ -49,9 +49,23 @@ function redirect(string $route): void {
  *
  * @param string $route
  */
-function authRequired(string $route = ""): void {
+function authRequired(string $route = "") {
 
     if (!isset($_SESSION['user'])) {
         redirect($route);
     }
+}
+
+/**
+ * @param $user
+ */
+function formatUserData($user) {
+
+    $user_data = [
+        'id'       => $user->getId(),
+        'username' => $user->getUsername(),
+        'email'    => $user->getEmail(),
+    ];
+
+    return $user_data;
 }

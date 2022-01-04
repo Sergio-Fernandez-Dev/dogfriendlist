@@ -4,6 +4,7 @@ let userMarker;
 let spot_list;
 let placeholderAddress = null;
 let markers = [];
+var markerCoords;
 
 
 function initMap() {
@@ -27,6 +28,7 @@ function chargeMap(clickable) {
             lng: -3.684
         };
 
+
         // Si el navegador permite la geolocalización
         if (navigator.geolocation) {
         // Obtenemos la posicion
@@ -36,6 +38,7 @@ function chargeMap(clickable) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
             };
+
             //Creamos un mapa con las coordenadas del usuario
             map = new google.maps.Map(document.getElementById("map"), {
 
@@ -119,9 +122,13 @@ function getAddressFromCoordinates(position) {
         if (response.results[0]) {
             const address = response.results[0].formatted_address;
             const placeholder = document.querySelector("#finder-form");
+            const addressField = document.querySelector("#address");
+            addressField.removeAttribute('value');
+            addressField.setAttribute('value', address);
             placeholder.removeAttribute('placeholder');
             placeholder.setAttribute('placeholder', address);
             placeholderAddress = address;
+            return address;
         }
     });
 }
@@ -168,7 +175,7 @@ function getCoordinatesFromAddress(address, category, placeholder, icon = null) 
                 markers.push(marker);  
             }
 
-        
+
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
         } else {
@@ -311,12 +318,14 @@ function addNewSpot(map) {
 
         if (!markers['custom']) {
            createMarker(map, coords, icon);     
-            
+           $("#lat").val(event.latLng.lat());
+           $("#lng").val(event.latLng.lng());
         } else {
             markers['custom'].setMap(null);
             delete markers['custom'];
             createMarker(map, coords, icon);
         }
+        
     });
 }
 
@@ -336,7 +345,19 @@ function createMarker(map, coords, icon) {
         delete markers['custom'];
     });
 
+    marker.addListener('dragend', (event) => {
+        $("#lat").val(event.latLng.lat());
+        $("#lng").val(event.latLng.lng());
+    });    
+
     markers['custom'] = marker;
+    let position = {
+        lat: coords.lat(),
+        lng: coords.lng()
+    }
+    markerCoords = position;
+    console.log('createmarker '+ markerCoords.lat);
+    
     return marker;
 }
 

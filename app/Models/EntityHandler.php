@@ -73,9 +73,11 @@ abstract class EntityHandler implements EntityHandlerInterface {
             throw new UserNotFoundException();
         }
 
-        $modelObject = $this->make($result);
+        foreach ($result as $row) {
+            $object_list[] = $this->make($row);
+        }
 
-        return $modelObject;
+        return $object_list[0];
     }
 
     /**
@@ -91,8 +93,6 @@ abstract class EntityHandler implements EntityHandlerInterface {
 
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
-
-        $object_list = [];
 
         foreach ($result as $row) {
             $object_list[] = $this->make($row);
@@ -162,10 +162,8 @@ abstract class EntityHandler implements EntityHandlerInterface {
             $result = $this->db->retrieve($query);
             $this->db->disconnect();
 
-            $model_object_list = [];
-
             foreach ($result as $model_object) {
-                $model_object_list = $this->make($model_object);
+                $model_object_list[] = $this->make($model_object);
             }
 
             return $model_object_list;
@@ -173,7 +171,6 @@ abstract class EntityHandler implements EntityHandlerInterface {
         } else {
             throw new LogicException('El método de consulta debe ser tipo "retrieve" o "persist"');
         }
-
     }
 
     /**
@@ -183,6 +180,11 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
+
+
+
+
 
 
 
