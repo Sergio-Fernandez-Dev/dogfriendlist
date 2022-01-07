@@ -57,15 +57,14 @@ class LoginForm extends Form {
             ->orWhere('username', '=', $this->identification)
             ->get();
 
-        $user = $this->handler->raw($query, 'retrieve');
+        $user_list = $this->handler->raw($query, 'retrieve');
+        $user = $user_list[0];
 
         if (null == $user->getEmail() && null == $user->getUsername()) {
             throw new FormException('La dirección de correo o el usuario no existe.');
         }
 
         if ($user->getPassword() != $this->password) {
-            $pass = $user->getPassword();
-            $nick = $user->getUsername();
             throw new FormException('La contraseña no es correcta');
         }
 

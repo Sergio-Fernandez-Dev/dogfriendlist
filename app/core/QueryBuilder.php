@@ -90,7 +90,9 @@ class QueryBuilder implements QueryBuilderInterface {
 
         $this->_build($this->query->base);
 
-        $this->_secureValues($values_to_bind);
+        if (isset($values_to_bind)) {
+            $this->_secureValues($values_to_bind);
+        }
 
         return $this;
     }

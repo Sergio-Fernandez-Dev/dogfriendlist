@@ -34,6 +34,11 @@ route::add('/charge-spots', 'POST',
     }
 );
 
+route::add('/save-spot', 'POST',
+    function () {
+
+    }
+);
 route::methodNotAllowed(
     function () {
 

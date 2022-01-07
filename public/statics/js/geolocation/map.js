@@ -123,11 +123,13 @@ function getAddressFromCoordinates(position) {
             const address = response.results[0].formatted_address;
             const placeholder = document.querySelector("#finder-form");
             const addressField = document.querySelector("#address");
+
             addressField.removeAttribute('value');
             addressField.setAttribute('value', address);
             placeholder.removeAttribute('placeholder');
             placeholder.setAttribute('placeholder', address);
             placeholderAddress = address;
+
             return address;
         }
     });
@@ -314,12 +316,13 @@ function addNewSpot(map) {
     google.maps.event.addListener(map, "click", (event) => {
         
         let coords = event.latLng;
-        let icon = Number($('select[name="category-new-spot"]').val());
+        let icon = Number($('select[name="category"]').val());
 
         if (!markers['custom']) {
-           createMarker(map, coords, icon);     
-           $("#lat").val(event.latLng.lat());
-           $("#lng").val(event.latLng.lng());
+            createMarker(map, coords, icon);     
+            $("#lat").val(coords.lat());
+            $("#lng").val(coords.lng());
+            $("#address").val(getAddressFromCoordinates(coords));
         } else {
             markers['custom'].setMap(null);
             delete markers['custom'];
@@ -346,8 +349,10 @@ function createMarker(map, coords, icon) {
     });
 
     marker.addListener('dragend', (event) => {
-        $("#lat").val(event.latLng.lat());
-        $("#lng").val(event.latLng.lng());
+        coords = event.latLng;
+        $("#lat").val(coords.lat());
+        $("#lng").val(coords.lng());
+        $("#address").val(getAddressFromCoordinates(coords));
     });    
 
     markers['custom'] = marker;

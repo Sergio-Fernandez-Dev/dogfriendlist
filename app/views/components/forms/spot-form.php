@@ -1,13 +1,11 @@
 <?php 
 
     $user = $_SESSION['user'];
-
-    print_r($_SESSION['user']);
 ?>
-<form class="form" id="new-spot-form" method="POST">
+<form class="form" id="new-spot-form" method="POST" onkeydown="return event.key != 'Enter';">
     <div class="form--finder-style">
         <input class="form__field form__field--finder-style" type="text" name="title" placeholder="Título" required><br>
-        <select class="form__select" name="category-new-spot">
+            <select class="form__select" name="category">
                 <option class="form__option" selected value="2">Parques y zonas verdes</option>
                 <option class="form__option" value="3">Playas</option>
                 <option class="form__option" value="4">Alojamiento</option>
@@ -24,10 +22,10 @@
     </div>
     <div class="box__separation-line"></div>
 
-    <input type="hidden" id="lat">
-    <input type="hidden" id="lng">
-    <input type="hidden" id="address">
-    <input type="hidden" id="user" value= <?php echo $user->getId(); ?> >
+    <input type="hidden" name="lat" id="lat" required>
+    <input type="hidden" name="lng" id="lng" required>
+    <input type="hidden" name="address" id="address" required>
+    <input type="hidden" name="user_id" id="user_id" value= <?php echo $user['id']; ?> >
     
     <?php render('components/geolocation/map.php', base_page: false);?>
 
@@ -37,10 +35,8 @@
             <textarea class="textarea" name="description" cols="30" rows="10" required></textarea><br>
         </div>
         <div class="form__button-box form__button-box--column">
-            <input class="button" type="submit" name="submit" value="Crear spot" onclick="sendForm()">   
+            <input class="button" type="submit" value="Crear spot" onclick="sendForm()">   
             <input class="button button--red" type="submit" name="cancel" value="Cancelar">
         </div>
     </div>
 </form>
-
-<?php echo $_SESSION['user']->getId(); ?>

@@ -1,4 +1,4 @@
-<form class="form form--35rem"action="register" method="post">
+<form class="form form--35rem" action="register" method="post">
 <?php
 
 if (isset($exception)) {

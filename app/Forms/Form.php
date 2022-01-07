@@ -32,10 +32,8 @@ abstract class Form {
 
         $filtered_data = [];
 
-        if (isset($data["submit"])) {
-            foreach ($data as $key => $value) {
-                $filtered_data[$key] = $this->_filter($value);
-            }
+        foreach ($data as $key => $value) {
+            $filtered_data[$key] = $this->_filter($value);
         }
 
         return $filtered_data;

@@ -91,16 +91,17 @@ route::add('/new-spot', ['GET', 'POST'],
                 $qb = new QueryBuilder();
                 $handler = new SpotHandler($db, $qb);
                 $form = new SpotForm($_POST, $handler);
-            
-                 //enviamos el formulario 
+
+                //  enviamos el formulario 
                 try {
-                   //Si todo es correcto nos devuelve un spot con valor 'null';
+                //    Si todo es correcto nos devuelve un spot con valor 'null';
                     $spot = $form->send();
+                    var_dump($spot);
                 } catch (FormException $e) {
                     $exception = $e->getMessage();
-                
+    
                     return render('new-spot.php', title: $title, exception: $exception, scripts: $scripts);
-                }             
+                }         
         }
     }
 );

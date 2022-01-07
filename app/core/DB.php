@@ -115,6 +115,8 @@ class DB implements GatewayInterface {
 
         $stmt = $this->_execute($query);
 
+        $result = [];
+
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
