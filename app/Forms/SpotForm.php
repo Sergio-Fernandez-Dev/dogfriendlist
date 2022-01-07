@@ -53,10 +53,10 @@ class SpotForm extends Form {
         $data = $this->_getData($data);
 
         isset($data['user_id']) ? $this->user_id = $data['user_id'] : $this->user_id = null;
-        isset($data['category_id']) ? $this->category_id = $data['category_id'] : $this->category_id = null;
+        isset($data['category']) ? $this->category_id = (int) $data['category'] : $this->category_id = null;
         isset($data['title']) ? $this->title = $data['title'] : $this->title = null;
-        isset($data['lat']) ? $this->lat = $data['lat'] : $this->lat = null;
-        isset($data['lng']) ? $this->lng = $data['lng'] : $this->lng = null;
+        isset($data['lat']) ? $this->lat = (float) $data['lat'] : $this->lat = null;
+        isset($data['lng']) ? $this->lng = (float) $data['lng'] : $this->lng = null;
         isset($data['address']) ? $this->address = $data['address'] : $this->address = null;
         isset($data['description']) ? $this->description = $data['description'] : $this->description = null;
     }
@@ -70,15 +70,13 @@ class SpotForm extends Form {
      */
     public function send() {
 
-        $spot = $this->handler->findByAddress($this->address);
+        $spot_list = $this->handler->findByAddress($this->address);
 
-        if (null != $spot->getAddress()) {
+        if (!empty($spot_list)) {
             throw new FormException('Ya existe un spot en la misma dirección');
         }
 
-        return $spot;
-
-        //TODO
+        return $spot_list;
     }
 
     /**
