@@ -2,8 +2,6 @@ html {
     font-size: 10px;
 }
 
-
-
 .body {
     display: flex;
     flex-wrap: wrap;
@@ -45,6 +43,10 @@ html {
     
 }
 
+.button:hover {
+    border: 0.05rem solid black;
+}
+
 .button--25rem {
     width: 25rem;
     
@@ -52,12 +54,10 @@ html {
 
 .button--red {
     background-color: #ff7a7a;
+    margin-left: 2rem;
 }
 
 
-.button:hover {
-    border: 0.05rem solid black;
-}
 
 /* Estilos para Unnlogged navbar  */
 
@@ -78,6 +78,23 @@ html {
     color: #FFFFFF;
     padding: 0.8rem 0.8rem;
 }
+
+.fav {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    padding-top: 2rem;
+    justify-content: right;
+    color: #a51212;
+    cursor: pointer;
+
+}
+
+.fav__button {
+    font-size: 1.6rem;
+    display: inline-block;   
+    
+} 
 
 .footer {
     width: 100%;
@@ -118,7 +135,8 @@ html {
     width: 100%;
     display: flex;
     flex-direction: row;
-    margin: 1rem 0;
+    margin-top: 2rem;
+    justify-content: center;
 }
 
 .form__button-box--column {
@@ -181,7 +199,7 @@ html {
 }
 
 .form__textarea-box {
-    width: auto;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -190,7 +208,7 @@ html {
 }
 
 .form__textarea-column {
-    width: 87%;
+    width: 100%;
     flex-direction: column;
 }
 
@@ -374,6 +392,7 @@ html {
     width: 100%;
     padding: 2rem;
     font-size: 2rem;
+    border-radius: 0.5rem;
 }
 
 

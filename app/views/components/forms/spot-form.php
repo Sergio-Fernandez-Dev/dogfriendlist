@@ -34,9 +34,9 @@
             <label class="form__label">Descripción:</label><br>
             <textarea class="textarea" name="description" cols="30" rows="10" required></textarea><br>
         </div>
-        <div class="form__button-box form__button-box--column">
+        <div class="form__button-box">
             <input class="button" type="submit" value="Crear spot" onclick="sendForm()">   
-            <input class="button button--red" type="submit" name="cancel" value="Cancelar">
+            <input class="button button--red" type="button" id="cancel" value="Cancelar">
         </div>
     </div>
 </form>

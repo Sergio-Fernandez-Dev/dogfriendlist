@@ -224,7 +224,7 @@ function chargeSpots(position, map, category = 0) {
 
         spot_list = JSON.parse(result);
 
-        var infowindow = new google.maps.InfoWindow();    
+        var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
         
         var length = spot_list.length;
 
@@ -290,6 +290,9 @@ function attachInfowindow(title, description, marker, map, infowindow) {
                     '<div class="infowindow__description" id="infowindow-description">' + 
                         description + 
                     '</div>' +
+                    '<div class="fav">' + 
+                        '<span class="material-icons fav__button">favorite_border</span>' + 
+                    '</div>' +  
                 '</div>';
     
     

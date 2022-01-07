@@ -113,6 +113,13 @@ route::add('/new-spot', ['GET', 'POST'],
     }
 );
 
+route::add('/user/([0-9]*)/favourites', ['GET', 'POST'],
+    function () {
+        
+        echo 'ok';
+    }
+);
+
 route::add('/auth/([a-zA-Z0-9/]*)', ['GET', 'POST'],
     function () {
         
