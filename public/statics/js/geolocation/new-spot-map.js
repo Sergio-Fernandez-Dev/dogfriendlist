@@ -7,7 +7,7 @@ function findNewSpot() {
 
     let address = $('input[name="address"]').val();
     let category = 0;
-    let icon = Number($('select[name="category-new-spot"]').val());
+    let icon = Number($('select[name="category"]').val());
 
     getCoordinatesFromAddress(address, category, false, icon);
     

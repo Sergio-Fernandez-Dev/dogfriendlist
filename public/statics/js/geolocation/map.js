@@ -334,6 +334,10 @@ function addNewSpot(map) {
 
 function createMarker(map, coords, icon) {
 
+    $("#lat").val(coords.lat());
+    $("#lng").val(coords.lng());
+    $("#address").val(getAddressFromCoordinates(coords));
+
     let marker = new google.maps.Marker({
         id: 'custom',
         position: coords,
