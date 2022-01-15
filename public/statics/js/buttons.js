@@ -1,8 +1,8 @@
 var menuVisibility = false;
+var clicked;
+const arrow = $('#arrow');
+const cancelButton = $('#cancel');
 
-var arrow = $('#arrow');
-var cancelButton = $('#cancel');
-var fav = $('#fav');
 
 arrow.on( "click", () => {
     if (!menuVisibility) {
@@ -17,3 +17,27 @@ arrow.on( "click", () => {
 cancelButton.on( "click", () => {
     $(location).attr('href', '..');
 });
+
+$(document).on('mouseover', '.fav__button', function(){
+    $(this).addClass('fav__button--hover');
+  });
+
+$(document).on('mouseleave', '.fav__button', function(){
+  if (!clicked) {
+      $(this).removeClass('fav__button--hover');
+  }
+});
+
+$(document).on('click', '.fav__button', function(){
+    if (!clicked) {
+        $(this).text('favorite');
+        $(this).addClass('fav__button--clicked');
+        clicked = true;
+        addToFavorite(markerId);
+    } else {
+        $(this).text('favorite_border');
+        $(this).removeClass('fav__button--clicked');
+        clicked = false;
+        removeFromFavorite(markerId);
+    }
+  });

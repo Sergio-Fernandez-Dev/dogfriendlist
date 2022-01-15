@@ -75,7 +75,7 @@ html {
 
 .corner-block__separator {
     display: inline;
-    color: #FFFFFF;
+    color: #afafaf;
     padding: 0.8rem 0.8rem;
 }
 
@@ -85,7 +85,7 @@ html {
     flex-direction: row;
     padding-top: 2rem;
     justify-content: right;
-    color: #a51212;
+    color: #c4bcbc;
     cursor: pointer;
 
 }
@@ -95,6 +95,15 @@ html {
     display: inline-block;   
     
 } 
+
+.fav__button--hover{
+    color: #c26060;
+}
+
+.fav__button--clicked{
+    color: #c00000;
+}
+
 
 .footer {
     width: 100%;

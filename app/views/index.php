@@ -19,7 +19,3 @@
 <?php render('components/geolocation/map.php', false);?>
 </div>
 
-<?php
-var_dump($_COOKIE);
-
-var_dump($_SESSION['user']);

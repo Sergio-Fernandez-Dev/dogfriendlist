@@ -1,10 +1,11 @@
 
 let map;
 let userMarker;
-let spot_list;
+let spotList;
 let placeholderAddress = null;
 let markers = [];
 var markerCoords;
+let markerId = null;
 
 
 function initMap() {
@@ -214,35 +215,39 @@ function chargeSpots(position, map, category = 0) {
     clearMarkers();
 
     $.post( "../geolocation/charge-spots", {
-        "coords" : { 
-            "lat" : position["lat"], 
-            "lng" : position["lng"] 
+        coords : { 
+            lat : position["lat"], 
+            lng : position["lng"] 
         },
-        "category" : category
+        category : category
     })
     .done((result) => {
 
-        spot_list = JSON.parse(result);
+        spotList = JSON.parse(result);
 
         var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
         
-        var length = spot_list.length;
+        var length = spotList.length;
 
         for (var i = 0; i < length; i++) {
 
             const pos = {
-            lat: parseFloat(spot_list[i].lat),
-            lng: parseFloat(spot_list[i].lng),
+            lat: parseFloat(spotList[i].lat),
+            lng: parseFloat(spotList[i].lng),
             }
 
+            const spotId = parseInt(spotList[i].id);
+
             let marker = new google.maps.Marker({
-            position: pos,
-            map: map
+                id: spotId,
+                position: pos,
+                map: map
             });
-            let icon = selectMarkerType(spot_list[i].category_id);
+
+            let icon = selectMarkerType(spotList[i].category_id);
             marker.setIcon(icon);
-            attachInfowindow(spot_list[i].title, spot_list[i].description, marker, map, infowindow);
-            
+            attachInfowindow(spotList[i].title, spotList[i].description, marker, map, infowindow, true); 
+
             markers.push(marker);
         }
     })       
@@ -280,7 +285,16 @@ function selectMarkerType(categoryId) {
     }
 }
 
-function attachInfowindow(title, description, marker, map, infowindow) {
+function attachInfowindow(title, description, marker, map, infowindow, fav) {
+    
+    if (fav) {
+        var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>';
+        clicked = true;
+
+    } else {
+        var span = '<span class="material-icons fav__button">favorite_border</span>';
+  
+    }
     
     let infowindowHTML = 
                 '<div class="infowindow">' +
@@ -291,7 +305,7 @@ function attachInfowindow(title, description, marker, map, infowindow) {
                         description + 
                     '</div>' +
                     '<div class="fav">' + 
-                        '<span class="material-icons fav__button">favorite_border</span>' + 
+                        span + 
                     '</div>' +  
                 '</div>';
     
@@ -301,14 +315,18 @@ function attachInfowindow(title, description, marker, map, infowindow) {
     marker.addListener("click",  () => {
         if (lastInfowindow) {
             infowindow.close();
+            markerId = null;
         }
 
         infowindow.setContent(infowindowHTML);
+
         infowindow.open({
             anchor: marker,
             map: map,
             shouldFocus: false,
         });
+
+        markerId = marker.id;
 
         lastInfowindow = infowindow;
     });
@@ -373,3 +391,10 @@ function createMarker(map, coords, icon) {
     return marker;
 }
 
+function addToFavorite(id) {
+    $.post("../geolocation/add-to-favs", {marker_id: id});
+}
+
+function removeFromFavorite(id) {
+    $.post("../geolocation/remove-from-favs", {marker_id: id});
+}
