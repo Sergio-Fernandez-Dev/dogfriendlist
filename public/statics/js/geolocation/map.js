@@ -6,6 +6,7 @@ let placeholderAddress = null;
 let markers = [];
 var markerCoords;
 let markerId = null;
+let favList = [];
 
 
 function initMap() {
@@ -246,7 +247,7 @@ function chargeSpots(position, map, category = 0) {
 
             let icon = selectMarkerType(spotList[i].category_id);
             marker.setIcon(icon);
-            attachInfowindow(spotList[i].title, spotList[i].description, marker, map, infowindow, true); 
+            attachInfowindow(spotList[i].title, spotList[i].description, marker, map, infowindow); 
 
             markers.push(marker);
         }
@@ -285,51 +286,55 @@ function selectMarkerType(categoryId) {
     }
 }
 
-function attachInfowindow(title, description, marker, map, infowindow, fav) {
+function attachInfowindow(title, description, marker, map, infowindow) {
     
-    if (fav) {
-        var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>';
-        clicked = true;
+    $.post("../geolocation/check-favs", {marker_id: marker.id})
+        .done( (result) => {
+            
+            let fav = JSON.parse(result);
 
-    } else {
-        var span = '<span class="material-icons fav__button">favorite_border</span>';
-  
-    }
-    
-    let infowindowHTML = 
-                '<div class="infowindow">' +
-                    '<h1 class="infowindow__title" id="infowindow-title">' + 
-                        title + 
-                    '</h1>' +
-                    '<div class="infowindow__description" id="infowindow-description">' + 
-                        description + 
-                    '</div>' +
-                    '<div class="fav">' + 
-                        span + 
-                    '</div>' +  
-                '</div>';
-    
-    
-    var lastInfowindow = false;  
+            if (fav.length > 0) {
+                var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>';
+                favList.push(marker.id);
+        
+            } else {
+                var span = '<span class="material-icons fav__button">favorite_border</span>';
+            }
+            
+            let infowindowHTML = 
+                        '<div class="infowindow">' +
+                            '<h1 class="infowindow__title" id="infowindow-title">' + 
+                                title + 
+                            '</h1>' +
+                            '<div class="infowindow__description" id="infowindow-description">' + 
+                                description + 
+                            '</div>' +
+                            '<div class="fav">' + 
+                                span + 
+                            '</div>' +  
+                        '</div>';
+            
+            
+            var lastInfowindow = false;  
 
-    marker.addListener("click",  () => {
-        if (lastInfowindow) {
-            infowindow.close();
-            markerId = null;
-        }
-
-        infowindow.setContent(infowindowHTML);
-
-        infowindow.open({
-            anchor: marker,
-            map: map,
-            shouldFocus: false,
+        
+            marker.addListener("click",  () => {
+                if (lastInfowindow) {
+                    infowindow.close();
+                }
+                infowindow.setContent(infowindowHTML);
+        
+                infowindow.open({
+                    anchor: marker,
+                    map: map,
+                    shouldFocus: false,
+                });
+        
+                markerId = marker.id;
+        
+                lastInfowindow = infowindow;
+            });
         });
-
-        markerId = marker.id;
-
-        lastInfowindow = infowindow;
-    });
 }
 
 function addNewSpot(map) {
@@ -392,9 +397,14 @@ function createMarker(map, coords, icon) {
 }
 
 function addToFavorite(id) {
+    favList.push(id);
     $.post("../geolocation/add-to-favs", {marker_id: id});
 }
 
 function removeFromFavorite(id) {
+    var index = favList.indexOf(id);
+    if (index > -1) {
+      favList.splice(index, 1);
+    }
     $.post("../geolocation/remove-from-favs", {marker_id: id});
 }

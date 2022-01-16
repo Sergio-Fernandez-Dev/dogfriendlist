@@ -78,6 +78,34 @@ route::add('/remove-from-favs', 'POST',
         }
     }
 );
+
+route::add('/check-favs', 'POST',
+    function () {
+
+        if ($_POST['marker_id']) {
+            session_start();
+
+            $db = new DB();
+            $qb = new QueryBuilder();
+            $user_id = $_SESSION['user']['id'];
+            $spot_id = $_POST['marker_id'];
+            $data = [
+                'user_id' => $user_id,
+                'spot_id' => $spot_id,
+            ];
+
+            $qb->setTableName('Favourites');
+            $query = $qb->select()
+                ->where('spot_id', '=', $spot_id)
+                ->andWhere('user_id', '=', $user_id)
+                ->get();
+            $result = $db->retrieve($query);
+            $db->disconnect();
+
+            echo json_encode($result);
+        }
+    }
+);
 route::methodNotAllowed(
     function () {
 

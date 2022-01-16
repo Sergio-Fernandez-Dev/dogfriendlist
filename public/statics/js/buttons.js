@@ -1,5 +1,5 @@
 var menuVisibility = false;
-var clicked;
+var clicked = [];
 const arrow = $('#arrow');
 const cancelButton = $('#cancel');
 
@@ -23,21 +23,21 @@ $(document).on('mouseover', '.fav__button', function(){
   });
 
 $(document).on('mouseleave', '.fav__button', function(){
-  if (!clicked) {
+  if (!clicked[markerId]) {
       $(this).removeClass('fav__button--hover');
   }
 });
 
 $(document).on('click', '.fav__button', function(){
-    if (!clicked) {
+    if (!favList.includes(markerId)) {
         $(this).text('favorite');
         $(this).addClass('fav__button--clicked');
-        clicked = true;
         addToFavorite(markerId);
+        console.log(favList);
     } else {
         $(this).text('favorite_border');
         $(this).removeClass('fav__button--clicked');
-        clicked = false;
         removeFromFavorite(markerId);
+        console.log(favList);
     }
   });
