@@ -1,6 +1,6 @@
 function newMap() {
 
-    chargeMap(true);
+    chargeMap(true, 'new-spot-map');
 }
 
 function findNewSpot() {

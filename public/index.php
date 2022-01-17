@@ -21,6 +21,7 @@ route::add('/', ['GET', 'POST'],
         //Establecemos las rutas que cargarán nuestros archivos javascript.
         $scripts = [
             SCRIPTS_PATH . 'main-map.php',
+            SCRIPTS_PATH . 'fav-map.php',
             SCRIPTS_PATH . 'google-api.php',
             SCRIPTS_PATH . 'buttons.php'
         ];
@@ -70,6 +71,8 @@ route::add('/new-spot', ['GET', 'POST'],
         session_start();
         authRequired();
 
+        $title = 'Nuevo Spot';
+
         $scripts = [
             SCRIPTS_PATH . 'main-map.php',
             SCRIPTS_PATH . 'new-spot-map.php',
@@ -79,7 +82,6 @@ route::add('/new-spot', ['GET', 'POST'],
     
         $user = $_SESSION['user'];
     
-        $title = 'Nuevo Spot';
     
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
@@ -113,10 +115,32 @@ route::add('/new-spot', ['GET', 'POST'],
     }
 );
 
-route::add('/user/([0-9]*)/favourites', ['GET', 'POST'],
-    function () {
+route::add('/user/([0-9]*)/favourites', 'GET',
+    function ($id) {
+
+        session_start();
+        authRequired();
+
+        $title = 'Favoritos';
         
-        echo 'ok';
+        $scripts = [
+            SCRIPTS_PATH . 'main-map.php',
+            SCRIPTS_PATH . 'fav-map.php',
+            SCRIPTS_PATH . 'google-api.php',
+            SCRIPTS_PATH . 'buttons.php'
+        ];
+    
+
+        $user = $_SESSION['user'];
+        
+        if ($user['id'] != $id) {
+            redirect('');
+        }
+
+        //Establecemos la función a la que llamaremos para crear nuestro mapa;
+        $callback = 'initMap';
+
+        return render('favourites.php', title: $title, scripts: $scripts, callback: $callback);
     }
 );
 

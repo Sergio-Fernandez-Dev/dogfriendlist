@@ -15,9 +15,7 @@ $user = $_SESSION['user'];
                     </a>
                 </div>
                 <div class="nav__button">
-                    <a class="nav__link" href="../user/<?php echo $user['id'] ?>/favourites">
-                        <span class="material-icons">favorite</span>
-                    </a>
+                    <span class="material-icons nav__link" onclick="chargeFavSpots()">favorite</span>
                 </div>
             </div>
         </nav>

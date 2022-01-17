@@ -1,5 +1,6 @@
 
 let map;
+let map_name
 let userMarker;
 let spotList;
 let placeholderAddress = null;
@@ -10,10 +11,11 @@ let favList = [];
 
 
 function initMap() {
-   chargeMap(false);
+   chargeMap(false, 'main-map');
 }
 
-function chargeMap(clickable) {
+function chargeMap(clickable, mapName) {
+    map_name = mapName;
     $('#map').append('<p class="map__p">CARGANDO MAPA...</p>');
 
     $(document).ready(() => {
@@ -215,7 +217,9 @@ function chargeSpots(position, map, category = 0) {
 
     clearMarkers();
 
-    $.post( "../geolocation/charge-spots", {
+    let controllerName = (map_name == 'fav-map') ? 'charge-fav-spots' : 'charge-spots';
+
+    $.post( "../geolocation/" + controllerName, {
         coords : { 
             lat : position["lat"], 
             lng : position["lng"] 

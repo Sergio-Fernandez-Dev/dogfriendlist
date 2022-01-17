@@ -1,0 +1,1 @@
+<script src="../statics/js/geolocation/fav-map.js"></script>

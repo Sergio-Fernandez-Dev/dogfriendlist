@@ -322,7 +322,7 @@ html {
 .nav__link {
     color: #FFFFFF;
     text-decoration: none;
-    
+    cursor: pointer;  
 }
 
 .nav__link:hover {
