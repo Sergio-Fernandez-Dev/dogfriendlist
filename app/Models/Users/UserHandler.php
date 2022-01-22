@@ -78,8 +78,12 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        foreach ($result as $user) {
-            $user_list[] = $this->make($user);
+        if (empty($result)) {
+            $user_list[] = $this->make($result);
+        } else {
+            foreach ($result as $user) {
+                $user_list[] = $this->make($user);
+            }
         }
 
         return $user_list[0];
@@ -101,10 +105,12 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
-        $user_list = [];
-
-        foreach ($result as $user) {
-            $user_list[] = $this->make($user);
+        if (empty($result)) {
+            $user_list[] = $this->make($result);
+        } else {
+            foreach ($result as $user) {
+                $user_list[] = $this->make($user);
+            }
         }
 
         return $user_list[0];
@@ -190,6 +196,12 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
     public function make(array $data) {
 
         $user = new User();
+
+        // Si el array está vacío, lo llenamos con los valores por defecto
+        if (empty($data)) {
+            return $user;
+        }
+
         $user->setProperties($data);
 
         return $user;

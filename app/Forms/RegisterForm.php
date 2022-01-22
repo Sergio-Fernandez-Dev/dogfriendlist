@@ -60,7 +60,9 @@ class RegisterForm extends Form {
         if (null != $user->getEmail()) {
             throw new FormException('La dirección de correo ya ha sido registrada anteriormente.');
         }
+
         $user = $this->handler->findByUsername($this->username);
+
         if (null != $user->getUsername()) {
             throw new FormException('El nombre de usuario ya existe.');
         }

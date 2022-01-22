@@ -115,10 +115,13 @@ class DB implements GatewayInterface {
 
         $stmt = $this->_execute($query);
 
-        $result = [];
+        if ($stmt->rowCount() < 1) {
+            $result = [];
+        } else {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = $row;
+            }
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $row;
         }
 
         return $result;
@@ -132,6 +135,8 @@ class DB implements GatewayInterface {
      * @return mixed
      */
     private function _execute($query) {
+
+        \var_dump($query);
 
         if (!isset($this->conn)) {$this->connect();}
 

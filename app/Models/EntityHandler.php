@@ -162,6 +162,12 @@ abstract class EntityHandler implements EntityHandlerInterface {
             $result = $this->db->retrieve($query);
             $this->db->disconnect();
 
+            $model_object_list = [];
+
+            if (empty($result)) {
+                $model_object_list[] = $this->make($result);
+            }
+
             foreach ($result as $model_object) {
                 $model_object_list[] = $this->make($model_object);
             }
@@ -180,4 +186,12 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
+
+
+
+
+
+
+
 

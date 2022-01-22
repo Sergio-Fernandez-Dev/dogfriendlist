@@ -72,7 +72,7 @@ route::add('/logout', 'GET',
 
 route::add('/register', ['GET', 'POST'],
     function () {
-
+        session_start();
         $title = 'Registro';
 
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -102,7 +102,7 @@ route::add('/register', ['GET', 'POST'],
             //Enviamos email de validación al correo del usuario
             $email->sendVerificationEmail($user);
             //Creamos una variable de sesión con el usuario instanciado.
-            session_start();
+            
             
             $_SESSION['user'] = $user;
 

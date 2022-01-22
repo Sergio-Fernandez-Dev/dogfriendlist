@@ -78,7 +78,7 @@ class User implements EntityInterface {
     /**
      * Devuelve un array con todas las propiedades de la clase.
      *
-    keybool $only_valuated
+     * @param bool $only_valuated
      * @return array
      */
     public function getProperties(bool $only_valuated = true) {
@@ -86,17 +86,14 @@ class User implements EntityInterface {
         $properties = \get_object_vars($this);
 
         foreach ($properties as $key => $value) {
-
 //Si el valor es nulo o está vacío, lo eliminamos del array.
             if ($only_valuated) {
                 if (!isset($properties[$key])) {
                     unset($properties[$key]);
                 }
-
             }
-
         }
-
+        
         return $properties;
     }
 
