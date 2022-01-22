@@ -58,8 +58,11 @@ function chargeMap(clickable, mapName) {
                 //Obtenemos la dirección correspondiente a las coordenadas recibidas.
                 getAddressFromCoordinates(pos);
             }
-            
-            chargeSpots(pos, map)
+            if (map_name == 'fav-,map') {
+                chargeFavs(map);
+            } else {
+                chargeSpots(pos, map)
+            }
 
             // Colocamos nuestro marcador de usuario en la posición obtenida del navegador.
 
@@ -217,9 +220,7 @@ function chargeSpots(position, map, category = 0) {
 
     clearMarkers();
 
-    let controllerName = (map_name == 'fav-map') ? 'charge-fav-spots' : 'charge-spots';
-
-    $.post( "../geolocation/" + controllerName, {
+    $.post( "../geolocation/charge-spots", {
         coords : { 
             lat : position["lat"], 
             lng : position["lng"] 

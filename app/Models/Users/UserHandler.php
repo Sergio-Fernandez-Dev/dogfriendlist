@@ -101,6 +101,8 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $result = $this->db->retrieve($query);
         $this->db->disconnect();
 
+        $user_list = [];
+
         foreach ($result as $user) {
             $user_list[] = $this->make($user);
         }

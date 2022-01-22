@@ -34,6 +34,35 @@ route::add('/charge-spots', 'POST',
     }
 );
 
+route::add('/charge-fav-spots', 'POST',
+    function () {
+
+        $db = new DB();
+        $qb = new QueryBuilder();
+        $handler = new SpotHandler($db, $qb);
+
+        $user_id = $_SESSION['user']['id'];
+
+        if (isset($_POST['category']) && $_POST['category'] > 1) {
+            $category = $_POST['category'];
+            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = :0 WHERE Spots.category_id = :1 AND Favourites.user_id = :2", "Favourites.spot_id", $category, $user_id)
+                ->get();
+
+            $spot_list = $handler->raw($query, 'retrieve');
+        } else {
+            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = :0 WHERE Favourites.user_id = :1", "Favourites.spot_id", $user_id)
+                ->get();
+
+            $spot_list = $handler->raw($query, 'retrieve');
+        }
+        foreach ($spot_list as $spot) {
+            $result[] = $spot->getProperties(false);
+        }
+
+        echo json_encode($result);
+    }
+);
+
 route::add('/add-to-favs', 'POST',
     function () {
 
