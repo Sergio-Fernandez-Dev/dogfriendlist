@@ -23,27 +23,47 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
     }
 
     /**
-     * Utiliza el nombre de usuario que creó el spot para buscar un registro en la base de datos y crea
-     * un objeto con el resultado de la consulta.
+     * @param float $lat
+     * @param float $lng
+     * @param float $distance
      *
-     * @param int $user_id
+     * @return array
      */
-    public function findByUser(int $user_id) {
+    private function _getBoundaries($lat, $lng, $distance = 1) {
 
-        $query = $this->q_builder->select()
-            ->where('user_id', '=', $user_id)
-            ->get();
+        $earthRadius = 6371;
 
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
+        $return = [];
 
-        $spot_list = [];
+        // Los angulos para cada dirección
+        $cardinalCoords = [
+            'north' => '0',
+            'south' => '180',
+            'east'  => '90',
+            'west'  => '270',
+        ];
 
-        foreach ($result as $spot) {
-            $spot_list[] = $this->make($spot);
+        $rLat = deg2rad($lat);
+        $rLng = deg2rad($lng);
+        $rAngDist = $distance / $earthRadius;
+
+        foreach ($cardinalCoords as $name => $angle) {
+            $rAngle = deg2rad($angle);
+            $rLatB = asin(sin($rLat) * cos($rAngDist) + cos($rLat) * sin($rAngDist) * cos($rAngle));
+            $rLonB = $rLng + atan2(sin($rAngle) * sin($rAngDist) * cos($rLat), cos($rAngDist) - sin($rLat) * sin($rLatB));
+
+            $return[$name] = [
+                'lat' => (float) rad2deg($rLatB),
+                'lng' => (float) rad2deg($rLonB),
+            ];
         }
 
-        return $spot_list;
+        return [
+            'min_lat' => $return['south']['lat'],
+            'max_lat' => $return['north']['lat'],
+            'min_lng' => $return['west']['lng'],
+            'max_lng' => $return['east']['lng'],
+        ];
     }
 
     /**
@@ -51,6 +71,8 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
      * un objeto con el resultado de la consulta.
      *
      * @param string $address
+     *
+     * @return array
      */
     public function findByAddress(string $address) {
 
@@ -71,58 +93,12 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
     }
 
     /**
-     * Utiliza la ciudad del spot para buscar un registro en la base de datos y crea
-     * un objeto con el resultado de la consulta.
-     *
-     * @param string $city
-     */
-    public function findByCity(string $city) {
-
-        $query = $this->q_builder->select()
-            ->where('city', '=', $city)
-            ->get();
-
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
-
-        $spot_list = [];
-
-        foreach ($result as $spot) {
-            $spot_list[] = $this->make($spot);
-        }
-
-        return $spot_list;
-    }
-
-    /**
-     * Utiliza el país del spot para buscar un registro en la base de datos y crea
-     * un objeto con el resultado de la consulta.
-     *
-     * @param string $country
-     */
-    public function findByCountry(string $country) {
-
-        $query = $this->q_builder->select()
-            ->where('country', '=', $country)
-            ->get();
-
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
-
-        $spot_list = [];
-
-        foreach ($result as $spot) {
-            $spot_list[] = $this->make($spot);
-        }
-
-        return $spot_list;
-    }
-
-    /**
      * Utiliza la categoría del spot para buscar un registro en la base de datos y crea
      * un objeto con el resultado de la consulta.
      *
      * @param int $category_id
+     *
+     * @return  array
      */
     public function findByCategory(int $category_id) {
 
@@ -198,47 +174,5 @@ class SpotHandler extends EntityHandler implements SpotHandlerInterface {
 
         return $spot;
     }
-
-    /**
-     * @param $lat
-     * @param $lng
-     * @param $distance
-     *
-     * @return array
-     */
-    private function _getBoundaries($lat, $lng, $distance = 1) {
-        $earthRadius = 6371;
-
-        $return = [];
-
-        // Los angulos para cada dirección
-        $cardinalCoords = [
-            'north' => '0',
-            'south' => '180',
-            'east'  => '90',
-            'west'  => '270',
-        ];
-
-        $rLat = deg2rad($lat);
-        $rLng = deg2rad($lng);
-        $rAngDist = $distance / $earthRadius;
-
-        foreach ($cardinalCoords as $name => $angle) {
-            $rAngle = deg2rad($angle);
-            $rLatB = asin(sin($rLat) * cos($rAngDist) + cos($rLat) * sin($rAngDist) * cos($rAngle));
-            $rLonB = $rLng + atan2(sin($rAngle) * sin($rAngDist) * cos($rLat), cos($rAngDist) - sin($rLat) * sin($rLatB));
-
-            $return[$name] = ['lat' => (float) rad2deg($rLatB),
-                'lng'                   => (float) rad2deg($rLonB)];
-        }
-
-        return [
-            'min_lat' => $return['south']['lat'],
-            'max_lat' => $return['north']['lat'],
-            'min_lng' => $return['west']['lng'],
-            'max_lng' => $return['east']['lng'],
-        ];
-    }
-
 }
 ?>

@@ -24,6 +24,40 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
     }
 
     /**
+     * Crea una carpeta para almacenar los archivos relacionados con el usuario
+     *
+     * @param string $username
+     */
+    private function _createUserFolder(string $username) {
+
+        $user = $this->findByUsername($username);
+
+        if (!is_dir('../storage/users/' . $user->getId())) {
+            mkdir('../storage/users/' . $user->getId(), 0777);
+        }
+    }
+
+    /**
+     * Accede de forma recursiva a todas las subcarpetas de nuestra carpeta de usuario
+     * y borra cualquier archivo que encuentre. Una vez vaciada, borra la carpeta principal.
+     *
+     * @param string $folder
+     */
+    private function _destroyUserFolder(string $folder) {
+
+        foreach (glob($folder . '/*') as $subfolder) {
+
+            if (is_dir($subfolder)) {
+                $this->_destroyUserFolder($subfolder);
+            } else {
+                unlink($subfolder);
+            }
+        }
+
+        rmdir($folder);
+    }
+
+    /**
      * @return QueryBuilderInterface
      */
     public function getQueryBuilder(): QueryBuilderInterface {
@@ -54,7 +88,7 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
     /**
      * Borra a un usuario de la base de datos junto a todos sus archivos relacionados.
      *
-     * @param $user
+     * @param User $user
      */
     public function remove($user) {
 
@@ -68,6 +102,8 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
      * un objeto con el resultado de la consulta.
      *
      * @param string $username
+     *
+     * @return User
      */
     public function findByUsername(string $username) {
 
@@ -95,6 +131,8 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
      * un objeto con el resultado de la consulta.
      *
      * @param string $email
+     *
+     * @return User
      */
     public function findByEmail(string $email) {
 
@@ -117,81 +155,12 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
     }
 
     /**
-     * Utiliza la ciudad del usuario para buscar en la base de datos y crea
-     * un objeto con el resultado de la consulta.
-     * @param string $city
-     */
-    public function findByCity(string $city) {
-
-        $query = $this->q_builder->select()
-            ->where('city', '=', $city)
-            ->get();
-
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
-
-        $user_list = [];
-
-        foreach ($result as $user) {
-            $user_list[] = $this->make($user);
-        }
-
-        return $user_list;
-    }
-
-    /**
-     * Utiliza el país del usuario para buscar en la base de datos y crea
-     * un objeto con el resultado de la consulta.
-     *
-     * @param string $country
-     */
-    public function findByCountry(string $country) {
-
-        $query = $this->q_builder->select()
-            ->where('country', '=', $country)
-            ->get();
-
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
-
-        $user_list = [];
-
-        foreach ($result as $user) {
-            $user_list[] = $this->make($user);
-        }
-
-        return $user_list;
-    }
-
-    /**
-     * Utiliza el rol del usuario para buscar en la base de datos y crea
-     * un objeto con el resultado de la consulta.
-     *
-     * @param int $role
-     */
-    public function findByRole(int $role) {
-
-        $query = $this->q_builder->select()
-            ->where('role', '=', $role)
-            ->get();
-
-        $result = $this->db->retrieve($query);
-        $this->db->disconnect();
-
-        $user_list = [];
-
-        foreach ($result as $user) {
-            $user_list[] = $this->make($user);
-        }
-
-        return $user_list;
-    }
-
-    /**
      * Crea un objeto Usuario con los parámetros
      * pasados como argumento.
      *
      * @param array $data
+     *
+     * @return User
      */
     public function make(array $data) {
 
@@ -205,40 +174,6 @@ class UserHandler extends EntityHandler implements UserHandlerInterface {
         $user->setProperties($data);
 
         return $user;
-    }
-
-    /**
-     * Crea una carpeta para almacenar los archivos relacionados con el usuario
-     *
-     * @param string $username
-     */
-    private function _createUserFolder(string $username) {
-
-        $user = $this->findByUsername($username);
-
-        if (!is_dir('../storage/users/' . $user->getId())) {
-            mkdir('../storage/users/' . $user->getId(), 0777);
-        }
-    }
-
-    /**
-     * Accede de forma recursiva a todas las subcarpetas de nuestra carpeta de usuario
-     * y borra cualquier archivo que encuentre. Una vez vaciada, borra la carpeta principal.
-     *
-     * @param string $folder
-     */
-    private function _destroyUserFolder($folder) {
-
-        foreach (glob($folder . '/*') as $subfolder) {
-
-            if (is_dir($subfolder)) {
-                $this->_destroyUserFolder($subfolder);
-            } else {
-                unlink($subfolder);
-            }
-        }
-
-        rmdir($folder);
     }
 }
 

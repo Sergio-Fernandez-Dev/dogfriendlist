@@ -64,6 +64,32 @@ class DB implements GatewayInterface {
     }
 
     /**
+     * Ejecuta las consultas a la base de datos
+     *
+     * @param array $query
+     *
+     * @return mixed
+     */
+    private function _execute($query) {
+
+        \var_dump($query);
+
+        if (!isset($this->conn)) {$this->connect();}
+
+        try
+        {
+            $stmt = $this->conn->prepare($query['query']);
+            $stmt->execute($query['values']);
+
+            return $stmt;
+
+        } catch (PDOException $e) {
+            die("No se ha podido ejecutar la consulta:" . $e->getMessage());
+        }
+
+    }
+
+    /**
      * Establece la conexión a la base de datos.
      *
      * @return array|null|void
@@ -109,7 +135,7 @@ class DB implements GatewayInterface {
      * para la consulta realizada.
      *
      * @param array|string $query
-     * @return array|string
+     * @return array
      */
     public function retrieve($query) {
 
@@ -125,32 +151,6 @@ class DB implements GatewayInterface {
         }
 
         return $result;
-    }
-
-    /**
-     * Ejecuta las consultas a la base de datos
-     *
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    private function _execute($query) {
-
-        \var_dump($query);
-
-        if (!isset($this->conn)) {$this->connect();}
-
-        try
-        {
-            $stmt = $this->conn->prepare($query['query']);
-            $stmt->execute($query['values']);
-
-            return $stmt;
-
-        } catch (PDOException $e) {
-            die("No se ha podido ejecutar la consulta:" . $e->getMessage());
-        }
-
     }
 
 }

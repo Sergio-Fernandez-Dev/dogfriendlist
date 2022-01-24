@@ -103,7 +103,8 @@ route::add('/register', ['GET', 'POST'],
             $email->sendVerificationEmail($user);
             //Creamos una variable de sesión con el usuario instanciado.
             
-            
+            $user_data = formatUserData($user);
+
             $_SESSION['user'] = $user;
 
             return redirect('auth/confirm');
@@ -130,7 +131,8 @@ route::add('/confirm', ['GET', 'POST'],
         case 'GET':
             //Si existe el objeto usuario mostramos la pagina de confirmación de envío del email
             if (isset($user)) {
-                
+                $user = formatUserData($user);
+
                 return render('auth/verification-email-sended.php', base_page: false, title: $title, user: $user);    
             //Si no, volvemos al inicio (así evitamos que se muestre 'verification-email-sended' 
             //en caso de que el  usuario introduzca la url manualmente)
@@ -152,6 +154,7 @@ route::add('/confirm', ['GET', 'POST'],
             //Enviamos un email de verificación.
             $email->sendVerificationEmail($user);
 
+            $user = formatUserData($user);
             //mostramos la pagina de confirmación de envío del email
             return render('auth/verification-email-sended.php', base_page: false, title: $title, user: $user);
         }   
@@ -197,7 +200,9 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
         case 'POST':             
             $user = $handler->findByEmail($_POST['email']);
 
-            $_SESSION['user'] = $user;
+            $user_data = formatUserData($user);
+
+            $_SESSION['user'] = $user_data;
 
             redirect('auth/confirm');       
         }              

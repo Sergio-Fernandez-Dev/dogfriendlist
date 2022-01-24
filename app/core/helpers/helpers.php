@@ -16,7 +16,7 @@ function render(string $page, bool $base_page = true, ...$params) {
     }
 
     if ($base_page) {
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['user']) && 0 != $_SESSION['user']['role']) {
             $header = \COMPONENTS_PATH . 'navbars/logged-navbar.php';
         } else {
             $header = \COMPONENTS_PATH . 'navbars/unlogged-navbar.php';
@@ -65,6 +65,7 @@ function formatUserData($user) {
         'id'       => $user->getId(),
         'username' => $user->getUsername(),
         'email'    => $user->getEmail(),
+        'role'     => $user->getRole(),
     ];
 
     return $user_data;

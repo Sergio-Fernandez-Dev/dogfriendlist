@@ -29,6 +29,12 @@ route::add('/', ['GET', 'POST'],
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
 
+                if (isset($_SESSION['user']) && !is_array($_SESSION['user'])) {
+                    $user = $_SESSION['user'];
+                    $user_data = formatUserData($user);
+                    $_SESSION['user'] = $user_data;
+                }
+
                 //Si existe una cookie con la id de usuario , 
                 // utilizamos la cookie para crear nuestra sesión de usuario, evitando la necesidad
                 // de volver a identificarse.

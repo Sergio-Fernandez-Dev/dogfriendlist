@@ -32,9 +32,72 @@ class QueryBuilder implements QueryBuilderInterface {
     private $table;
 
     /**
-     * @var mixed
+     * @var array
      */
     private $immutables = [];
+
+    /**
+     * Crea un objeto vacío
+     *
+     * @return void
+     */
+    private function _createEmptyQueryObject($table, $immutables) {
+        $this->query = new stdClass();
+        $this->query->type = null;
+        $this->values_to_bind = [];
+        $this->table = $table;
+        $this->immutables = $immutables;
+    }
+
+    /**
+     * Construye la consulta
+     *
+     * @param string $sql_string
+     *
+     * @return void
+     */
+    private function _build($sql_string) {
+
+        if (empty($this->query->result)) {$this->query->result = "";}
+
+        $this->query->result .= $sql_string;
+
+    }
+
+    /**
+     * Formatea los argumentos recibidos
+     * para evitar inyección SQL
+     *
+     * @param string|array $values
+     * @return string|array
+     */
+    private function _secureValues($values) {
+        $result = [];
+
+        if (\is_array($values)) {
+
+            foreach ($values as $value) {
+                $this->values_to_bind[":$this->position"] = $value;
+                $this->secure_values[] = ":$this->position";
+
+                $result[] = ":$this->position";
+
+                $this->position++;
+            }
+
+        } else {
+            $this->values_to_bind[":$this->position"] = $values;
+            $this->secure_values[] = ":$this->position";
+
+            $result_string = ":$this->position";
+
+            $this->position++;
+
+            return $result_string;
+        }
+
+        return $result;
+    }
 
     /**
      * Establece el nombre de la tabla sobre la que
@@ -398,72 +461,7 @@ class QueryBuilder implements QueryBuilderInterface {
 
             return ['query' => $query, 'values' => $values_to_bind];
         }
-
     }
-
-    /**
-     * Crea un objeto vacío
-     *
-     * @return void
-     */
-    private function _createEmptyQueryObject($table, $immutables) {
-        $this->query = new stdClass();
-        $this->query->type = null;
-        $this->values_to_bind = [];
-        $this->table = $table;
-        $this->immutables = $immutables;
-    }
-
-    /**
-     * Construye la consulta
-     *
-     * @param int $sql_string
-     *
-     * @return void
-     */
-    private function _build($sql_string) {
-
-        if (empty($this->query->result)) {$this->query->result = "";}
-
-        $this->query->result .= $sql_string;
-
-    }
-
-    /**
-     * Formatea los argumentos recibidos
-     * para evitar inyección SQL
-     *
-     * @param string|array $values
-     * @return string|array
-     */
-    private function _secureValues($values) {
-        $result = [];
-
-        if (\is_array($values)) {
-
-            foreach ($values as $value) {
-                $this->values_to_bind[":$this->position"] = $value;
-                $this->secure_values[] = ":$this->position";
-
-                $result[] = ":$this->position";
-
-                $this->position++;
-            }
-
-        } else {
-            $this->values_to_bind[":$this->position"] = $values;
-            $this->secure_values[] = ":$this->position";
-
-            $result_string = ":$this->position";
-
-            $this->position++;
-
-            return $result_string;
-        }
-
-        return $result;
-    }
-
 }
 
 ?>

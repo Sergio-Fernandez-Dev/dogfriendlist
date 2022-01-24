@@ -6,24 +6,9 @@ use App\Models\Interfaces\EntityHandlerInterface;
 interface SpotHandlerInterface extends EntityHandlerInterface {
 
     /**
-     * @param int $user_id
-     */
-    public function findByUser(int $user_id);
-
-    /**
      * @param string $address
      */
     public function findByAddress(string $address);
-
-    /**
-     * @param string $city
-     */
-    public function findByCity(string $city);
-
-    /**
-     * @param string $country
-     */
-    public function findByCountry(string $country);
 
     /**
      * @param int $category_id
@@ -39,6 +24,8 @@ interface SpotHandlerInterface extends EntityHandlerInterface {
 }
 
 ?>
+
+
 
 
 

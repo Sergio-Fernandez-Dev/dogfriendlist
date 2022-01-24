@@ -14,23 +14,10 @@ Interface UserHandlerInterface extends EntityHandlerInterface {
      */
     public function findByUsername(string $username);
 
-    /**
-     * @param string $country
-     */
-    public function findByCountry(string $country);
-
-    /**
-     * @param string $city
-     */
-    public function findByCity(string $city);
-
-    /**
-     * @param int $role
-     */
-    public function findByRole(int $role);
 }
 
 ?>
+
 
 
 

@@ -59,6 +59,8 @@ abstract class EntityHandler implements EntityHandlerInterface {
      * un objeto con el resultado de la consulta.
      *
      * @param int $id
+     *
+     * @return array
      */
     public function find(int $id) {
 
@@ -186,6 +188,8 @@ abstract class EntityHandler implements EntityHandlerInterface {
 }
 
 ?>
+
+
 
 
 
