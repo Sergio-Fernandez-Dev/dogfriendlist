@@ -292,7 +292,7 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @param string $column
      * @param string $operator
-     * @param string $value
+     * @param mixed $value
      *
      * @return QueryBuilder
      */
@@ -324,7 +324,7 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @param string $column
      * @param string $operator
-     * @param string $value
+     * @param mixed $value
      *
      * @return QueryBuilder
      */
@@ -448,8 +448,7 @@ class QueryBuilder implements QueryBuilderInterface {
      *
      * @return array
      */
-    public function get(): array
-    {
+    public function get() {
         {
             $query = $this->query->result;
             $query .= ";";

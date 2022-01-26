@@ -9,33 +9,30 @@ use App\Models\Spots\SpotHandler;
 route::add('/charge-spots', 'POST',
     function () {
 
-        if (isset($_POST['coords'])) {
-            $db = new DB();
-            $qb = new QueryBuilder();
-            $handler = new SpotHandler($db, $qb);
+        $db = new DB();
+        $qb = new QueryBuilder();
+        $handler = new SpotHandler($db, $qb);
 
-            $coords = $_POST['coords'];
-            $lat = $coords['lat'];
-            $lng = $coords['lng'];
+        if (isset($_POST['category']) && $_POST['category'] > 1) {
+            $spot_list = $handler->findByCategory($_POST['category']);
 
-            if (isset($_POST['category']) && $_POST['category'] > 1) {
-                $spot_list = $handler->findByCategory($_POST['category']);
-
-            } else {
-                $spot_list = $handler->findAll();
-            }
-
-            foreach ($spot_list as $spot) {
-                $result[] = $spot->getProperties(false);
-            }
-
-            echo json_encode($result);
+        } else {
+            $spot_list = $handler->findAll();
         }
+
+        foreach ($spot_list as $spot) {
+            $result[] = $spot->getProperties(false);
+        }
+
+        echo json_encode($result);
+
     }
 );
 
 route::add('/charge-fav-spots', 'POST',
     function () {
+
+        session_start();
 
         $db = new DB();
         $qb = new QueryBuilder();
@@ -45,12 +42,12 @@ route::add('/charge-fav-spots', 'POST',
 
         if (isset($_POST['category']) && $_POST['category'] > 1) {
             $category = $_POST['category'];
-            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = :0 WHERE Spots.category_id = :1 AND Favourites.user_id = :2", "Favourites.spot_id", $category, $user_id)
+            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = Favourites.spot_id WHERE Spots.category_id = :0 AND Favourites.user_id = :1", $category, $user_id)
                 ->get();
 
             $spot_list = $handler->raw($query, 'retrieve');
         } else {
-            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = :0 WHERE Favourites.user_id = :1", "Favourites.spot_id", $user_id)
+            $query = $qb->raw("SELECT * FROM `Spots` INNER JOIN `Favourites` ON Spots.id = Favourites.spot_id WHERE Favourites.user_id = :0", $user_id)
                 ->get();
 
             $spot_list = $handler->raw($query, 'retrieve');
@@ -66,7 +63,7 @@ route::add('/charge-fav-spots', 'POST',
 route::add('/add-to-favs', 'POST',
     function () {
 
-        if ($_POST['marker_id']) {
+        if (isset($_POST['marker_id'])) {
             session_start();
 
             $db = new DB();
@@ -89,7 +86,7 @@ route::add('/add-to-favs', 'POST',
 route::add('/remove-from-favs', 'POST',
     function () {
 
-        if ($_POST['marker_id']) {
+        if (isset($_POST['marker_id'])) {
             session_start();
 
             $db = new DB();
@@ -111,7 +108,7 @@ route::add('/remove-from-favs', 'POST',
 route::add('/check-favs', 'POST',
     function () {
 
-        if ($_POST['marker_id']) {
+        if (isset($_POST['marker_id']) && isset($_SESSION['user']['id'])) {
             session_start();
 
             $db = new DB();
@@ -131,8 +128,11 @@ route::add('/check-favs', 'POST',
             $result = $db->retrieve($query);
             $db->disconnect();
 
-            echo json_encode($result);
+        } else {
+            $result = [];
         }
+
+        echo json_encode($result);
     }
 );
 route::methodNotAllowed(

@@ -21,7 +21,7 @@ if (isset($exception)) {
         </label><br>
         <div class="form__button-box">
             <input class="button" type="submit" name="submit" value="Login">
-            <p class="form__p"> o <a class="form__a" href="../auth/register"> Regístrate</a></p>
+            <p class="form__p"> o <a class="form__a" href="/auth/register"> Regístrate</a></p>
         </div>
     </form>
 </div>

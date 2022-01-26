@@ -26,6 +26,11 @@ abstract class EntityHandler implements EntityHandlerInterface {
     protected $db;
 
     /**
+     * @param array $data
+     */
+    protected abstract function make(array $data);
+
+    /**
      * @param string $table
      * @param QueryBuilderInterface $q_builder
      */
@@ -180,11 +185,6 @@ abstract class EntityHandler implements EntityHandlerInterface {
             throw new LogicException('El método de consulta debe ser tipo "retrieve" o "persist"');
         }
     }
-
-    /**
-     * @param $data
-     */
-    protected abstract function make(array $data);
 }
 
 ?>

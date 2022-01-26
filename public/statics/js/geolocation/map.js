@@ -58,10 +58,10 @@ function chargeMap(clickable, mapName) {
                 //Obtenemos la dirección correspondiente a las coordenadas recibidas.
                 getAddressFromCoordinates(pos);
             }
-            if (map_name == 'fav-,map') {
+            if (map_name == 'fav-map') {
                 chargeFavs(map);
             } else {
-                chargeSpots(pos, map)
+                chargeSpots(map)
             }
 
             // Colocamos nuestro marcador de usuario en la posición obtenida del navegador.
@@ -85,7 +85,7 @@ function chargeMap(clickable, mapName) {
             });
 
             getAddressFromCoordinates(pos);
-            chargeSpots(pos, map);
+            chargeSpots(map);
             // Llamamos a handleLocationError
             handleLocationError(false, userMarker, pos);
         }     
@@ -111,7 +111,7 @@ function handleLocationError(browserHasGeolocation, userMarker, pos) {
     });
 
     getAddressFromCoordinates(pos);
-    chargeSpots(pos, map);
+    chargeSpots(map);
     userMarker.setMap(map);
 }
 
@@ -169,7 +169,7 @@ function getCoordinatesFromAddress(address, category, placeholder, icon = null) 
                 lng: results[0].geometry.location.lng
             }
 
-            chargeSpots(position, map, category);
+            chargeSpots(map, category);
 
             if (placeholderAddress != address && icon === null) {
                 let marker = new google.maps.Marker({
@@ -216,20 +216,17 @@ function checkEnterIsPressed(e, page) {
 }
 
 
-function chargeSpots(position, map, category = 0) {
+function chargeSpots(map, category = 0) {
 
     clearMarkers();
 
     $.post( "../geolocation/charge-spots", {
-        coords : { 
-            lat : position["lat"], 
-            lng : position["lng"] 
-        },
         category : category
     })
     .done((result) => {
 
         spotList = JSON.parse(result);
+        console.log(spotList);
 
         var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
         
@@ -243,9 +240,11 @@ function chargeSpots(position, map, category = 0) {
             }
 
             const spotId = parseInt(spotList[i].id);
+            const spotCategory = parseInt(spotList[i].category_id);
 
             let marker = new google.maps.Marker({
                 id: spotId,
+                category: spotCategory,
                 position: pos,
                 map: map
             });

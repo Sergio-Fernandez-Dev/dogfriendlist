@@ -4,17 +4,13 @@ function chargeFavSpots() {
 
 function chargeFavs(map, category = 0) {
     clearMarkers();
-
-    $.post( "../geolocation/charge-spots", {
-        coords : { 
-            lat : position["lat"], 
-            lng : position["lng"] 
-        },
+    console.log('Entra en chargeFavs')
+    $.post( "../geolocation/charge-fav-spots", {
         category : category
     })
     .done((result) => {
 
-        spotList = JSON.stringify(result);
+        spotList = JSON.parse(result);
         console.log(spotList);
 
         var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
@@ -29,9 +25,11 @@ function chargeFavs(map, category = 0) {
             }
 
             const spotId = parseInt(spotList[i].id);
+            const spotCategory = parseInt(spotList[i].category_id);
 
             let marker = new google.maps.Marker({
                 id: spotId,
+                category: spotCategory,
                 position: pos,
                 map: map
             });
@@ -43,5 +41,25 @@ function chargeFavs(map, category = 0) {
             markers.push(marker);
         }
     })       
+}
+
+function hideMarkers() {
+
+    const category = Number($('select[name="fav-category"]').val());
+    var length = spotList.length;
+
+    if (category == 1) {
+        for (var i = 0; i < length; i++) {
+            markers[i].setMap(map);
+        }
+    } else {
+        for (var i = 0; i < length; i++) {
+            if (markers[i].category != category) {
+                markers[i].setMap(null);
+            } else {
+                markers[i].setMap(map);
+            }
+        }
+    }
 }
 

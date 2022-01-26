@@ -2,7 +2,6 @@
 namespace App\Forms;
 
 use Exceptions\Form\FormException;
-use App\Core\Interfaces\GatewayInterface;
 use App\Models\Interfaces\EntityHandlerInterface;
 
 abstract class Form {
@@ -15,7 +14,7 @@ abstract class Form {
     abstract public function send();
 
     /**
-     * @param GatewayInterface $dbh
+     * @param EntityHandlerInterface $handler
      */
     public function __construct(EntityHandlerInterface $handler) {
 
@@ -42,7 +41,7 @@ abstract class Form {
     /**
      * Valida si el email introducido tiene el formato correcto.
      *
-     * @param $email
+     * @param string $email
      * @throws FormException
      */
     protected function _validateEmail($email) {
@@ -56,7 +55,7 @@ abstract class Form {
 
     /**
      * Valida si el password introducido tiene el formato correcto.
-     * @param $password
+     * @param string $password
      */
     protected function _validatePassword($password) {
 

@@ -17,7 +17,8 @@
             </select><br>
     </div>
     <div class="form form--finder-style">
-        <input class="form__field form__field--finder-style" id="new-spot-finder-form" type="text" name="address" placeholder="Dirección (opcional)" onkeydown="checkEnterIsPressed(event, 'new-spot')"><br>
+        <input class="form__field form__field--finder-style" id="new-spot-finder-form" type="text" name="address" 
+        placeholder="Dirección (opcional)" onkeydown="checkEnterIsPressed(event, 'new-spot')"><br>
         <input class="button button--25rem" id="finder-button" type="button" value="Buscar" onclick="findNewSpot()">
     </div>
     <div class="box__separation-line"></div>

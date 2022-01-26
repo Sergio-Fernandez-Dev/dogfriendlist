@@ -2,6 +2,7 @@ html {
     font-size: 10px;
 }
 
+
 .body {
     display: flex;
     flex-wrap: wrap;
@@ -17,6 +18,10 @@ html {
     width: 90%;
     height: auto;
     margin: 0 auto;
+}
+
+.box--centered {
+    margin: auto;
 }
 
 .box__separation-line {
@@ -352,6 +357,11 @@ html {
 .p {
     font-size: 1.5rem;
     justify-self: left;
+}
+
+.p--bold {
+    font-size: 1.7rem;
+    font-weight: bold;
 }
 
 

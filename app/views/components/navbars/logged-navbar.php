@@ -5,17 +5,19 @@ $user = $_SESSION['user'];
 <header class="header">
     <div class="header__content">
     <h1 class="header__logo">
-            <a class="header__link" href="..">DOGFRIENDLIST</a>
+            <a class="header__link" href="/">DOGFRIENDLIST</a>
         </h1>
         <nav class="nav">
             <div class="nav__menu">
                 <div class="nav__button">
-                    <a class="nav__link" href="../new-spot">
-                        <i class="material-icons">add_location_alt</i>
+                    <a class="nav__link" href="/new-spot">
+                        <span class="material-icons">add_location_alt</span>
                     </a>
                 </div>
                 <div class="nav__button">
-                    <span class="material-icons nav__link" onclick="chargeFavSpots()">favorite</span>
+                    <a class="nav__link" href="/favourites">
+                        <span class="material-icons">favorite</span>
+                    </a>
                 </div>
             </div>
         </nav>

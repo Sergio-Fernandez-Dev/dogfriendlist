@@ -72,8 +72,6 @@ class DB implements GatewayInterface {
      */
     private function _execute($query) {
 
-        \var_dump($query);
-
         if (!isset($this->conn)) {$this->connect();}
 
         try
