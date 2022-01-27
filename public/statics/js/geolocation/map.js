@@ -8,6 +8,7 @@ let markers = [];
 var markerCoords;
 let markerId = null;
 let favList = [];
+let infowindowHTML;
 
 
 function initMap() {
@@ -300,35 +301,16 @@ function attachInfowindow(title, description, marker, map, infowindow) {
             console.log(result);
 
             if (fav.length > 0) {
-                var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>';
                 favList.push(marker.id);
-        
-            } else {
-                var span = '<span class="material-icons fav__button">favorite_border</span>';
-            }
-            
-            let infowindowHTML = 
-                        '<div class="infowindow">' +
-                            '<h1 class="infowindow__title" id="infowindow-title">' + 
-                                title + 
-                            '</h1>' +
-                            '<div class="infowindow__description" id="infowindow-description">' + 
-                                description + 
-                            '</div>' +
-                            '<div class="fav">' + 
-                                span + 
-                            '</div>' +  
-                        '</div>';
-            
-            
+            } 
+                   
             var lastInfowindow = false;  
 
-        
             marker.addListener("click",  () => {
                 if (lastInfowindow) {
                     infowindow.close();
                 }
-                infowindow.setContent(infowindowHTML);
+                infowindow.setContent(setInfowindowHTML(marker.id, title, description));
         
                 infowindow.open({
                     anchor: marker,
@@ -337,10 +319,33 @@ function attachInfowindow(title, description, marker, map, infowindow) {
                 });
         
                 markerId = marker.id;
-        
                 lastInfowindow = infowindow;
             });
         });
+}
+
+function setInfowindowHTML(id, title, description) {
+
+    if (favList.includes(id)) {
+        var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>'
+    } else {
+        var span = '<span class="material-icons fav__button">favorite_border</span>';
+    }
+
+    var html = 
+            '<div class="infowindow">' +
+                '<h1 class="infowindow__title" id="infowindow-title">' + 
+                    title + 
+                '</h1>' +
+                '<div class="infowindow__description" id="infowindow-description">' + 
+                    description + 
+                '</div>' +
+                '<div class="fav">' + 
+                    span + 
+                '</div>' +  
+            '</div>';
+
+    return html;
 }
 
 function addNewSpot(map) {

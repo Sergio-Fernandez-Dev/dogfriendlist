@@ -108,17 +108,14 @@ route::add('/remove-from-favs', 'POST',
 route::add('/check-favs', 'POST',
     function () {
 
+        session_start();
+
         if (isset($_POST['marker_id']) && isset($_SESSION['user']['id'])) {
-            session_start();
 
             $db = new DB();
             $qb = new QueryBuilder();
             $user_id = $_SESSION['user']['id'];
             $spot_id = $_POST['marker_id'];
-            $data = [
-                'user_id' => $user_id,
-                'spot_id' => $spot_id,
-            ];
 
             $qb->setTableName('Favourites');
             $query = $qb->select()
