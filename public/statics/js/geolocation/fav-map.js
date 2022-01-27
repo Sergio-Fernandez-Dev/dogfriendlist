@@ -4,14 +4,14 @@ function chargeFavSpots() {
 
 function chargeFavs(map, category = 0) {
     clearMarkers();
-    console.log('Entra en chargeFavs')
+    ('Entra en chargeFavs')
     $.post( "../geolocation/charge-fav-spots", {
         category : category
     })
     .done((result) => {
 
         spotList = JSON.parse(result);
-        console.log(spotList);
+        (spotList);
 
         var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
         

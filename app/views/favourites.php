@@ -16,6 +16,6 @@
         <input class="button" id="finder-button" type="button" value="Buscar" onclick="prepareFinderQuery(true)">
     </div>
     <span class="box__separation-line"></span>
-    <h2 class="h2">Cerca de ti:</h2>
+    <h2 class="h2">Tus spots favoritos:</h2>
 <?php render('components/geolocation/map.php', false);?>
 </div>

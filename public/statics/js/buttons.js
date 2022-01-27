@@ -33,11 +33,11 @@ $(document).on('click', '.fav__button', function(){
         $(this).text('favorite');
         $(this).addClass('fav__button--clicked');
         addToFavorite(markerId);
-        console.log(favList);
+        (favList);
     } else {
         $(this).text('favorite_border');
         $(this).removeClass('fav__button--clicked');
         removeFromFavorite(markerId);
-        console.log(favList);
+        (favList);
     }
   });

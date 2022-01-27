@@ -135,6 +135,7 @@ function getAddressFromCoordinates(position) {
             addressField.setAttribute('value', address);
             placeholder.removeAttribute('placeholder');
             placeholder.setAttribute('placeholder', address);
+            (address);
             placeholderAddress = address;
 
             return address;
@@ -206,10 +207,10 @@ function prepareFinderQuery(placeholder) {
 function checkEnterIsPressed(e, page) {
 
     if (e.key == 'Enter') {
-        if (page = 'index') {
+        if (page == 'index') {
             prepareFinderQuery(true);
         }
-        if (page = 'new-spot') {
+        if (page == 'new-spot') {
             findNewSpot();
         }
     }
@@ -226,7 +227,7 @@ function chargeSpots(map, category = 0) {
     .done((result) => {
 
         spotList = JSON.parse(result);
-        console.log(spotList);
+        (spotList);
 
         var infowindow = new google.maps.InfoWindow({ maxWidth: 320 });    
         
@@ -395,7 +396,7 @@ function createMarker(map, coords, icon) {
         lng: coords.lng()
     }
     markerCoords = position;
-    console.log('createmarker '+ markerCoords.lat);
+    ('createmarker '+ markerCoords.lat);
     
     return marker;
 }
