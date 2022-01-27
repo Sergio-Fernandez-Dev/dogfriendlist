@@ -63,3 +63,40 @@ function hideMarkers() {
     }
 }
 
+function findFavsFromAddres() {
+    const address = $('#fav-address').val();
+
+    if (address == "" && placeholder) {
+        address = placeholderAddress;
+    }
+
+    if (address == "" && !placeholder) {
+        return;
+    }
+
+    const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ 
+        address: address,
+        region: 'es'
+    }, 
+    (results, status) => {
+        if (status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            map.setZoom(17);
+
+            let marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+
+            markers.push(marker); 
+        } else if (status == 'INVALID_REQUEST') {
+            alert('La dirección solicitada no existe');
+        } else {
+            alert('Algo ha salido mal, inténtalo de nuevo');
+        }   
+        
+    });
+}
+

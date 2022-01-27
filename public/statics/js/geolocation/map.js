@@ -185,7 +185,6 @@ function getCoordinatesFromAddress(address, category, placeholder, icon = null) 
                 markers.push(marker);  
             }
 
-
         } else if (status == 'INVALID_REQUEST') {
             alert('La dirección solicitada no existe');
         } else {
@@ -297,6 +296,8 @@ function attachInfowindow(title, description, marker, map, infowindow) {
         .done( (result) => {
             
             let fav = JSON.parse(result);
+
+            console.log(result);
 
             if (fav.length > 0) {
                 var span = '<span class="material-icons fav__button fav__button--hover fav__button--clicked">favorite</span>';
