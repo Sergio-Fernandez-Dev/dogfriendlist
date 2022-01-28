@@ -148,7 +148,8 @@ route::add('/confirm', ['GET', 'POST'],
             //Si venimos desde 'verification-failed' habremos recibido una peticion POST 
             //con el email introducido por el usuario. Utilizaremos ese email para instanciar
             //un nuevo usuario.
-            } elseif (isset($_POST['email'])) {
+            } 
+            if (isset($_POST['email'])) {
                 $user = $handler->findByEmail($_POST['email']);
             }
             //Enviamos un email de verificación.
@@ -195,16 +196,19 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
 
             $title = 'Validación errónea';
 
-            return render('auth/verification-failed.php', base_page: false, title: $title);
+            return render('auth/verification-failed.php', base_page: false, title: $title, key: $activation_key);
 
-        case 'POST':             
+        case 'POST':      
+
             $user = $handler->findByEmail($_POST['email']);
 
+            if (null === $user->getEmail()) {
+                return redirect('errors/404.php');
+            }
             $user_data = formatUserData($user);
-
             $_SESSION['user'] = $user_data;
 
-            redirect('auth/confirm');       
+           return redirect('auth/confirm');       
         }              
     }
 );
@@ -212,14 +216,14 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
 route::methodNotAllowed(
     function() {
 
-        render('errors/405.php', false);
+        render('errors/405.php', base_page: false);
     }
 );
 
 route::pathNotFound(
     function() {
 
-        render('errors/404.php', false);
+        render('errors/404.php', base_page: false);
     }
 );
 
