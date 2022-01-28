@@ -17,7 +17,7 @@
 <div class="box box--row">
     <img class="box__img" src="../statics/img/doggy.png">
         <div class="box--centered">
-            <h2 class="h2">Ooops!!!</h1><br>
+            <h2 class="h2">Ooops!!!</h2><br>
             <p class="p">Parece que alguien ha metido el hocico donde no debía...</p>
             </p><br><br>
             <form class="form" action="/" method="post">

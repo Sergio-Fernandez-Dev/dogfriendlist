@@ -67,6 +67,19 @@ abstract class Form {
     }
 
     /**
+     * Valida si el password introducido tiene el formato correcto.
+     * @param string $password
+     */
+    protected function _validateUsername($username) {
+
+        $pattern = '^([0-9A-Za-z_-]{3,15})$';
+
+        if (!\preg_match('#' . $pattern . '#', $username)) {
+            throw new FormException("El nombre de usuario solo puede contener números, letras y guiones, y debe tener entre 3 y 15 caracteres");
+        }
+    }
+
+    /**
      * Filtra los valores introducidos en los campos del formulario
      * para evitar código malicioso.
      *

@@ -1,4 +1,4 @@
-<?php declare (strict_types = 1);
+<?php
 namespace App\Auth\Mail;
 
 use App\Models\Users\User;
@@ -88,6 +88,8 @@ class Email extends PHPMailer {
 
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$this->ErrorInfo}";
+            echo "user: {$this->username}";
+            echo "pass: {$this->password}";
         }
     }
 

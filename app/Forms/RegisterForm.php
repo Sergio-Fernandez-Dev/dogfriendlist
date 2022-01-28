@@ -53,6 +53,7 @@ class RegisterForm extends Form {
      */
     public function send() {
 
+        $this->_validateUsername($this->username);
         $this->_validateEmail($this->email);
 
         $user = $this->handler->findByEmail($this->email);

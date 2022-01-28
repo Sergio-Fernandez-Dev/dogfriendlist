@@ -24,6 +24,17 @@ html {
     margin: auto;
 }
 
+.box--row { 
+    flex-direction: row;
+}
+
+.box__img {
+    display: inline-block;
+    width: 30%;
+    align-self: flex-end;
+    justify-self: center;
+}
+
 .box__separation-line {
     width: 100%;
     border-bottom:  0.1rem solid #928A97;

@@ -12,8 +12,9 @@ use Exceptions\Form\FormException;
 use Exceptions\Db\UserNotFoundException;
 
 
-route::add('/', 'GET', 
+route::add('/', ['GET', 'POST'], 
     function () {
+        
         session_start();
 
         $title = 'Index';
@@ -68,7 +69,7 @@ route::add('/new-spot', ['GET', 'POST'],
     function () {
 
         session_start();
-        authRequired();
+        authRequired('auth/login');
 
         $title = 'Nuevo Spot';
 
@@ -118,7 +119,7 @@ route::add('/favourites', ['GET', 'POST'],
     function () {
 
         session_start();
-        authRequired();
+        authRequired('auth/login');
 
         $title = 'Favoritos';
         
@@ -137,10 +138,7 @@ route::add('/favourites', ['GET', 'POST'],
 
                 return render('favourites.php', title: $title, scripts: $scripts, callback: $callback);
             case 'POST':
-                
-
-        }
-        
+        }      
 
         //Establecemos la función a la que llamaremos para crear nuestro mapa;
         $callback = 'chargeFavSpots';
@@ -160,6 +158,20 @@ route::add('/geolocation/([a-zA-Z0-9-_/]*)', ['GET', 'POST'],
     function () {
 
         require_once '../app/Geolocation/geolocation.php';
+    }
+);
+
+route::methodNotAllowed(
+    function() {
+
+        render('errors/405.php', false);
+    }
+);
+
+route::pathNotFound(
+    function() {
+
+        render('errors/404.php', false);
     }
 );
 

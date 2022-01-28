@@ -17,9 +17,9 @@
     <div class="box box--row">
         <img class="box__img" src="../statics/img/dog-email.png">
             <div class="box--centered">
-                <h2 class="h2">Un email de confirmación ha sido enviado a tu correo</h1><br>
-                <p class="p">¡Gracias por unirte a nuestra gran familia! Acabamos de enviarte un mensaje de confirmacion a</p>
-                <p class="p p--bold"><?php echo $user['email'] ?></p><br>
+                <h2 class="h2">Un email de confirmación ha sido enviado a tu correo</h2><br><br>
+                <p class="p">¡Gracias por unirte a nuestra gran familia! Acabamos de enviarte un mensaje de confirmacion a:</p><br>
+                <p class="p p--bold"><?php echo $user['email'] ?></p><br><br>
                 <p class="p">Si en unos minutos no lo has recibido, haz click en el siguiente botón
                     y te lo enviaremos de nuevo.
                 </p><br><br>
