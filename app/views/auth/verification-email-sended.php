@@ -14,18 +14,19 @@
     <title>Dogfriendlist - Confirmación</title>
 </head>
 <body class="body">
-    <div class="box">
-        <div class="box box--centered">
-            <h2 class="h2">Un email de confirmación ha sido enviado a tu correo</h1><br>
-            <p class="p">¡Gracias por unirte a nuestra gran familia! Acabamos de enviarte un mensaje de confirmacion a</p>
-            <p class="p p--bold"><?php echo $user['email'] ?></p><br>
-            <p class="p">Si en unos minutos no lo has recibido, haz click en el siguiente botón
-                y te lo enviaremos de nuevo.
-            </p><br><br>
-            <form class="form" action="confirm" method="post">
-            <input class="button" type="submit" value="¡Reenvíamelo!">
-            </form>
-        </div>
+    <div class="box box--row">
+        <img class="box__img" src="../statics/img/dog-email.png">
+            <div class="box--centered">
+                <h2 class="h2">Un email de confirmación ha sido enviado a tu correo</h1><br>
+                <p class="p">¡Gracias por unirte a nuestra gran familia! Acabamos de enviarte un mensaje de confirmacion a</p>
+                <p class="p p--bold"><?php echo $user['email'] ?></p><br>
+                <p class="p">Si en unos minutos no lo has recibido, haz click en el siguiente botón
+                    y te lo enviaremos de nuevo.
+                </p><br><br>
+                <form class="form" action="confirm" method="post">
+                    <input class="button" type="submit" value="¡Reenvíamelo!">
+                </form>
+            </div>
     </div>
 </body>
 </html>
