@@ -209,24 +209,17 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
     }
 );
 
-route::add('/all', 'GET',
-    function () {
-
-        return print_r(route::getAll());
-    }
-);
-
 route::methodNotAllowed(
     function() {
 
-        echo 'no existe el metodo';
+        render('errors/405.php', false);
     }
 );
 
 route::pathNotFound(
     function() {
 
-        echo 'path no encontrado';
+        render('errors/404.php', false);
     }
 );
 
