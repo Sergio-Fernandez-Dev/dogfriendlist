@@ -120,7 +120,7 @@ route::add('/confirm', ['GET', 'POST'],
 
         isset($_SESSION['user']) ? $user = $_SESSION['user'] : $user = null;
 
-        $email = new Email(true);
+        $email = new Email(false);
         $db = new DB();
         $qb = new QueryBuilder();
         $handler = new UserHandler($db, $qb);
@@ -131,6 +131,7 @@ route::add('/confirm', ['GET', 'POST'],
         case 'GET':
             //Si existe el objeto usuario mostramos la pagina de confirmación de envío del email
             if (isset($user)) {
+
                 $user = formatUserData($user);
 
                 return render('auth/verification-email-sended.php', base_page: false, title: $title, user: $user);    
@@ -170,6 +171,7 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
         $db = new DB();
         $qb = new QueryBuilder();
         $handler = new UserHandler($db, $qb);
+        $email = new Email(false);
 
         switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
@@ -199,12 +201,14 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
             return render('auth/verification-failed.php', base_page: false, title: $title, key: $activation_key);
 
         case 'POST':      
-
             $user = $handler->findByEmail($_POST['email']);
 
             if (null === $user->getEmail()) {
-                return redirect('errors/404.php');
+                return redirect('auth/register');
             }
+
+            $email->sendVerificationEmail($user);
+
             $user_data = formatUserData($user);
             $_SESSION['user'] = $user_data;
 

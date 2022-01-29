@@ -61,6 +61,9 @@ function authRequired(string $route = "") {
  */
 function formatUserData($user) {
 
+    if (!is_object($user)) {
+        return $user;
+    }
     $user_data = [
         'id'       => $user->getId(),
         'username' => $user->getUsername(),
