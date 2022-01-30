@@ -2,12 +2,13 @@
     "require": {
         "phpunit/phpunit": "^9.5",
         "vlucas/phpdotenv": "^5.3",
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+        "heroku/heroku-buildpack-php": "^205.0"
     },
 
     "autoload": {
         "files": [
-            "app/core/helpers/helpers.php",
+            "app/Core/helpers/helpers.php",
             "config/global.php"
         ],
 

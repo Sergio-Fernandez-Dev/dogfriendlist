@@ -11,13 +11,14 @@ services:
       - db
     environment:  
       XDEBUG_CONFIG: remote_host=localhost remote_port=9000 remote_enable=1
+      user: root
     ports:
       - 3000:80
     volumes:
       - .:/var/www
       - ./config/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./config/apache2.conf:/etc/apache2/apache2.conf
-      - ./config/php.ini-development:/usr/local/etc/php/php.ini
+      - ./config/php.ini:/usr/local/lib/php/php.ini
 
   db:
     container_name: mariadb
