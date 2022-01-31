@@ -14,9 +14,8 @@ use Exceptions\Db\UserNotFoundException;
 
 route::add('/', ['GET', 'POST'], 
     function () {
-        
         session_start();
-        
+
         $title = 'Index';
 
         //Establecemos las rutas que cargarán nuestros archivos javascript.

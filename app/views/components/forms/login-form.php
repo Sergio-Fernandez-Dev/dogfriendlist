@@ -2,9 +2,9 @@
 <?php
 if (isset($login_title)) {
     echo $login_title;
-    echo '<span class="box__separation-line"></span>';
 }
 ?>
+    <span class="box__separation-line"></span>
     <form class="form form--35rem" action="login" method="post">
 <?php
 if (isset($exception)) {

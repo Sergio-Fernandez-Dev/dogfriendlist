@@ -87,9 +87,7 @@ class Email extends PHPMailer {
             $this->send();
 
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$this->ErrorInfo}";
-            echo "user: {$this->username}";
-            echo "pass: {$this->password}";
+            $info = $this->ErrorInfo;
         }
     }
 

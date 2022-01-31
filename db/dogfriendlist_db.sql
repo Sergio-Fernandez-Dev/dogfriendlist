@@ -33,9 +33,9 @@ CREATE TABLE `Spots` (
   `id` INT(8) NOT NULL UNIQUE,
   `title` VARCHAR(50) NOT NULL UNIQUE,
   `description` TEXT(500) NOT NULL,
-  `lat` DECIMAL(6,3) NOT NULL,
-  `lng` DECIMAL(6,3) NOT NULL,
-  `address` VARCHAR(125)CHARACTER SET cp1250 COLLATE cp1250_bin DEFAULT NULL,
+  `lat` DECIMAL(10,7) NOT NULL,
+  `lng` DECIMAL(10,7) NOT NULL,
+  `address` VARCHAR(125) DEFAULT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` INT(8) NOT NULL,
   `category_id` INT(8) NOT NULL
@@ -50,38 +50,9 @@ CREATE TABLE `Categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Estructura de la tabla `Comments`
 
-CREATE TABLE `Comments` (
-  `id` INT(8) NOT NULL,
-  `title` VARCHAR(50) NOT NULL,
-  `comment` TEXT(500) NOT NULL,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` INT(8) NOT NULL,
-  `spot_id` INT(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
--- Estructura de la tabla `Ratings`
-
-CREATE TABLE `Ratings` (
-  `user_id` INT(8) NOT NULL,
-  `spot_id` INT(8) NOT NULL,
-  `valuation` TINYINT(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Estructura de la tabla `Favourites`
 
 CREATE TABLE `Favourites` (
-  `user_id` INT(8) NOT NULL,
-  `spot_id` INT(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Estructura de la tabla `Pictures`
-
-CREATE TABLE `Pictures` (
-  `id` INT(8) NOT NULL,
-  `img` VARCHAR(255) DEFAULT 'spots/common/default-spot-picture.jpg',
   `user_id` INT(8) NOT NULL,
   `spot_id` INT(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -103,31 +74,12 @@ ALTER TABLE `Spots`
   MODIFY `id` INT(8) NOT NULL;
 
 
-ALTER TABLE `Comments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_COMMENTS_USERS` (`user_id`),
-  ADD KEY `FK_COMMENTS_SPOTS` (`spot_id`),
-  MODIFY `id` INT(8) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `Ratings`
-  ADD PRIMARY KEY (`user_id`, `spot_id` ),
-  ADD KEY `FK_RATINGS_USERS` (`user_id`),
-  ADD KEY `FK_RATINGS_SPOTS` (`spot_id`),
-  MODIFY `user_id` INT(8) NOT NULL,
-  MODIFY `spot_id` INT(8) NOT NULL;
-
 ALTER TABLE `Favourites`
   ADD PRIMARY KEY (`user_id`, `spot_id` ),
   ADD KEY `FK_FAVOURITES_USERS` (`user_id`),
   ADD KEY `FK_FAVOURITES_SPOTS` (`spot_id`),
   MODIFY `user_id` INT(8) NOT NULL,
   MODIFY `spot_id` INT(8) NOT NULL;
-
-ALTER TABLE `Pictures`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_PICTURES_USERS` (`user_id`),
-  ADD KEY `FK_PICTURES_SPOTS` (`spot_id`),
-  MODIFY `id` INT(8) NOT NULL AUTO_INCREMENT;
 
 -- Claves foráneas
 
@@ -137,26 +89,8 @@ ALTER TABLE `Spots`
   ADD CONSTRAINT `FK_SPOTS_CATEGORIES` FOREIGN KEY (`category_id`) 
   REFERENCES `Categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `Comments`
-  ADD CONSTRAINT `FK_COMMENTS_USERS` FOREIGN KEY (`user_id`) 
-  REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_COMMENTS_SPOTS` FOREIGN KEY (`spot_id`) 
-  REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `Ratings`
-  ADD CONSTRAINT `FK_RATINGS_USERS` FOREIGN KEY (`user_id`) 
-  REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_RATINGS_SPOTS` FOREIGN KEY (`spot_id`) 
-  REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 ALTER TABLE `Favourites`
   ADD CONSTRAINT `FK_FAVOURITES_USERS` FOREIGN KEY (`user_id`) 
   REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_FAVOURITES_SPOTS` FOREIGN KEY (`spot_id`) 
-  REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `Pictures`
-  ADD CONSTRAINT `FK_PICTURES_USERS` FOREIGN KEY (`user_id`) 
-  REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_PICTURES_SPOTS` FOREIGN KEY (`spot_id`) 
   REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

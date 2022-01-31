@@ -13,7 +13,7 @@ use Exceptions\Form\FormException;
 
 route::add('/login', ['GET', 'POST'],
     function () {
-
+        session_start();
         $title = 'Login';
 
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -37,7 +37,7 @@ route::add('/login', ['GET', 'POST'],
 
                 return render('auth/login.php', title: $title, exception: $exception);
             }
-            session_start();
+            
             //Si el login se ha realizado correctamente, almacenamos los datos del usuario recibido en una variable de sesión.
             $user_data = formatUserData($user);
 
@@ -192,6 +192,10 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
                     //y hacemos una redirección a la página de login.
                     $_SESSION['verification_body'] = 'auth/verification-succeeded.php';
 
+                    $user_data = formatUserData($user);
+
+                    $_SESSION['user'] = $user_data;
+
                     return redirect('auth/login');
                 }  
             }
@@ -204,6 +208,9 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
             $user = $handler->findByEmail($_POST['email']);
 
             if (null === $user->getEmail()) {
+                $user_data = formatUserData($user);
+                $_SESSION['user'] = $user_data;
+                
                 return redirect('auth/register');
             }
 
