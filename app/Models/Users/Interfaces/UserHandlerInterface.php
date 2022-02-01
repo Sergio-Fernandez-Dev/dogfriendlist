@@ -17,20 +17,3 @@ Interface UserHandlerInterface extends EntityHandlerInterface {
 }
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

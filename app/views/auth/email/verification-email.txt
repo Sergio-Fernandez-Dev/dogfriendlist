@@ -2,6 +2,6 @@ Bienvenido a Dogfriendlist.
 
 Estas a un paso de unirte a nuestra gran familia. Para activar tu cuenta copia y pega el siguiente link en tu navegador:
 
-href="http://dogfriendlist.herokuapp.com/auth/confirm/$activation_key?username=$username">Haz click aquí para activar tu cuenta
+http://$url_root/auth/confirm/$activation_key?username=$username
 
 

@@ -147,3 +147,4 @@ route::pathNotFound(
 );
 
 route::run('/geolocation');
+?>

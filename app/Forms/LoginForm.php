@@ -84,5 +84,4 @@ class LoginForm extends Form {
     }
 
 }
-
 ?>

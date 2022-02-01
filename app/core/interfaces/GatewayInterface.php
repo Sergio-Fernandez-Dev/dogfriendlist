@@ -1,38 +1,21 @@
 <?php
-    namespace App\Core\Interfaces;
+namespace App\Core\Interfaces;
 
-    interface GatewayInterface {
+interface GatewayInterface {
 
-        public function connect();
+    public function connect();
 
-        public function disconnect();
+    public function disconnect();
 
-        /**
-         * @param array $data
-         */
-        public function persist(array $data);
+    /**
+     * @param mixed $data
+     */
+    public function persist($data);
 
-        /**
-         * @param int $id
-         */
-        public function retrieve(array $data);
-    }
+    /**
+     * @param mixed $data
+     */
+    public function retrieve($data);
+}
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

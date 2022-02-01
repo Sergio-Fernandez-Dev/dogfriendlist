@@ -24,11 +24,3 @@ interface SpotHandlerInterface extends EntityHandlerInterface {
 }
 
 ?>
-
-
-
-
-
-
-
-

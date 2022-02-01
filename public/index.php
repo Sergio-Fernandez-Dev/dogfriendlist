@@ -1,5 +1,6 @@
 <?php
 
+
 require_once '../vendor/autoload.php';
 
 use App\Core\DB;
@@ -11,7 +12,7 @@ use App\Models\Users\UserHandler;
 use Exceptions\Form\FormException;
 use Exceptions\Db\UserNotFoundException;
 
-
+try {
 route::add('/', ['GET', 'POST'], 
     function () {
         session_start();
@@ -182,3 +183,7 @@ route::add('/test', ['GET', 'POST'],
 );
 
 route::run('');
+} catch (Error $e) {
+    echo "errorrrrrr:" . $e->getMessage();
+}
+?>

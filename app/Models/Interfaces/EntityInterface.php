@@ -22,19 +22,3 @@ interface EntityInterface {
 }
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

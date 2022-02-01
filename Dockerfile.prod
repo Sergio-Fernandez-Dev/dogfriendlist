@@ -29,6 +29,14 @@ RUN docker-php-ext-enable \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
+COPY ./config/apache2.conf /etc/apache2/apache2.conf
+COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./config/php.ini /usr/local/etc/php/
+
 RUN a2enmod rewrite
+
+ENTRYPOINT []
+CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-enabled/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground
+
 
 

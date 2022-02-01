@@ -85,7 +85,7 @@ route::add('/register', ['GET', 'POST'],
             $qb = new QueryBuilder();
             $handler = new UserHandler($db, $qb);
             $form = new RegisterForm($_POST, $handler);
-            $email = new Email(true);
+            $email = new Email(false);
              //enviamos el formulario de registro
             try {
                //Si todo es correcto nos devuelve un usuario con valor 'null';
@@ -95,19 +95,20 @@ route::add('/register', ['GET', 'POST'],
 
                 return render('auth/register.php', title: $title, exception: $exception);
             }
+
             //Establecemos las propiedades de nuestro usuario en base a los datos tomados del formulario
             $user->setProperties($form->getFields());
             //Añadimos el usuario a la base de datos;
             $handler->add($user);
             //Enviamos email de validación al correo del usuario
             $email->sendVerificationEmail($user);
-            //Creamos una variable de sesión con el usuario instanciado.
             
             $user_data = formatUserData($user);
 
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = $user_data;
 
             return redirect('auth/confirm');
+    
         }
     }
 );
@@ -239,5 +240,4 @@ route::pathNotFound(
 );
 
 route::run('/auth');
-
 ?>
