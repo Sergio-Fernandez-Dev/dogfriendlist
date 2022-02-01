@@ -3,10 +3,10 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+02:00";
 
-DROP DATABASE IF EXISTS `dogfriendlist`;
+DROP DATABASE IF EXISTS `testing-db`;
 
-CREATE DATABASE `dogfriendlist` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `dogfriendlist`;
+CREATE DATABASE `testing-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `testing-db`;
 
 -- Estructura de la tabla `Users`
 
@@ -50,7 +50,7 @@ CREATE TABLE `Categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
+-- Estructura de la tabla `Favourites`
 
 CREATE TABLE `Favourites` (
   `user_id` INT(8) NOT NULL,
@@ -94,3 +94,13 @@ ALTER TABLE `Favourites`
   REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_FAVOURITES_SPOTS` FOREIGN KEY (`spot_id`) 
   REFERENCES `Spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Valores predefinidos para la tabla `Categories`.
+
+INSERT INTO `Categories` (id, name) VALUES (2, 'Parques y zonas verdes');
+INSERT INTO `Categories` (id, name) VALUES (3, 'Alojamiento');
+INSERT INTO `Categories` (id, name) VALUES (4,	'Bares y restaurantes');
+INSERT INTO `Categories` (id, name) VALUES (5, 'Tiendas de mascotas');
+INSERT INTO `Categories` (id, name) VALUES (6, 'Clínicas veterinarias');
+INSERT INTO `Categories` (id, name) VALUES (7,	'Guarderías caninas');
+INSERT INTO `Categories` (id, name) VALUES (8,	'Otros');
