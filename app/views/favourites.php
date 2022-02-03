@@ -1,8 +1,8 @@
 <div class="box">
-    <div class="form form--finder-style" id="finder-form">
-        <input class="form__field form__field--finder-style" id="fav-address" name="fav-address"
-        type="text" placeholder="Buscar por localización" onkeydown="checkEnterIsPressed(event)">
-        <select class="form__select form__select--finder-style" id="fav-category" name="fav-category" onchange="hideMarkers()">
+    <div class="form form--finder-style form--850 form--615" id="finder-form">
+        <input class="form__field form__field--finder-style form__field--850 form__field--615{" id="fav-address" name="fav-address"
+        type="text" placeholder="Buscar por localización" onkeydown="checkEnterIsPressed(event, 'favs')">
+        <select class="form__select form__select--finder-style form__select--850 form__select--615" id="fav-category" name="fav-category" onchange="hideMarkers()">
             <option class="form__option" selected value="1">Todos los spots</option>
             <option class="form__option" value="2">Parques y zonas verdes</option>
             <option class="form__option" value="3">Playas</option>
@@ -13,7 +13,7 @@
             <option class="form__option" value="8">Guarderías caninas</option>
             <option class="form__option" value="9">Otros</option>
         </select>
-        <input class="button" id="finder-button" type="button" value="Buscar" onclick="findFavsFromAddres()">
+        <input class="button button--615" id="finder-button" type="button" value="Buscar" onclick="findFavsFromAddres()">
     </div>
     <span class="box__separation-line"></span>
     <h2 class="h2">Tus spots favoritos:</h2>

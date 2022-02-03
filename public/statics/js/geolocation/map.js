@@ -213,6 +213,9 @@ function checkEnterIsPressed(e, page) {
         if (page == 'new-spot') {
             findNewSpot();
         }
+        if (page == 'favs') {
+            findFavsFromAddres();
+        }
     }
 }
 
@@ -297,8 +300,6 @@ function attachInfowindow(title, description, marker, map, infowindow) {
         .done( (result) => {
             
             let fav = JSON.parse(result);
-
-            console.log(result);
 
             if (fav.length > 0) {
                 favList.push(marker.id);

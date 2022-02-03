@@ -6,6 +6,7 @@ html {
 .body {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
     min-height: 10rem;
     background-color: #f3f1f3;
     font-family: 'Ubuntu', sans-serif;
@@ -45,6 +46,7 @@ html {
 .button {
     width: 15rem;
     height: 4rem;
+    min-width: 12rem;
     font-size: 1.6rem;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -154,7 +156,7 @@ html {
 .form--finder-style {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     flex-direction: row;
     align-content: center;
     margin-bottom: 2rem;
@@ -199,7 +201,7 @@ html {
 }
 
 .form__field--finder-style {
-    width: 50%;
+    width: 65%;
     margin-right: 2rem;  
 }
 
@@ -432,4 +434,56 @@ html {
     border-radius: 0.5rem;
 }
 
+
+@media (max-width: 850px) {
+
+    .form--850 {
+
+        flex-wrap: wrap;
+    }
+    .form__field--850 {
+        width: 100%;
+        margin-bottom: 2rem;
+        margin-right: 0;
+    }
+
+    .form__select--850 {
+        flex-grow: 4;
+    }
+
+
+    .button--850 {
+        width: auto;
+        margin-left: 2rem;;
+    }
+}
+
+@media (max-width: 615px) {
+
+    .profile-menu__name {
+        display: none;
+    }
+
+    .form--615 {
+        flex-wrap: wrap;
+    }
+
+    .form__field--615{
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: inherit;
+    }
+
+    .form__select--615 {
+        width: 100%;
+        margin-bottom: inherit;
+        margin-right: 0;
+    }
+
+    .button--615 {
+        width: 100%;
+        margin-left: inherit;
+    }
+
+}
 
