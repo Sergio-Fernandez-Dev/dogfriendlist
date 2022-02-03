@@ -36,6 +36,3 @@ $user = $_SESSION['user'];
     </div>
 
 </header>
-
-
-
