@@ -20,9 +20,9 @@
             <h2 class="h2">¡Algo ha salido mal!</h2><br><br>
             <p class="p">El enlace de activación no es correcto o ya ha expirado. Introduce tu dirección de correo
                 y te lo enviaremos de nuevo.</p><br>
-            <form class="form form__button-box" action="../confirm/<?php echo $key; ?>" method="post">
-                <input class="form__field " type="email"  name="email" placeholder="correo@ejemplo.com" required>
-                <input class="button" type="submit" value="¡Reenvíamelo!" style="margin-left: 1rem;">
+            <form class="form form--finder-style form__button-box" action="../confirm/<?php echo $key; ?>" method="post">
+                <input class="form__field" type="email"  name="email" placeholder="correo@ejemplo.com" required>
+                <input class="button button--spaced" type="submit" value="¡Reenvíamelo!">
             </form>
         </div>
     </div>

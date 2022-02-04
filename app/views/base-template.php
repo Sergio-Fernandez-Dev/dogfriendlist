@@ -21,7 +21,9 @@
 if (isset($header)) {
     require_once $header;
 }
+
 include_once $main_content;
+
 if (isset($footer)) {
     require_once $footer;
 }

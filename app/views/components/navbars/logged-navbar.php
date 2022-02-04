@@ -36,3 +36,19 @@ $user = $_SESSION['user'];
     </div>
 
 </header>
+
+<!-- Menú inferior para versión móvil -->
+<nav class="nav nav--footer">
+    <div class="nav__menu">
+        <div class="nav__button">
+            <a class="nav__link" href="/new-spot">
+                <span class="material-icons">add_location_alt</span>
+            </a>
+        </div>
+        <div class="nav__button">
+            <a class="nav__link" href="/favourites">
+                <span class="material-icons">favorite</span>
+            </a>
+        </div>
+    </div>
+</nav>

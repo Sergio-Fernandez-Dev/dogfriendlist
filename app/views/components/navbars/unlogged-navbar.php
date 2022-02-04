@@ -11,3 +11,14 @@
     </div>
 </header>
 
+<!-- Menú inferior para versión móvil -->
+<nav class="nav nav--footer">
+    <div class="nav__menu">
+        <div class="nav__button">
+            <a class="corner-block__link" href="../auth/login">Login</a>
+        </div>
+        <div class="nav__button">
+        <a class="corner-block__link" href="../auth/register">Registro</a>
+        </div>
+    </div>
+</nav>
