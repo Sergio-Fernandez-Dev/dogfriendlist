@@ -16,7 +16,7 @@ function render(string $page, bool $base_page = true, ...$params) {
     }
 
     if ($base_page) {
-        if (isset($_SESSION['user']) && 0 != $_SESSION['user']['role']) {
+        if (isset($_SESSION['user']) && isset($_SESSION['active'])) {
             $header = \COMPONENTS_PATH . 'navbars/logged-navbar.php';
         } else {
             $header = \COMPONENTS_PATH . 'navbars/unlogged-navbar.php';

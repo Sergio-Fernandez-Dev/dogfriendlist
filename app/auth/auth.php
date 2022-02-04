@@ -42,6 +42,7 @@ route::add('/login', ['GET', 'POST'],
             $user_data = formatUserData($user);
 
             $_SESSION['user'] = $user_data;
+            $_SESSION['active'] = true;
             
             //Si se ha seleccionado la casilla 'Recuérdame', lo registramos en una variable de sesión.
             if ($form->getRememberMe()) {
@@ -187,7 +188,6 @@ route::add("/confirm/([a-zA-Z0-9]*)", ['GET', 'POST'],
                     //Cambiamos el rol a usuario activo, resesteamos la clave de activación 
                     // y actualizamos al usuario en la base de datos.
                     $user->setRole(1);
-                    $user->setActivationKey(null);
                     $handler->save($user);
                     //Establecemos como variable de sesión el cuerpo de nuestro mensaje de verificación
                     //y hacemos una redirección a la página de login.
