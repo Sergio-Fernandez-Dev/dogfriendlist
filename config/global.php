@@ -6,6 +6,7 @@ $dotenv = Dotenv\Dotenv::createImmutable('../');
 $dotenv->safeLoad();
 
 define('URL_ROOT', $_ENV['URL_ROOT']);
+define('URL_PREFIX', $_ENV['URL_PREFIX']);
 
 define('BASE_VIEW_PATH', '../app/views/');
 define('BASE_VIEW_TEMPLATE', '../app/views/base-template.php');

@@ -1,9 +1,11 @@
 .DS_Store
 *.tmp
 *.log
-.env
+*.example
+*.dev
 *.cache
 *.conf
+*.dist
 
 .vscode/*
 !.vscode/settings.json
@@ -12,10 +14,7 @@
 !.vscode/extensions.json
 *.code-workspace
 
-composer.phar
-/vendor/
-
-/db/mariadb-data/*
+/db/mariadb-data/
 app/test.php
-/trash/
-/storage/
+/tests/
+phpunit.*

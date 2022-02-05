@@ -39,8 +39,8 @@ function render(string $page, bool $base_page = true, ...$params) {
  * @param string $route
  */
 function redirect(string $route) {
-    //$root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . 'https://' . $_SERVER['HTTP_HOST'] . '/';
-    header("Location: http://localhost:3000/" . "$route");
+
+    header("Location: " . URL_PREFIX . "://" . URL_ROOT . "$route");
 }
 
 /**
