@@ -2,7 +2,7 @@
 
     $user = $_SESSION['user'];
 ?>
-<form class="form" id="new-spot-form" method="POST" onkeydown="return event.key != 'Enter';">
+<form class="form" id="new-spot-form" method="POST" >
     <div class="form--finder-style form form--635">
         <input class="form__field form__field--finder-style form__field--635" type="text" name="title" placeholder="Título" required><br>
             <select class="form__select form__select--635" name="category">
