@@ -147,7 +147,8 @@ route::add('/confirm', ['GET', 'POST'],
         case 'POST':
             //Si venimos desde 'register' tendremos una variable de sesión con nuestro usuario
             if (isset($_SESSION['user'])) {
-                $user = $_SESSION['user'];        
+                $user_mail= $_SESSION['user']['email'];        
+                $user = $handler->findByEmail($user_mail);
             //Si venimos desde 'verification-failed' habremos recibido una peticion POST 
             //con el email introducido por el usuario. Utilizaremos ese email para instanciar
             //un nuevo usuario.

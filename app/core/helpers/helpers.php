@@ -40,7 +40,7 @@ function render(string $page, bool $base_page = true, ...$params) {
  */
 function redirect(string $route) {
 
-    header("Location: " . URL_PREFIX . "://" . URL_ROOT . "$route");
+    header("Location: " . URL_PREFIX . "://" . URL_ROOT . "/$route");
 }
 
 /**
